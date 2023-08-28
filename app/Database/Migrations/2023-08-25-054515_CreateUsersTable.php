@@ -31,6 +31,10 @@ class CreateUsersTable extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
             ],
+             'remember_token'   => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
             ],

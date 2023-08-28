@@ -36,7 +36,12 @@ $routes->setDefaultNamespace('App\Controllers\Admin');
 
 
 $routes->get('/admin/login', 'Auth::index');
-$routes->get('/admin/dashboard', 'Dashboard::index');
+
+$routes->post('/admin/login', 'Auth::login');
+
+
+
+$routes->get('/admin/dashboard', 'Dashboard::index', ['filter' => 'auth']);
 
 
 /*

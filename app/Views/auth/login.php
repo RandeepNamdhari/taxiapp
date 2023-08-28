@@ -17,6 +17,17 @@
         <link href="<?=base_url('admin/assets/css/icons.min.css')?>" rel="stylesheet" type="text/css">
         <!-- App Css-->
         <link href="<?=base_url('admin/assets/css/app.min.css')?>" id="app-style" rel="stylesheet" type="text/css">
+
+        <style>
+            .validation-error
+            {
+                    
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: var(--bs-form-invalid-color);
+            }
+        </style>
     
     </head>
 
@@ -50,7 +61,7 @@
                                 <h4 class="font-size-18 mt-5 text-center">Welcome Back !</h4>
                                 <p class="text-muted text-center">Sign in to continue to Veltrix.</p>
 
-                              <form class="mt-4" action="#">
+                              <form class="mt-4" action="#" id="loginForm">
 
                                 <div class="mb-3">
                                     <label class="form-label" for="username">Username</label>
@@ -59,15 +70,15 @@
     
 
                                 <div class="mb-3">
-                                    <label class="form-label" for="userpassword">Password</label>
-                                    <input type="password" class="form-control" id="userpassword" placeholder="Enter password">
+                                    <label class="form-label" for="password">Password</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Enter password">
                                 </div>
     
                                 <div class="mb-3 row">
                                     <div class="col-sm-6">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="customControlInline">
-                                            <label class="form-check-label" for="customControlInline">Remember me</label>
+                                            <input type="checkbox" class="form-check-input" id="remember">
+                                            <label class="form-check-label" for="remember">Remember me</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 text-end">
@@ -100,14 +111,80 @@
     
 
                 <!-- JAVASCRIPT -->
-                <script src="assets/libs/jquery/jquery.min.js"></script>
-                <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-                <script src="assets/libs/metismenu/metisMenu.min.js"></script>
-                <script src="assets/libs/simplebar/simplebar.min.js"></script>
-                <script src="assets/libs/node-waves/waves.min.js"></script>
+                <script src="<?=base_url('admin/assets/libs/jquery/jquery.min.js');?>"></script>
+                <script src="<?=base_url('admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js');?>"></script>
+                <script src="<?=base_url('admin/assets/libs/metismenu/metisMenu.min.js');?>"></script>
+                <script src="<?=base_url('admin/assets/libs/simplebar/simplebar.min.js');?>"></script>
+                <script src="<?=base_url('admin/assets/libs/node-waves/waves.min.js');?>"></script>
 
 
-        <script src="assets/js/app.js"></script>
+        <script src="<?=base_url('admin/assets/js/app.js');?>"></script>
+
+        <script>
+    const csrfToken = '<?= csrf_hash() ?>';
+</script>
+        <script src="<?=base_url('admin/assets/js/common.js');?>"></script>
+
+        <script>
+
+            document.getElementById("loginForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // Prevents the form from submitting
+   submitform();
+});
+
+            function submitform(){
+
+                 
+          
+            var data={};
+
+            data.username=$('#loginForm').find('#username').val();
+            data.password=$('#loginForm').find('#password').val();
+            data.remember=$('#loginForm').find('#remember').prop('checked')?1:0;
+            var url="<?=base_url('admin/login');?>";
+
+               var response=__postRequest(url,data);
+
+        response.then(function(data){
+
+            $('.validation-error').remove();
+            $('.alert-danger').remove();
+           
+
+
+         if(data.status)
+         {
+             $('#loginForm').prepend('<div class="alert alert-success alert-dismissible fade show mb-0" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><strong>Login Successfull!</strong>You will be redirect to your dashboard.</div>');
+             setTimeout(function()
+             {
+               window.location.assign("<?=base_url('admin/dashboard')?>");
+             },2000)
+         }
+
+          else if(!data.status && data.errors)
+          {
+            Object.keys(data.errors).forEach(key => {
+
+           $('#loginForm').find('#'+key).after('<div class="validation-error">'+data.errors[key]+'</div>');
+              
+              });
+          }
+          else
+          {
+             $('#loginForm').prepend('<div id="errorAlert" class="alert alert-danger alert-dismissible fade show mb-0" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><strong>Credentials Mismatch!</strong> The username or password is incorrect.</div>');
+          }
+        })
+
+          
+
+            return false;
+
+        }
+
+
+
+        </script>
+
 
     </body>
 </html>
