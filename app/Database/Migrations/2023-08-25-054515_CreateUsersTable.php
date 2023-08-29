@@ -35,12 +35,12 @@ class CreateUsersTable extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'created_at' => [
-                'type' => 'DATETIME',
+              'reset_token'   => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255,
             ],
-            'updated_at' => [
-                'type' => 'DATETIME',
-            ],
+             'created_at datetime default current_timestamp',
+             'updated_at datetime default current_timestamp on update current_timestamp', 
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addUniqueKey('email');

@@ -58,8 +58,5 @@ if (!function_exists('run_with_exceptions')) {
         
     }
 
-    function isLoggedIn()
-    {
-        return false;
-    }
+ 
 }

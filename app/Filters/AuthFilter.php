@@ -10,7 +10,7 @@ class AuthFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        helper('exception_helper');
+        helper('auth_helper');
         if (!isLoggedIn()) {
             return redirect()->to('admin/login');
         }

@@ -32,16 +32,56 @@ $routes->set404Override();
 $routes->get('/', 'Home::index');
 
 
-$routes->setDefaultNamespace('App\Controllers\Admin');
-
-
-$routes->get('/admin/login', 'Auth::index');
-
-$routes->post('/admin/login', 'Auth::login');
 
 
 
-$routes->get('/admin/dashboard', 'Dashboard::index', ['filter' => 'auth']);
+
+/** Admin Routes **/
+
+$routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static function ($routes) {
+
+    $routes->get('login', 'Auth::index');
+    
+    $routes->post('login', 'Auth::login');
+
+    $routes->get('forgot/password', 'Auth::forgot_password');
+
+    $routes->post('forgot/password', 'Auth::send_forgot_password_link');
+
+    $routes->get('reset/password/(:any)', 'Auth::reset_password/$1');
+
+    $routes->post('reset/password/(:any)', 'Auth::set_new_password/$1');
+
+
+
+
+
+});
+
+
+/** Admin Authenticate Routes **/
+
+    $routes->group('admin',['namespace' => 'App\Controllers\Admin','filter' => 'auth'], static function ($routes) {
+
+    $routes->get('dashboard', 'Dashboard::index');
+
+    $routes->get('roles', 'Roles::index');
+
+    $routes->get('create/role', 'Roles::create');
+
+
+
+
+
+    $routes->get('logout', 'Auth::logout');
+
+
+});
+
+
+/** End Admin Routes **/
+
+
 
 
 /*

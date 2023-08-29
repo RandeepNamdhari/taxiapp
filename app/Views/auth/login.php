@@ -88,7 +88,7 @@
 
                                 <div class="mb-3 mt-2 mb-0 row">
                                     <div class="col-12 mt-3">
-                                        <a href="pages-recoverpw-2.html"><i class="mdi mdi-lock"></i> Forgot your password?</a>
+                                        <a href="<?=base_url('admin/forgot/password');?>"><i class="mdi mdi-lock"></i> Forgot your password?</a>
                                     </div>
                                 </div>
 
