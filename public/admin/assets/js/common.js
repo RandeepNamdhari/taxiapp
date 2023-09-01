@@ -21,50 +21,23 @@
   }
 
 
-  const updateThemeSettings=()=>
+
+
+  const __showMessage=(message,type,response='')=>
   {
-    let previousStorage=sessionStorage;
-    setTimeout(function(){
     
-    if(sessionStorage){
+       Swal.fire({
+                title: message,
+                icon: type,
+                toast: true,
+                position: 'top-right', // Adjust the position as needed
+                showConfirmButton: false,
+                timer: 3000 // Close the toast after 3 seconds
+            });
+         
 
-    var url=THEME_SETTING_URL;
-
-    var data={'themeSetting':sessionStorage};
-
-
-
-     var response=__postRequest(url,data,showSmallMessage);
-
-        response.then(function(data){
-          console.log(data);
-        })
-    }
-
-    },1000)
-      
   }
 
 
-  const showSmallMessage=(message,type,response='')=>
-  {
-    
-    Toastify({
-          newWindow: true,
-          text: message,
-          gravity: 'top',
-          position: 'right',
-          className: "bg-" +type,
-          stopOnFocus: true,
-          // offset: {
-          //   x: toastData.offset ? 50 : 0, // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-          //   y: toastData.offset ? 10 : 0, // vertical axis - can be a number or a string indicating unity. eg: '2em'
-          // },
-          duration: 3000,
-          close: true,
-          // style:{
-          //   background: "linear-gradient(to right, #0AB39C, #405189)"
-          // },
-        }).showToast();
 
-  }
+  

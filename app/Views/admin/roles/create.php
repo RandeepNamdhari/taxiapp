@@ -1,4 +1,22 @@
 
+   <?php 
+
+   $moduleWithPermissions=[];
+
+   foreach($permissions as $permission):
+
+   $module=strstr($permission['name'], '.', true);                                             
+
+  $moduleWithPermissions[$module][]=$permission;
+
+
+
+   endforeach;
+
+   //echo '<pre>';print_r($moduleWithPermissions);die;
+
+                                                ?>
+
 <?= $this->extend('admin/layouts/master') ?>
 
 <?= $this->section('content') ?>
@@ -10,152 +28,100 @@
                         <div class="page-title-box">
                             <div class="row align-items-center">
                                 <div class="col-md-8">
-                                    <h6 class="page-title">Pricing</h6>
+                                    <h6 class="page-title">Roles</h6>
                                     <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="#">Veltrix</a></li>
-                                        <li class="breadcrumb-item"><a href="#">Extra Pages</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Pricing</li>
+                                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                        <li class="breadcrumb-item"><a href="#">Roles</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Create New Role</li>
                                     </ol>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="float-end d-none d-md-block">
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary  dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="mdi mdi-cog me-2"></i> Settings
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <a class="dropdown-item" href="#">Something else here</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Separated link</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                              
                             </div>
                         </div>
                         <!-- end page title -->
 
                         
 
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card pricing-box">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex mt-2">
-                                            <div class="flex-shrink-0 align-self-center">
-                                                <i class="ion ion-ios-airplane h2"></i>
-                                            </div>                                            
-                                            <div class="flex-grow-1 ms-auto text-end">
-                                                <h4>Starter</h4>
-                                                <p class="text-muted mb-0">Sed ut neque unde</p>
-                                            </div>
-                                          </div>
-                                        <div class="pricing-features mt-5 pt-2">
-                                            <p><i class="mdi mdi-check text-primary me-2"></i> Free Live Support</p>
-                                            <p><i class="mdi mdi-check text-primary me-2"></i> Unlimited User</p>
-                                            <p><i class="mdi mdi-check text-primary me-2"></i> No Time Tracking</p>
-                                            <p><i class="mdi mdi-close text-primary me-2"></i> Free Setup</p>
-                                        </div>
-                                        <div class="text-center mt-5">
-                                            <h1 class="mb-0"><sup><small>$</small></sup>19/<span class="font-size-16">Per month</span></h1>
-                                        </div>
-                                        <div class="d-grid mt-5">
-                                            <a href="#" class="btn btn-primary waves-effect waves-light">Sign up Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end col -->
+                     <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body p-0">
 
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card pricing-box">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex mt-2">
-                                            <div class="flex-shrink-0 align-self-center">
-                                                <i class="ion ion-ios-trophy h2"></i>
-                                            </div>
-                                            <div class="flex-grow-1 ms-auto text-end">
-                                                <h4>Professional</h4>
-                                                <p class="text-muted mb-0">Sed ut neque unde</p>
-                                            </div>
-                                          </div>
-                                        <div class="pricing-features mt-5 pt-2">
-                                            <p><i class="mdi mdi-check text-primary me-2"></i> Free Live Support</p>
-                                            <p><i class="mdi mdi-check text-primary me-2"></i> Unlimited User</p>
-                                            <p><i class="mdi mdi-check text-primary me-2"></i> No Time Tracking</p>
-                                            <p><i class="mdi mdi-close text-primary me-2"></i> Free Setup</p>
-                                        </div>
-                                        <div class="text-center mt-5">
-                                            <h1 class="mb-0"><sup><small>$</small></sup>29/<span class="font-size-16">Per month</span></h1>
-                                        </div>
-                                        <div class="d-grid mt-5">
-                                            <a href="#" class="btn btn-primary waves-effect waves-light">Sign up Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end col -->
+                                        <form id="roleForm">
 
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card pricing-box">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex mt-2">
-                                            <div class="flex-shrink-0 align-self-center">
-                                                <i class="ion ion-ios-umbrella h2"></i>
-                                            </div>
-                                            <div class="flex-grow-1 ms-auto text-end">
-                                                <h4>Enterprise</h4>
-                                                <p class="text-muted mb-0">Sed ut neque unde</p>
-                                            </div>
-                                          </div>
-                                        <div class="pricing-features mt-5 pt-2">
-                                            <p><i class="mdi mdi-check text-primary me-2"></i> Free Live Support</p>
-                                            <p><i class="mdi mdi-check text-primary me-2"></i> Unlimited User</p>
-                                            <p><i class="mdi mdi-check text-primary me-2"></i> No Time Tracking</p>
-                                            <p><i class="mdi mdi-close text-primary me-2"></i> Free Setup</p>
-                                        </div>
-                                        <div class="text-center mt-5">
-                                            <h1 class="mb-0"><sup><small>$</small></sup>39/<span class="font-size-16">Per month</span></h1>
-                                        </div>
-                                        <div class="d-grid mt-5">
-                                            <a href="#" class="btn btn-primary waves-effect waves-light">Sign up Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end col -->
+                                        <h4 class="card-title bg-success text-light p-2">Create New Role And Set Permissions</h4>
 
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card pricing-box">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex mt-2">
-                                            <div class="flex-shrink-0 align-self-center">
-                                                <i class="ion ion-ios-cube h2"></i>
+                                        <div class="p-5">
+                                     
+                                        <div class="row mb-3">
+                                            <label for="role_name" class="col-sm-2 col-form-label">Role Name</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" placeholder="Enter Role Name" id="role_name">
                                             </div>
-                                            <div class="flex-grow-1 ms-auto text-end">
-                                                <h4>Unlimited</h4>
-                                                <p class="text-muted mb-0">Sed ut neque unde</p>
-                                            </div>
-                                          </div>
-                                        <div class="pricing-features mt-5 pt-2">
-                                            <p><i class="mdi mdi-check text-primary me-2"></i> Free Live Support</p>
-                                            <p><i class="mdi mdi-check text-primary me-2"></i> Unlimited User</p>
-                                            <p><i class="mdi mdi-check text-primary me-2"></i> No Time Tracking</p>
-                                            <p><i class="mdi mdi-close text-primary me-2"></i> Free Setup</p>
                                         </div>
-                                        <div class="text-center mt-5">
-                                            <h1 class="mb-0"><sup><small>$</small></sup>49/<span class="font-size-16">Per month</span></h1>
-                                        </div>
-                                        <div class="d-grid mt-5">
-                                            <a href="#" class="btn btn-primary waves-effect waves-light">Sign up Now</a>
-                                        </div>
+                                     
+                                        <!-- end row -->
+                                        <div class="row mt-5">
+                                         
+            <?php foreach($moduleWithPermissions as $module => $permissions): ?>
+                                          
+                                           <div class="col-md-6 col-lg-6 col-xl-4">
+        
+                                         <div class="card">
+
+                                    <div class="card-body">
+
+                                       <div class="d-flex">
+                                        <span class="card-title d-block w-75"><b><?=ucwords($module);?></b></span>
+                                        <input class="form-check form-switch w-25" onchange="selectAll('<?=$module?>')" type="checkbox" id="<?=$module;?>" checked switch="none">
+                                            <label class="form-label" for="<?=$module;?>" data-on-label="All" data-off-label="None"></label>
+
                                     </div>
+
+                                         <?php foreach($permissions as $kk=> $permission): ?>
+                                          
+                                         <div class="d-flex">
+                                             
+                                        <span class=" d-block w-75"><?=$permission['name'];?></span>
+
+                                        <div class="w-25 d-flex justify-content-center">
+  <input class="form-check w-50 mr-2 permissionsInput <?=$module?>" name="permissions[]"  value="<?=$permission['id'];?>" type="checkbox" checked>
+
+                                    </div>
+                                       
+                                        
+
+                                    </div>
+
+                                    <?php endforeach;
+
+                                    ?>
+
+                                    </div>
+                                  
                                 </div>
+        
                             </div>
-                            <!-- end col -->
-                            
+
+                               <?php endforeach;
+                              
+                                    ?>
+
+                                    <p id="permissions"></p>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12" style="text-align:right;">
+                                            <button class="btn btn-primary w-25">Save</button>
+                                        </div>
+                                        </div>
+
+                                    </div>
+                                        <!-- end row -->
+                                    </div><!-- end cardbody -->
+                                </form>
+                                </div><!-- end card -->
+                            </div> <!-- end col -->
                         </div>
                         <!-- end row -->
 
@@ -166,3 +132,85 @@
 
 
                 <?= $this->endSection() ?>
+
+
+                <?=$this->section('page-script')?>
+
+                <script type="text/javascript">
+
+                    function selectAll(selector)
+                    {
+                        
+                        if( $('input.'+selector).prop('checked')){
+
+                        $('input.'+selector).prop('checked',false);
+
+
+                        }
+                        else
+                        {
+
+                        $('input.'+selector).prop('checked',true);
+                           
+                        }
+                    }
+
+
+
+
+                     document.getElementById("roleForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // Prevents the form from submitting
+   submitform();
+});
+
+            function submitform(){
+
+                 
+          
+            var data={};
+
+            data.permissions=[];
+
+            data.role_name=$('#roleForm').find('#role_name').val();
+
+            $.each($('#roleForm').find('.permissionsInput'),function()
+                {
+                    if($(this).prop('checked'))
+                    data.permissions.push($(this).val());
+                });
+
+        
+           
+            var url="<?=base_url('admin/save-role');?>";
+
+               var response=__postRequest(url,data,__showMessage);
+
+        response.then(function(data){
+
+            $('.validation-error').remove();
+            $('.alert-danger').remove();
+
+           if(!data.status && data.errors)
+          {
+            Object.keys(data.errors).forEach(key => {
+
+              
+                     $('#roleForm').find('#'+key).after('<div class="validation-error">'+data.errors[key].replace('_',' ')+'</div>');
+                 
+              
+              });
+          }
+         
+        })
+
+
+        }
+
+
+
+
+                </script>
+
+
+
+                <?=$this->endSection()?>

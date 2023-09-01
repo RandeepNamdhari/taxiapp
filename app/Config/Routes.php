@@ -67,7 +67,10 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     $routes->get('roles', 'Roles::index');
 
-    $routes->get('create/role', 'Roles::create');
+    $routes->get('create-role', 'Roles::create');
+
+    $routes->post('save-role', 'Roles::store');
+
 
 
 
