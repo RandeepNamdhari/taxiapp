@@ -19,7 +19,8 @@
 
                             <li class="<?php echo ($currentRoute=='admin-dashboard')?'mm-active':''?>">
                                 <a href="index.html" class="waves-effect <?php echo ($currentRoute=='admin-dashboard')?'active':''?>">
-                                    <i class="ti-home"></i><span class="badge rounded-pill bg-primary float-end">1</span>
+                                    <i class="ti-home"></i>
+                                      <!--   <span class="badge rounded-pill bg-primary float-end">1</span> -->
                                     <span>Dashboard</span>
                                 </a>
                             </li>
@@ -27,17 +28,19 @@
 
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="ti-more"></i>
-                                    <span>Multi Level</span>
+                                    <i class="ti-user"></i>
+                                    <span>User Management</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="true">
-                                    <li><a href="javascript: void(0);">Level 1.1</a></li>
-                                    <li><a href="javascript: void(0);" class="has-arrow">Level 1.2</a>
+                                    <!-- <li><a href="javascript: void(0);">Users</a></li> -->
+                                    <li class="<?php echo ($currentRoute=='admin-roles')?'mm-active':''?>"><a href="<?=base_url('admin/roles')?>">Roles</a></li>
+
+                                  <!--   <li><a href="javascript: void(0);" class="has-arrow">Level 1.2</a>
                                         <ul class="sub-menu" aria-expanded="true">
                                             <li><a href="javascript: void(0);">Level 2.1</a></li>
                                             <li><a href="javascript: void(0);">Level 2.2</a></li>
                                         </ul>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </li>
 

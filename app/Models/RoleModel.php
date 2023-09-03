@@ -17,7 +17,6 @@ class RoleModel extends Model
     {
         $response= run_with_exceptions(function() use ($data){  
 
-            $db = \Config\Database::connect();
             $this->db->transBegin();
 
             $role=array('name'=>$data['role_name']);
@@ -42,7 +41,8 @@ class RoleModel extends Model
 
 
 
-            return array('status'=>1,'message'=>'The role is created successfully','type'=>'success');
+            return array('status'=>1,'message'=>'The role is created successfully','type'=>'success',
+                         'redirect'=>base_url('admin/roles'));
 
             
 
@@ -62,6 +62,97 @@ class RoleModel extends Model
 
         return $response;
     }
+
+
+    public function getRoles()
+    {
+          $roles=$this->findAll();
+
+          $data['roles']=$roles;
+
+          return array('data'=>$data,'status'=>1);
+    }
+
+
+    public function getRoleWithPermissions($role_id)
+    {
+
+          $role=$this->find($role_id);
+
+          $data['role']=$role===null ? throw new DatabaseException('Record not found.'):$role;
+
+         
+          $data['role']['permissions']=\App\Models\RolePermissionModel::getPermissionsWithRoleId($role_id);
+
+          $data['permissions']=\App\Models\PermissionModel::all();
+
+
+          return array('data'=>$data,'status'=>1);
+    }
+
+    public static function destroy(int $id)
+    {
+        $obj=new self();
+
+        return $obj->delete($id);
+    }
+
+    
+
+     public function updateRoleWithPermissions($data,int $id)
+    {
+        $response= run_with_exceptions(function() use ($data,$id){  
+
+            $this->db->transBegin();
+
+            $role=array('name'=>$data['role_name']);
+
+           $this->update($id,$role);
+
+            $rolePermissions= new \App\Models\RolePermissionModel;
+
+
+            
+
+                $permissions=$rolePermissions->sortWithExistingPermissions($data['permissions'],$id);
+
+                if(count($permissions)):
+
+                foreach($permissions as $permission):
+
+
+                    $rolePermissions->insert(array('role_id'=>$id,'permission_id'=>$permission));
+
+
+
+                endforeach;
+
+            endif;
+
+
+
+            return array('status'=>1,'message'=>'The role is updated successfully','type'=>'success',
+                         'redirect'=>base_url('admin/roles'));
+
+            
+
+           
+
+        },'array');
+
+        if($response['status']==1 && $this->db->transStatus() === true):
+
+           $this->db->transCommit();
+
+        else:
+
+              $this->db->transRollback();
+
+        endif;
+
+        return $response;
+    }
+
   
 
 

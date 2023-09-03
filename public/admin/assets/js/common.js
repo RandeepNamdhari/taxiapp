@@ -34,10 +34,55 @@
                 showConfirmButton: false,
                 timer: 3000 // Close the toast after 3 seconds
             });
+
+       if(typeof response.redirect !='undefined' && response.redirect.length)
+       {
+
+        setTimeout(function(){
+
+        window.location.assign(response.redirect);
+
+
+        },2000)
+
          
 
   }
 
 
 
-  
+         }
+
+
+
+         const __askThenDelete=(url,data,callback=null)=>
+         {
+           Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Handle the delete action here
+
+          let response=__postRequest(url,data,__showMessage);
+
+         
+
+          if(callback)
+          {
+            callback(response);
+            
+          }
+         
+   
+
+         
+        }
+    });
+
+         }

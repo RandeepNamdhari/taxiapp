@@ -3,21 +3,23 @@
                     <div class="d-flex">
                         <!-- LOGO -->
                         <div class="navbar-brand-box">
-                            <a href="index.html" class="logo logo-dark">
+                            <a href="<?=base_url('admin')?>" class="logo logo-dark">
                                 <span class="logo-sm">
-                                    <img src="assets/images/logo-sm.png" alt="" height="22">
+                                    <?=img('admin/assets/images/logo-sm.png', false, ['alt' => 'logo','height'=>'22']);?>
+                                    <!-- <img src="assets/images/logo-sm.png" alt="" > -->
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="assets/images/logo-dark.png" alt="" height="17">
+                                    
+                                     <?=img('admin/assets/images/logo-dark.png', false, ['alt' => 'logo','height'=>'17']);?>
                                 </span>
                             </a>
 
-                            <a href="index.html" class="logo logo-light">
+                            <a href="<?=base_url('admin')?>" class="logo logo-light">
                                 <span class="logo-sm">
-                                    <img src="assets/images/logo-sm.png" alt="" height="22">
+                                  <?=img('admin/assets/images/logo-sm.png', false, ['alt' => 'logo','height'=>'22']);?>
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="assets/images/logo-light.png" alt="" height="18">
+                                <?=img('admin/assets/images/logo-light.png', false, ['alt' => 'logo','height'=>'18']);?>
                                 </span>
                             </a>
                         </div>
@@ -73,7 +75,7 @@
                             </div>
                         </div>
 
-                        <div class="dropdown d-none d-md-block ms-2">
+        <?php /*                <div class="dropdown d-none d-md-block ms-2">
                             <button type="button" class="btn header-item waves-effect"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img class="me-2" src="assets/images/flags/us_flag.jpg" alt="Header Language" height="16"> English <span class="mdi mdi-chevron-down"></span>
@@ -106,6 +108,8 @@
                                 </a>
                             </div>
                         </div>
+
+                        */ ?>
 
                         <div class="dropdown d-none d-lg-inline-block">
                             <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen">
@@ -231,8 +235,9 @@
                         <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="rounded-circle header-profile-user" src="assets/images/users/user-4.jpg"
-                                    alt="Header Avatar">
+                                
+
+                                      <?=img('admin/assets/images/users/user-4.jpg', false, ['alt' => 'Header Avatar','class'=>'rounded-circle header-profile-user']);?>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->

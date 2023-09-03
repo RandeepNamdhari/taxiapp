@@ -21,6 +21,14 @@ class PermissionModel extends Model
 
         });
     }
+
+    public static function all()
+    {
+           $obj=new self();
+
+           return $obj->findAll();
+
+    }
   
 
 

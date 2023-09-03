@@ -1,9 +1,12 @@
 
    <?php 
 
-   $moduleWithPermissions=[];
+   $moduleWithPermissions=$selectedPermissions=[];
+
+   $role_id=$response['data']['role']['id']??0;
 
    if(isset($response['data']['permissions'])):
+
 
    foreach($response['data']['permissions'] as $permission):
 
@@ -15,9 +18,18 @@
 
    endforeach;
 
+
+endif;
+
+
+
+   if(isset($response['data']['role']['permissions'])):
+
+    $selectedPermissions=array_values(array_column($response['data']['role']['permissions'], 'permission_id'));
+
    endif;
 
-   
+ 
 
                                                 ?>
 
@@ -37,7 +49,7 @@
                                         <li class="breadcrumb-item"><a href="<?=base_url('admin')?>">Home</a></li>
                                         <li class="breadcrumb-item"><a href="#">User Management</a></li>
                                         <li class="breadcrumb-item"><a href="<?=base_url('admin/roles')?>">Roles</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Create New Role</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Edit Role</li>
                                     </ol>
                                 </div>
                               
@@ -54,14 +66,14 @@
 
                                         <form id="roleForm">
 
-                                        <h4 class="card-title bg-success text-light p-2">Create New Role And Set Permissions</h4>
+                                        <h4 class="card-title bg-success text-light p-2">Edit Role And Set Permissions</h4>
 
                                         <div class="p-5">
                                      
                                         <div class="row mb-3">
                                             <label for="role_name" class="col-sm-2 col-form-label">Role Name</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="text" placeholder="Enter Role Name" id="role_name">
+                                                <input class="form-control" type="text" placeholder="Enter Role Name" id="role_name" value="<?=$response['data']['role']['name']??''?>">
                                             </div>
                                         </div>
                                      
@@ -78,19 +90,29 @@
 
                                        <div class="d-flex">
                                         <span class="card-title d-block w-75"><b><?=ucwords($module);?></b></span>
-                                        <input class="form-check form-switch w-25" onchange="selectAll('<?=$module?>',this)" type="checkbox" id="<?=$module;?>" checked switch="none">
+                                        <input class="form-check form-switch w-25" onchange="selectAll('<?=$module?>',this)" type="checkbox" id="<?=$module;?>" switch="none">
                                             <label class="form-label" for="<?=$module;?>" data-on-label="All" data-off-label="None"></label>
 
                                     </div>
 
-                                         <?php foreach($permissions as $kk=> $permission): ?>
+                                         <?php foreach($permissions as $kk=> $permission): 
+
+                                            $checked='';
+
+                                            if(in_array($permission['id'], $selectedPermissions)):
+                                                $checked='checked';
+                                            endif;
+
+                                            ?>
+
+
                                           
                                          <div class="d-flex">
                                              
                                         <span class=" d-block w-75"><?=$permission['name'];?></span>
 
                                         <div class="w-25 d-flex justify-content-center">
-  <input class="form-check w-50 mr-2 permissionsInput <?=$module?>" name="permissions[]"  value="<?=$permission['id'];?>" type="checkbox" checked>
+  <input class="form-check w-50 mr-2 permissionsInput <?=$module?>" name="permissions[]"  value="<?=$permission['id'];?>" type="checkbox" <?=$checked?>>
 
                                     </div>
                                        
@@ -184,9 +206,9 @@
                     data.permissions.push($(this).val());
                 });
 
-        
            
-            var url="<?=base_url('admin/save/role');?>";
+           
+            var url="<?=base_url('admin/update/'.$role_id.'/role');?>";
 
                var response=__postRequest(url,data,__showMessage);
 

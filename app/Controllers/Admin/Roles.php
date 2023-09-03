@@ -12,19 +12,35 @@ class Roles extends BaseController
     {
         $data['currentRoute']='admin-roles';
         $data['pageTitle']='Roles';
-        
+
+        $data['response']= run_with_exceptions(function(){ 
+
+            $role=new RoleModel;
+
+            return $role->getRoles();
+
+        });
+
+    
+
         return view('admin/roles/index',$data);
+        
     }
 
 
     public function create(): string
     {
         $data['currentRoute']='admin-roles';
-        $data['pageTitle']='Roles';
-        $permissionModel=new \App\Models\PermissionModel;
-        $data['permissions']=$permissionModel->getPermissions();
+        $data['pageTitle']='Create Role';
 
-       // echo '<pre>';print_r($data);die;
+        $data['response']= run_with_exceptions(function(){ 
+
+            $data['permissions']=\App\Models\PermissionModel::all();
+
+            return array('status'=>1,'data'=>$data);
+
+        });
+     
         
         return view('admin/roles/create',$data);
     }
@@ -65,6 +81,91 @@ class Roles extends BaseController
     }
 
 }
+
+
+  public function edit(int $id): string
+    {
+
+
+       $data['currentRoute']='admin-roles';
+        $data['pageTitle']='Edit Role';
+
+        $data['response']= run_with_exceptions(function()use ($id){ 
+
+            $role=new RoleModel;
+
+
+            return $role->getRoleWithPermissions($id);
+
+        });
+
+    
+        return view('admin/roles/edit',$data);
+    }
+
+
+        public function update(int $id)
+    {
+
+        if ($this->request->getMethod() === 'post') {
+
+          $data = [
+            'role_name'   => $this->request->getVar('role_name'),
+            'permissions' => $this->request->getVar('permissions'),
+                   ];
+
+        $rule = [
+            'role_name'   => 'required',
+            'permissions' => 'required',
+        ];
+
+        if (! $this->validateData($data, $rule)) {
+             $response=array('status'=>0,
+                             'errors'=>$this->validator->getErrors(),
+                             'message'=>'Validation Error Occur!',
+                             'type'=>'warning');
+            
+        }
+        else
+        {
+            $roleModel=new RoleModel();
+            $response=$roleModel->updateRoleWithPermissions($data,$id);
+           
+        }
+
+
+
+        return $this->response->setJSON($response);
+       
+    }
+
+}
+
+
+
+    public function delete()
+    {
+
+        if ($this->request->getMethod() === 'post') {
+
+            $id=$this->request->getVar('id');
+
+     
+             $response=run_with_exceptions(function() use ($id){ 
+
+             \App\Models\RoleModel::destroy($id);
+
+            return array('status'=>1,'message'=>'The Role is deleted successfully!','type'=>'success');
+
+        });
+           
+        }
+
+
+
+        return $this->response->setJSON($response);
+       
+    }
 
 
 
