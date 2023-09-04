@@ -64,22 +64,29 @@
                                             <tr>
                                                 <?php if(isset($role['users']) && count($role['users'])):?>
                                                 <td style="width: 60%;">
-                                                    <div class="d-flex team-members">
 
-                                                         <?php foreach($role['users'] as $ind => $user):?>
+                                                    <div  class="d-flex team-members vertical-scroll-bar" style="overflow: scroll;max-width:300px;">
+
+                                                         <?php
+
+                                                    
+
+                                                          foreach($role['users'] as $ind => $user):?>
                                                      <!--    <div>
                                                     <img src="assets/images/users/avatar-2.jpg" class="rounded-circle avatar-sm zIndex0" alt="">
                                                 </div> -->
 
                                                      <div class="avatar-sm zIndex0 <?php if($ind >0)echo 'role-member';?>">
-                                                        <span class="avatar-title rounded-circle bg-primary text-white font-size-14">
-                                                            C
+                                                        <span class="avatar-title rounded-circle text-white font-size-14" style="background:<?=randomColor($user['username'])?>;">
+                                                        <?=  strtoupper(mb_substr($user['username'], 0, 1));?>
                                                         </span>
                                                     </div>
                                                 <?php endforeach;
-                                            endif;?>
+                                               
+                                            endif;
+                                        ?>
                                                      <div class="avatar-sm zIndex1 role-member" onclick="__showUserModal(this,'<?=$role['id']?>')">
-                                                        <span class="avatar-title rounded-circle bg-dark text-white font-size-14">
+                                                        <span class="avatar-title rounded-circle bg-dark text-white font-size-14" style="cursor: pointer;">
                                                             +
                                                         </span>
                                                     </div>

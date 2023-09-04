@@ -77,6 +77,9 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     $routes->post('delete/(:num)/role', 'Roles::delete/$1');
 
+    $routes->post('search/user', 'User::search');
+
+
 
 
 

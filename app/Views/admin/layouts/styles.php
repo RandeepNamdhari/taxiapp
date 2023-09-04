@@ -60,6 +60,31 @@
                 border:1px dotted;
                 padding:5px;
                 max-height: 300px;
-            
+
             }
+
+            .vertical-scroll-bar::-webkit-scrollbar {
+    width: 6px; /* Adjust the width of the scrollbar */
+    height: 6px;
+}
+
+.vertical-scroll-bar::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Color of the thumb */
+    border-radius: 6px; /* Rounded corners */
+}
+
+.vertical-scroll-bar::-webkit-scrollbar-thumb:hover {
+    background-color: gray; /* Hover color */
+}
+
+/* Style the scrollbar track */
+.vertical-scroll-bar::-webkit-scrollbar-track {
+    background-color: transparent; /* Color of the track */
+}
+
+/* Style the scrollbar corners */
+.vertical-scroll-bar::-webkit-scrollbar-corner {
+    background-color: transparent; /* Color of the scrollbar corners */
+}
+
         </style>

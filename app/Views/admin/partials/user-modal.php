@@ -8,14 +8,14 @@
                                                             <div class="modal-body">
 
                                                                 <div class="col-sm-12 border-0">
-                                                <input class="form-control border-0" type="text" placeholder="Search with user name..." id="example-text-input" onkeyup="__searchUser()">
+                                                <input class="form-control border-0" type="text" placeholder="Search with user name..." id="example-text-input" onkeyup="__searchUser(this)">
                                             </div>
 
 
-                                            <div data-simplebar="init" style="max-height: 230px;" class="simplebar-dragging"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: -15px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
+                                            <div data-simplebar="init" style="max-height: 230px;" class="simplebar-dragging"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: -15px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;"><div class="simplebar-content" id="userlist_content" style="padding: 0px;">
 
-                                    <a href="" class="text-reset notification-item">
-                                        <div class="d-flex">
+                                   <!--  <a href="" class="text-reset notification-item">
+                                        <div class="d-flex" style="align-items: center;">
                                             <div class="flex-shrink-0 me-3">
                                                 <div class="avatar-xs">
                                                     <span class="avatar-title bg-success rounded-circle font-size-16">
@@ -24,13 +24,17 @@
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1">
-                                                <h6 class="mb-1">Your order is placed</h6>
-                                                <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">Dummy text of the printing and typesetting industry.</p>
+                                                <h6 class="">Your order is placed</h6>
+                                                
+                                            </div>
+
+                                             <div class="d-flex w-25" style="pointer-events: all;">
+                                                <div class="">
+                                                   <input class="form-check" type="checkbox" style="width: 50px;">
                                                 </div>
                                             </div>
                                         </div>
-                                    </a>
+                                    </a> -->
                         
                                    
                                 </div></div></div></div><div class="simplebar-placeholder" style="width: auto; height: 407px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="transform: translate3d(0px, 0px, 0px); display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="transform: translate3d(0px, 101px, 0px); display: block; height: 129px;"></div></div></div>

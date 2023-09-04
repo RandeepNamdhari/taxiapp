@@ -30,6 +30,22 @@ class UserModel extends Model
         return $obj->whereIn('id',$ids)->findAll();
     }
 
+    public static function search()
+    {
+        $request = \Config\Services::request();
+
+        $search=$request->getVar('search');
+
+        $obj=new self();
+
+
+        $data['users']=$obj->like('username', $search)->like('email',$search)->findAll();
+
+        $data['content']=view('admin/partials/user-list',$data);
+
+        return array('status'=>1,'message'=>'success','data'=>$data);
+    }
+
 
 
 
