@@ -1,5 +1,6 @@
    <script type="text/javascript">
     const csrfToken = '<?= csrf_hash() ?>';
+    const baseURL='<?=base_url()?>';
    </script> 
    
 

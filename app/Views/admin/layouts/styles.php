@@ -54,4 +54,12 @@
             {
                  z-index: 2;
             }
+
+            .users-list
+            {
+                border:1px dotted;
+                padding:5px;
+                max-height: 300px;
+            
+            }
         </style>

@@ -86,3 +86,20 @@
     });
 
          }
+
+
+         const __showUserModal=(selector,id)=>
+         {
+            console.log(id);
+            $('.bs-users-modal-center').modal('show');
+         }
+
+         const __searchUser=()=>
+         {
+            let usersList=__postRequest(baseURL+'/admin/get/users',data)
+
+            usersList.then(function(data)
+            {
+                console.log(data);
+            })
+         }

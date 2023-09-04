@@ -64,11 +64,21 @@ class RoleModel extends Model
     }
 
 
-    public function getRoles()
+    public function getRolesWithUsers()
     {
           $roles=$this->findAll();
 
+          
+          
+          if(count($roles)):
+
+          $roles=\App\Models\UserRoleModel::getRoleAndUsers($roles);
+
+          endif;
+
           $data['roles']=$roles;
+
+
 
           return array('data'=>$data,'status'=>1);
     }

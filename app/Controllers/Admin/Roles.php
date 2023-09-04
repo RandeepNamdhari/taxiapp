@@ -17,11 +17,11 @@ class Roles extends BaseController
 
             $role=new RoleModel;
 
-            return $role->getRoles();
+            return $role->getRolesWithUsers();
 
         });
 
-    
+       // echo '<pre>';print_r($data);die;
 
         return view('admin/roles/index',$data);
         

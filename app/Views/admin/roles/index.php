@@ -62,18 +62,23 @@
 
                                              ?>
                                             <tr>
+                                                <?php if(isset($role['users']) && count($role['users'])):?>
                                                 <td style="width: 60%;">
                                                     <div class="d-flex team-members">
-                                                        <div>
-                                                    <img src="assets/images/users/avatar-2.jpg" class="rounded-circle avatar-sm zIndex0" alt="">
-                                                </div>
 
-                                                     <div class="avatar-sm zIndex0 role-member">
+                                                         <?php foreach($role['users'] as $ind => $user):?>
+                                                     <!--    <div>
+                                                    <img src="assets/images/users/avatar-2.jpg" class="rounded-circle avatar-sm zIndex0" alt="">
+                                                </div> -->
+
+                                                     <div class="avatar-sm zIndex0 <?php if($ind >0)echo 'role-member';?>">
                                                         <span class="avatar-title rounded-circle bg-primary text-white font-size-14">
                                                             C
                                                         </span>
                                                     </div>
-                                                     <div class="avatar-sm zIndex1 role-member">
+                                                <?php endforeach;
+                                            endif;?>
+                                                     <div class="avatar-sm zIndex1 role-member" onclick="__showUserModal(this,'<?=$role['id']?>')">
                                                         <span class="avatar-title rounded-circle bg-dark text-white font-size-14">
                                                             +
                                                         </span>
@@ -119,6 +124,9 @@
 
                     </div> <!-- container-fluid -->
                 </div>
+
+
+                 <?= view('admin/partials/user-modal') ?>
 
 
 
