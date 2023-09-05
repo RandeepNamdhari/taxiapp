@@ -22,7 +22,7 @@ class UserRoleModel extends Model
         $rolesIds=array_values(array_column($roles,'id'));
 
 
-        $role_with_users=$obj->whereIn('role_id',$rolesIds)->findAll();
+        $role_with_users=$obj->whereIn('role_id',$rolesIds)->orderBy('id','desc')->findAll();
 
 
 
@@ -52,6 +52,62 @@ class UserRoleModel extends Model
 
         return $roles;
 
+    }
+
+    public static function getUsersOfRole(int $role_id)
+    {
+       $obj=new self();
+
+       return $obj->where('role_id',$role_id)->findAll();
+    }
+
+      public static function attach(array $data)
+    {
+        $obj=new self();
+
+        if(!$obj->where('user_id',$data['user_id'])->where('role_id',$data['model_id'])->first()):
+
+            $obj->insert(['role_id'=>$data['model_id'],'user_id'=>$data['user_id']]);
+
+            $data['content']=$obj->userDiv($data['user_id'],$data['model_id']);
+
+            return array('status'=>1,'message'=>'The role is attached to the user successfully!','type'=>'success','data'=>$data);
+
+        else:
+
+               return array('status'=>0,'message'=>'The role is already attached to the user.','type'=>'warning');
+
+
+
+        endif;
+    }
+
+    public function userDiv($user_id,$role_id)
+    {
+        $user=$this->db->table('users')->where('id',$user_id)->get()->getRowArray();
+
+        return ' <div data-toggle="tooltip" data-placement="top" title="'.ucwords($user['username']).'" class="avatar-sm zIndex0 role-member"><span class="avatar-title rounded-circle text-white font-size-14" style="background:'.randomColor($user['username']).'">'.strtoupper(mb_substr($user['username'], 0, 1)).'</span><span onclick="detachUser(this,'.$user['id'].','.$role_id.')" class="remove-icon-user removeUserIcon">X</span></div>';
+    }
+
+      public static function detach(array $data)
+    {
+        $obj=new self();
+
+        if($obj->where('user_id',$data['user_id'])->where('role_id',$data['model_id'])->first()):
+
+            $obj->where('role_id',$data['model_id'])->where('user_id',$data['user_id'])->delete();
+
+            
+
+            return array('status'=>1,'message'=>'The role is detach from the user successfully!','type'=>'success');
+
+        else:
+
+               return array('status'=>0,'message'=>'No data is effected!','type'=>'warning');
+
+
+
+        endif;
     }
 
 

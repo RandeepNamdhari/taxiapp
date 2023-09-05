@@ -36,14 +36,63 @@ class UserModel extends Model
 
         $search=$request->getVar('search');
 
+        $type=$request->getVar('type');
+
+        $id=$request->getVar('id');
+
+
+
         $obj=new self();
 
+        $query=$obj->like('username', $search)->like('email',$search);
 
-        $data['users']=$obj->like('username', $search)->like('email',$search)->findAll();
+        if($type && $id):
+
+        $existingUsers=$obj->checkExistingUsers($type,$id);
+
+       if(count($existingUsers)):
+
+       
+
+        $query->whereNotIn('id',$existingUsers);
+
+        endif;
+
+
+
+        endif;
+
+
+        $data['users']=$query->findAll();
+
+        $data['role_id']=$id;
 
         $data['content']=view('admin/partials/user-list',$data);
 
         return array('status'=>1,'message'=>'success','data'=>$data);
+    }
+
+    public function checkExistingUsers($type,$id)
+    {
+       switch ($type) {
+
+           case 'user_roles':
+
+
+
+               $users=\App\Models\UserRoleModel::getUsersOfRole($id);
+
+
+
+               return array_values(array_column($users,'user_id'));
+
+               break;
+           
+           default:
+               // code...
+               break;
+       }
+        
     }
 
 

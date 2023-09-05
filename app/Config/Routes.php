@@ -79,6 +79,16 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     $routes->post('search/user', 'User::search');
 
+    $routes->post('attach/user_role', 'Roles::attach');
+
+    $routes->post('detach/user_role', 'Roles::detach');
+
+
+    
+
+
+
+
 
 
 

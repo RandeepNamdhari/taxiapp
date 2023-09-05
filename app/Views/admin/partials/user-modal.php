@@ -8,7 +8,9 @@
                                                             <div class="modal-body">
 
                                                                 <div class="col-sm-12 border-0">
-                                                <input class="form-control border-0" type="text" placeholder="Search with user name..." id="example-text-input" onkeyup="__searchUser(this)">
+                                                <input class="form-control border-0" type="text" placeholder="Search with user name..."  id="searchUserInList" onkeyup="__searchUser(this)">
+                                                <input type="hidden" name="type" id="existingUsersType">
+                                                <input type="hidden" name="model_id" id="modelId">
                                             </div>
 
 

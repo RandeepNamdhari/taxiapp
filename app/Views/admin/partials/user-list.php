@@ -16,7 +16,7 @@
 
                                              <div class="d-flex w-25" style="pointer-events: all;">
                                                 <div class="">
-                                                   <input class="form-check" type="checkbox" style="width: 50px;">
+                                                   <input class="form-check" type="checkbox" onchange="attachUser(this,'user_role',<?=$user['id']?>,<?=$role_id?>,attachSuccess)" style="width: 50px;">
                                                 </div>
                                             </div>
                                         </div>

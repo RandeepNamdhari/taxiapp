@@ -21,6 +21,25 @@
 
 
           <style>
+            .remove-icon-user
+            {
+                    background-color: darkred;
+     width: 13px; 
+     text-align: center;
+     cursor: pointer;
+    padding-top: 5px;
+    color: white;
+    height: 13px;
+    font-size: 8px;
+    font-weight: bold;
+    border-radius: 25px;
+    position: relative;
+    padding-top: 1px;
+    left:27px;
+    bottom: 48px;
+    display:block;
+/*    visibility: hidden;*/
+            }
             .validation-error
             {
                     
@@ -30,9 +49,16 @@
     color: var(--bs-form-invalid-color);
             }
 
+            .team-members
+            {
+                padding-left: 30px;
+            }
+
             .team-members div
             {
-               display: flex;
+               display: inline-block;
+               width: 18%;
+
 
             }
 
@@ -48,12 +74,14 @@
             }
             .zIndex1
             {
-                  z-index: 1;
+                  z-index: 2;
             }
             .zIndex0:hover
             {
-                 z-index: 2;
+                 z-index: 3;
             }
+
+         
 
             .users-list
             {

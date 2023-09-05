@@ -167,6 +167,52 @@ class Roles extends BaseController
        
     }
 
+    public function attach()
+    {
+         if ($this->request->getMethod() === 'post') {
+
+            $data=$this->request->getJSON(true);
+
+     
+             $response=run_with_exceptions(function() use ($data){ 
+
+             return \App\Models\UserRoleModel::attach($data);
+
+         
+
+        });
+           
+        }
+
+
+
+        return $this->response->setJSON($response);
+
+    }
+
+    public function detach()
+    {
+         if ($this->request->getMethod() === 'post') {
+
+            $data=$this->request->getJSON(true);
+
+     
+             $response=run_with_exceptions(function() use ($data){ 
+
+             return \App\Models\UserRoleModel::detach($data);
+
+         
+
+        });
+           
+        }
+
+
+
+        return $this->response->setJSON($response);
+
+    }
+
 
 
 }

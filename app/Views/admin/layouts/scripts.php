@@ -1,6 +1,7 @@
    <script type="text/javascript">
     const csrfToken = '<?= csrf_hash() ?>';
     const baseURL='<?=base_url()?>';
+
    </script> 
    
 
@@ -13,6 +14,14 @@
       <?=script_tag('admin/assets/libs/sweetalert2/sweetalert2.min.js')?>
       <?=script_tag('admin/assets/js/app.js')?>
       <?=script_tag('admin/assets/js/common.js')?>
+
+      <script type="text/javascript">
+
+        $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+      </script>
 
 
 

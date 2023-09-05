@@ -88,32 +88,4 @@
          }
 
 
-         const __showUserModal=(selector,id)=>
-         {
-            console.log(id);
-            $('.bs-users-modal-center').modal('show');
-         }
 
-         const __searchUser=(selector)=>
-         {
-            let search=selector.value;
-
-            if(search.length >1){
-
-
-            let data={'search':search};
-            let usersList=__postRequest(baseURL+'/admin/search/user',data)
-
-            usersList.then(function(data)
-            {
-                if(data.data.content){
-                  $('#userlist_content').html(data.data.content);
-                }
-                else
-                {
-                  $('#userlist_content').html('No user found.')
-                }
-            })
-
-            }
-         }
