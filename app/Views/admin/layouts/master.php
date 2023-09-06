@@ -10,7 +10,7 @@
         <meta content="Themesbrand" name="author">
         <?= view('admin/layouts/styles') ?>
 
-      <?= $this->renderSection('styles') ?>
+      <?= $this->renderSection('page-style') ?>
     
     </head>
 

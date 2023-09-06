@@ -22,6 +22,8 @@ class Migration_CreateRolesTable extends Migration
                 'type' => 'TEXT',
                 'null' => true,
             ],
+            'created_at datetime default current_timestamp',
+             'updated_at datetime default current_timestamp on update current_timestamp', 
         ]);
         $this->forge->addPrimaryKey('id');
         $this->forge->createTable('roles');

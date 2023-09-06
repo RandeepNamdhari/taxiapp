@@ -110,6 +110,65 @@ class UserRoleModel extends Model
         endif;
     }
 
+    public static function hasPermission(array $permissionNamesArray): Array
+    {
+        return run_with_exceptions(function() use ($permissionNamesArray){   
+
+        $user=session('user');
+
+        $hasPermissions=[];
+
+        $access=false;
+
+        if(isset($user['id'])):
+
+            $obj=new self();
+
+            $roles=$obj->where('user_id',$user['id'])->findAll();
+
+            $roles=array_values(array_column($roles,'role_id'));
+
+
+            if(count($roles)):
+
+             //for super admin    
+
+            if(in_array(1,$roles)):
+                return array('status'=>1,'access'=>1);
+            endif;
+
+            //end
+
+            $hasPermissions=\App\Models\RolePermissionModel::userPermissionsByRoles($roles);
+
+
+
+            endif;
+
+        endif;
+
+        $permissions=\App\Models\PermissionModel::getPermissionIds($permissionNamesArray);
+
+
+
+        foreach($permissions as $permission):
+
+        if(in_array($permission, $hasPermissions)):
+
+            $access=true;
+
+            break;
+
+        endif;
+
+        endforeach;
+
+        return array('status'=>1,'access'=>$access);
+
+    });
+
+    }
+
 
 
 

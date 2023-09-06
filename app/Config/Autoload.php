@@ -96,5 +96,5 @@ class Autoload extends AutoloadConfig
      * @var string[]
      * @phpstan-var list<string>
      */
-    public $helpers = ['exception_helper','common'];
+    public $helpers = ['exception_helper','common','html'];
 }

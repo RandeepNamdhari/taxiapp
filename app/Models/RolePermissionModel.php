@@ -35,6 +35,16 @@ class RolePermissionModel extends Model
     }
 
 
+     public static function userPermissionsByRoles(array $roles)
+    {
+        $obj=new self();
+
+        $permissions= $obj->whereIn('role_id',$roles)->findAll();
+
+        return array_values(array_column($permissions,'permission_id'));
+    }
+
+
   
   
 

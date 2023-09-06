@@ -65,7 +65,9 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     $routes->get('dashboard', 'Dashboard::index');
 
-    $routes->get('roles', 'Roles::index');
+    // Roles Routes
+
+    $routes->get('roles', 'Roles::index',['filter' => 'permission:roles.read']);
 
     $routes->get('create/role', 'Roles::create');
 
@@ -82,6 +84,19 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     $routes->post('attach/user_role', 'Roles::attach');
 
     $routes->post('detach/user_role', 'Roles::detach');
+
+    // End Roles Routes
+
+    // Customer Routes
+
+    $routes->get('customers/create', 'Customer::create');
+
+
+
+
+
+
+    // End Customer Routes
 
 
     

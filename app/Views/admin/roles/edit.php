@@ -52,6 +52,16 @@ endif;
                                         <li class="breadcrumb-item active" aria-current="page">Edit Role</li>
                                     </ol>
                                 </div>
+
+                                  <div class="col-md-4">
+                                    <div class="text-center">
+                                     
+                                          <a href="<?=base_url('admin/roles')?>" class="btn btn-outline-primary waves-effect waves-light">
+                                              <i class="fas fa-arrow-alt-circle-left "></i>&nbsp;Go Back
+                                            </a>
+                                      
+                                    </div>
+                                </div>
                               
                             </div>
                         </div>

@@ -29,6 +29,21 @@ class PermissionModel extends Model
            return $obj->findAll();
 
     }
+
+    public static function getPermissionIds(array $permissionNamesArray)
+    {
+        
+           $obj=new self();
+
+           $permissions=$obj->whereIn('name',$permissionNamesArray)->findAll();
+
+           return array_values(array_column($permissions,'id'));
+
+
+    }
+
+
+
   
 
 

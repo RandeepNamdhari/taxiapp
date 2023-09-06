@@ -56,7 +56,7 @@ class Roles extends BaseController
                    ];
 
         $rule = [
-            'role_name'   => 'required',
+            'role_name'   => 'required|is_unique[roles.name]',
             'permissions' => 'required',
         ];
 
@@ -115,7 +115,7 @@ class Roles extends BaseController
                    ];
 
         $rule = [
-            'role_name'   => 'required',
+            'role_name'   => 'required|is_unique[roles.name,id,'.$id.']',
             'permissions' => 'required',
         ];
 

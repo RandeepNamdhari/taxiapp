@@ -25,6 +25,8 @@ class Migration_CreateRolePermissionsTable extends Migration
                 'constraint' => 11,
                 'unsigned' => true,
             ],
+            'created_at datetime default current_timestamp',
+             'updated_at datetime default current_timestamp on update current_timestamp', 
         ]);
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('role_id','roles','id','NO ACTION','CASCADE');

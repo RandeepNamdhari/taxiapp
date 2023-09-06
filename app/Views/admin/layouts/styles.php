@@ -1,9 +1,5 @@
   <!-- App favicon -->
-  <?php 
 
-  helper('html')
-
-  ?>
   
       <?=link_tag('admin/assets/images/favicon.ico')?>
 
@@ -21,6 +17,23 @@
 
 
           <style>
+                 .form-group label {
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            background-color: white;
+            padding: 0 5px;
+            color: #999;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label {
+            top: -12px;
+            font-size: 12px;
+            background-color: white;
+            padding: 0 5px;
+        }
             .remove-icon-user
             {
                     background-color: darkred;
