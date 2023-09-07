@@ -40,7 +40,7 @@ if (!function_exists('run_with_exceptions')) {
            
         }
 
-        catch (DatabaseException $e) {
+        catch (\DatabaseException $e) {
 
           log_message('error', $e->getMessage());
 

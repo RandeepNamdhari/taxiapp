@@ -88,4 +88,57 @@
          }
 
 
+         // function to submit form
+             const submitNormalForm=(formId,url,data,callback=null)=>{
+
+
+               var response=__postRequest(url,data,__showMessage);
+
+        response.then(function(data){
+
+            $('.validation-error').remove();
+            $('.alert-danger').remove();
+
+           if(!data.status && data.errors)
+          {
+            Object.keys(data.errors).forEach(key => {
+
+              
+                     $('#'+formId).find('[name="'+key+'"]').after('<div class="validation-error">'+data.errors[key].replace('_',' ')+'</div>');
+                 
+              
+              });
+          }
+
+          if(callback)
+          {
+            callback(data);
+          }
+         
+        })
+
+
+        }
+
+        const getFormData=(formId)=>
+        {
+          let $form = $('#'+formId);
+  
+  
+         let formData = {};
+
+ 
+  $form.find('input,textarea,select').each(function() {
+    let $input = $(this);
+    let inputName = $input.attr('name');
+    let inputValue = $input.val();
+    
+   
+    formData[inputName] = inputValue;
+    
+        })
+  return formData;
+      }
+
+
 

@@ -10,7 +10,7 @@ class UserModel extends Model
 {
     protected $table = 'users'; 
     protected $primaryKey = 'id'; 
-    protected $allowedFields = ['username', 'email', 'password', 'remember_token','reset_token'];
+    protected $allowedFields = ['username', 'email', 'password', 'remember_token','reset_token','phone'];
     protected $user;
 
 
@@ -93,6 +93,14 @@ class UserModel extends Model
                break;
        }
         
+    }
+
+
+    public static function createUser($user)
+    {
+         $obj=new self();
+
+         return $obj->allowEmptyInserts()->insert($user);
     }
 
 

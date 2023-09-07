@@ -77,6 +77,11 @@ class CreateCustomersTable extends Migration
                 'constraint' => 250, // Maximum length for interested_party
                 'null' => true,
             ],
+             'status' => [
+                'type' => 'BOOLEAN',
+               
+               'default'=>false,
+            ],
             'created_at datetime default current_timestamp',
              'updated_at datetime default current_timestamp on update current_timestamp', 
         ]);

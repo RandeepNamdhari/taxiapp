@@ -17,6 +17,31 @@
 
 
           <style>
+
+           .full-switch
+            {
+                width: 84px !important;
+            }
+
+            input.form-switch:checked +.full-switch::after{
+
+                left:60px !important;
+
+
+            }
+               input.form-switch:checked +.full-switch::before{
+
+                right:25px !important;
+
+
+            }
+
+           input.form-switch + .full-switch::before{
+
+                left:15px !important;
+
+
+            }
                  .form-group label {
             position: absolute;
             top: 8px;

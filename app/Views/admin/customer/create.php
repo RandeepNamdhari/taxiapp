@@ -46,12 +46,12 @@
                                         <h4 class="card-title mb-0">Customer Details</h4>
                                         <small class="card-title-desc ">Please enter the customer detail correctly and check the details before submit.</small>
 
-                                        <form class="needs-validation mt-3" novalidate>
+                                        <form class="mt-3" id="customerForm">
 
                                             <div class="row">
  <div class="col-md-4 mb-3">
  <label> First Name</label>
- <input data-bind="firstName" type="text" name="first_name" class="form-control" placeholder="First Name" required="required">
+ <input data-bind="firstName" type="text" name="first_name" class="form-control" placeholder="First Name">
  </div>
  <div class="col-md-4 mb-3">
  <label>Middle Name</label>
@@ -59,7 +59,7 @@
  </div>
  <div class="col-md-4 mb-3">
  <label>Last Name</label>
- <input data-bind="lastName" type="text" name="last_name" class="form-control" placeholder="Last Name" required="required">
+ <input data-bind="lastName" type="text" name="last_name" class="form-control" placeholder="Last Name" >
  </div>
  <div class="col-md-4 mb-3">
  <label>Company Name</label>
@@ -67,33 +67,38 @@
  </div>
  <div class="col-md-4 mb-3">
  <label> Email</label>
- <input data-bind="email" type="text" name="email" class="form-control" placeholder="Email" required="required" autocomplete="no-autofill" >
+ <input data-bind="email" type="text" name="email" class="form-control" placeholder="Email"  autocomplete="no-autofill" >
  </div>
  <div class="col-md-4 mb-3">
  <label>Phone Number</label>
- <input data-bind="phoneNumber" type="text" name="phone" class="form-control" placeholder="Phone Number" required="required">
+ <input data-bind="phoneNumber" type="text" name="phone" class="form-control" placeholder="Phone Number" >
  </div>
 
- <div class="col-md-6 mb-3">
+ <div class="col-md-8 mb-3">
  <label> Address</label>
- <textarea data-bind="address" type="text" name="address" class="form-control" placeholder="Address"></textarea>
+ <textarea data-bind="address" rows="5" type="text" name="address" class="form-control" placeholder="Address"></textarea>
  </div>
+
+ <div class="col-md-4 mb-3">
+    <div class="row">
  
- <div class="col-md-3  mb-3">
+ <div class="col-md-12  mb-3">
  <label> Suburb</label>
- <input data-bind="suburb" type="text" name="suburb" class="form-control" placeholder="Suburb" >
+ <input  type="text" name="suburb" class="form-control" placeholder="Suburb" >
  </div>
- <div class="col-md-3 mb-3">
+ <div class="col-md-12 mb-3">
  <label> Post Code</label>
  <input data-bind="postcode" type="text" name="postcode" class="form-control" placeholder="Post Code" >
  </div>
+</div>
+</div>
  <div class="col-md-4 mb-3">
  <label>Date of Birth</label>
- <input data-bind="dob" type="date" name="dob" class="form-control" >
+ <input  type="date" name="dob" class="form-control" >
  </div>
  <div class="col-md-4 mb-3">
  <label> State</label>
- <select class="form-select" name="c[state]" required="required" data-bind="state">
+ <select class="form-select" name="state"  >
  <option value="">--select--</option>
   <option value="NSW">NSW</option>
   <option value="VIC">VIC</option>
@@ -150,6 +155,20 @@
                 <?= $this->endSection() ?>
 
                 <?=$this->section('page-script')?>
+
+
+                <script type="text/javascript">
+                    
+                     document.getElementById("customerForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // Prevents the form from submitting
+   let data=getFormData('customerForm');
+   let url='<?=base_url('admin/customers/store')?>'
+  // console.log(data);return false;
+   submitNormalForm('customerForm',url,data);
+});
+
+        
+                </script>
 
                
       

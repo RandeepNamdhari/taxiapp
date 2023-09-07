@@ -89,7 +89,22 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     // Customer Routes
 
+    $routes->get('customers', 'Customer::index');
+
+
     $routes->get('customers/create', 'Customer::create');
+
+    $routes->post('customers/store', 'Customer::store');
+
+
+    $routes->get('customers/(:num)/edit', 'Customer::edit/$1');
+
+    $routes->post('customers/(:num)/update', 'Customer::update/$1');
+
+    $routes->post('customers/(:num)/delete', 'Customer::delete/$1');
+
+
+
 
 
 
