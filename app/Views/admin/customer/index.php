@@ -56,7 +56,7 @@
                                                 <th>Company Name</th>
                                                 <th>Email</th>
                                                 <th>Mobile</th>
-                                                <th>Status</th>
+                                                <th class="text-center">Status</th>
                                                 <th>Registration Date</th>
                                                 <th>Action</th>
 
@@ -135,18 +135,9 @@
         {
                 var data={'id':id};
 
-                var url='<?=base_url('admin/customers/')?>'+id+'/delete';
+                var url='<?=base_url('admin/customers/')?>'+id+'/change/status';
 
-                        __askThenDelete(url,data,function(response)
-                                {
-                                       response.then(function(data){
-
-                                          if(data.status)
-                                          {
-                                              customerTable.draw();
-                                          }
-                                       })
-                                });
+                        __postRequest(url,data,__showMessage);
         }
     }
 </script>

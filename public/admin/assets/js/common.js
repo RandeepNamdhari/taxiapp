@@ -91,6 +91,11 @@
          // function to submit form
              const submitNormalForm=(formId,url,data,callback=null)=>{
 
+             
+
+              toggleLoaderButton(formId,'show');
+
+
 
                var response=__postRequest(url,data,__showMessage);
 
@@ -114,6 +119,8 @@
           {
             callback(data);
           }
+
+          toggleLoaderButton(formId,'hide')
          
         })
 
@@ -139,6 +146,29 @@
         })
   return formData;
       }
+
+
+      const toggleLoaderButton=(formId,type='show')=>
+      {
+            if(type=='show'){
+                 $('#'+formId).find('.serverLoader').removeClass('d-none');
+
+              $('#'+formId).find('.serverSaveButton').addClass('d-none');
+            }
+            else
+            {
+                 $('#'+formId).find('.serverLoader').addClass('d-none');
+
+              $('#'+formId).find('.serverSaveButton').removeClass('d-none');
+            }
+          
+      }
+
+
+      const goBack=()=>{
+    const previousUrl = document.referrer;
+    window.location.href = previousUrl;
+}
 
 
 

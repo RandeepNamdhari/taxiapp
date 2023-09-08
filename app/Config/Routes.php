@@ -67,7 +67,10 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     // Roles Routes
 
-    $routes->get('roles', 'Roles::index',['filter' => 'permission:roles.read']);
+   // $routes->get('roles', 'Roles::index',['filter' => 'permission:roles.read']);
+
+    $routes->get('roles', 'Roles::index');
+
 
     $routes->get('create/role', 'Roles::create');
 
@@ -96,12 +99,18 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     $routes->post('customers/store', 'Customer::store');
 
+    $routes->get('customers/(:num)/view', 'Customer::view/$1');
+
+
 
     $routes->get('customers/(:num)/edit', 'Customer::edit/$1');
 
     $routes->post('customers/(:num)/update', 'Customer::update/$1');
 
     $routes->post('customers/(:num)/delete', 'Customer::delete/$1');
+
+    $routes->post('customers/(:num)/change/status', 'Customer::status/$1');
+
 
 
 

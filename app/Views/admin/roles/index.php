@@ -17,20 +17,13 @@
                                         <li class="breadcrumb-item active" aria-current="page">Roles</li>
                                     </ol>
                                 </div>
-                                <div class="col-md-4 d-none">
-                                    <div class="float-end d-none d-md-block">
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary  dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="mdi mdi-cog me-2"></i> Settings
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <a class="dropdown-item" href="#">Something else here</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Separated link</a>
-                                            </div>
-                                        </div>
+                                <div class="col-md-4">
+                                    <div class="text-end">
+                                     
+                                          <a href="<?=base_url('admin/create/role')?>" class="btn btn-outline-primary waves-effect waves-light">
+                                              <i class="fas fa-plus-circle"></i>&nbsp;Create Role
+                                            </a>
+                                      
                                     </div>
                                 </div>
                             </div>
@@ -41,7 +34,7 @@
                           <div class="card">
                             <div class="p-4 pb-0 d-flex">
                                 <h5 class="card-title mb-0 w-75">Roles and Members</h5>
-                                <div class="text-right w-25"><a href=<?=base_url('admin/create/role');?> class="btn btn-primary float-end">Create Role</a></div>
+                               
                             </div>
 
                             <div class="card-body">

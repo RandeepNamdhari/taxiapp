@@ -54,7 +54,7 @@ endif;
                                 </div>
 
                                   <div class="col-md-4">
-                                    <div class="text-center">
+                                    <div class="text-end">
                                      
                                           <a href="<?=base_url('admin/roles')?>" class="btn btn-outline-primary waves-effect waves-light">
                                               <i class="fas fa-arrow-alt-circle-left "></i>&nbsp;Go Back

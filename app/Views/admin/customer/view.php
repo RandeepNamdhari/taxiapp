@@ -1,3 +1,15 @@
+<?php 
+
+if(isset($response['data']['customer'])):
+
+    $customer=$response['data']['customer'];
+
+
+endif;
+
+
+
+?>
 <?= $this->extend('admin/layouts/master') ?>
 
 <?= $this->section('content') ?>
@@ -19,9 +31,9 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <div class="text-center">
+                                    <div class="text-end">
                                      
-                                          <a href="<?=base_url('admin/customers')?>" class="btn btn-outline-primary waves-effect waves-light">
+                                        <a href="javascript:void(0)" onclick="goBack()" class="btn btn-outline-primary waves-effect waves-light">
                                               <i class="fas fa-arrow-alt-circle-left "></i>&nbsp;Go Back
                                             </a>
                                       
@@ -47,7 +59,7 @@
                                         <!-- Nav tabs -->
                                         <ul class="nav nav-tabs" role="tablist">
                                             <li class="nav-item" role="presentation">
-                                                <a class="nav-link active" data-bs-toggle="tab" href="#home" role="tab" aria-selected="true">
+                                                <a class="nav-link active" data-bs-toggle="tab" href="#profile" role="tab" aria-selected="true">
                                                     <span class="d-none d-md-block">Profile</span><span class="d-block d-md-none"><i class="mdi mdi-home-variant h5"></i></span>
                                                 </a>
                                             </li>
@@ -73,19 +85,63 @@
                                             	</div>
                                              
                                             </div>
-                                            <div class="tab-pane p-3" id="profile" role="tabpanel">
-                                                <p class="mb-0">
-                                                    Food truck fixie locavore, accusamus mcsweeney's marfa nulla
-                                                    single-origin coffee squid. Exercitation +1 labore velit, blog
-                                                    sartorial PBR leggings next level wes anderson artisan four loko
-                                                    farm-to-table craft beer twee. Qui photo booth letterpress,
-                                                    commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
-                                                    vinyl cillum PBR. Homo nostrud organic, assumenda labore
-                                                    aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr,
-                                                    vero magna velit sapiente labore stumptown. Vegan fanny pack
-                                                    odio cillum wes anderson 8-bit.
-                                                </p>
+                                        </div>
+
+                                            <div class="tab-pane p-3 active show pt-0" id="profile" role="tabpanel">
+
+                                                <div class="row">
+
+                                                    <div class="col-md-6">
+                                                     
+                                                   <div class="d-flex" style="align-items:center;">
+                                                       <h3 class="d-inline-block w-75">Customer Information</h3>
+
+                                                       <div class="w-25 text-end" >
+
+                                                       <a href="<?=base_url('admin/customers/'.$customer->user_id.'/edit')?>" class="fs-4 text-primary text-end">
+                                                                   <i class="fas fa-edit"></i> </a>
+                                                               </div>
+                                                   </div>
+                                                        <hr class="mt-1" style="border:3px solid;border-radius: 25px;">
+
+                                                        
+            <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">Full Name:</strong><span class="d-inline-block w-75"> <?=$customer->first_name.' '.$customer->middle_name.' '.$customer->last_name?><span></p>
+
+                  <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">Company:</strong><span class="d-inline-block w-75"> <?=$customer->company_name??''?><span></p>
+
+                 <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">Email:</strong><span class="d-inline-block w-75"> <?=$customer->email??''?><span></p>
+
+                     <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">phone:</strong><span class="d-inline-block w-75"> <?=$customer->phone??''?><span></p>
+
+                         <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">Date Of Birth:</strong><span class="d-inline-block w-75"> <?=$customer->date_of_birth??''?><span></p>
+
+                    <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">Address:</strong><span class="d-inline-block w-75"> <?=$customer->address??''?><span></p>
+
+                        <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">Suburb:</strong><span class="d-inline-block w-75"> <?=$customer->suburb??''?><span></p>
+
+                             <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">State:</strong><span class="d-inline-block w-75"> <?=$customer->state??''?><span></p>
+
+                                 <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">Post Code:</strong><span class="d-inline-block w-75"> <?=$customer->post_code??''?><span></p>
+         
+                                                </div>
+
+                                                <div class="col-md-5">
+                                               
+                                                     
+                                                   <div class="d-flex" style="align-items:center;">
+                                                       <h3 class="d-inline-block w-75">Licence Information</h3>
+
+                                                       <div class="w-25 text-end" >
+
+                                                       <a href="<?=base_url('admin/customers/'.$customer->user_id.'/edit')?>" class="fs-4 text-primary text-end">
+                                                                   <i class="fas fa-edit"></i> </a>
+                                                               </div>
+                                                   </div>
+                                                     <hr class="mt-1" style="border:3px solid;border-radius: 25px;">
+                                                </div>
+                                               
                                             </div>
+                                        </div>
                                             <div class="tab-pane p-3" id="messages" role="tabpanel">
                                                 <p class="mb-0">
                                                     Etsy mixtape wayfarers, ethical wes anderson tofu before they

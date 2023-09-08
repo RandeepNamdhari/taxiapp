@@ -31,11 +31,13 @@ class Customer extends BaseController
 
         $data['response']= run_with_exceptions(function(){ 
              
-             return true;
+             $data['states']= \App\Models\StateModel::all();
+
+             return array('status'=>1,'data'=>$data);
 
         });
 
-       // echo '<pre>';print_r($data);die;
+      
 
         return view('admin/customer/create',$data);
     }
@@ -102,4 +104,111 @@ class Customer extends BaseController
         return $this->response->setJSON($response);
        
     }
+
+
+    public function status($id)
+    {
+
+        if ($this->request->getMethod() === 'post') {
+
+            $id=$this->request->getVar('id');
+
+     
+             $response=run_with_exceptions(function() use ($id){ 
+
+             \App\Models\CustomerModel::changeStatus($id);
+
+            return array('status'=>1,'message'=>'The Customer status is updated successfully!','type'=>'success');
+
+        });
+
+        return $this->response->setJSON($response);
+
+           
+        }
+
+
+
+       
+    }
+
+    public function view(int $id)
+    {
+        $data['currentRoute']='admin-customers';
+
+        $data['pageTitle']='View Customer';
+
+        $data['response']=run_with_exceptions(function() use ($id){
+
+            $data['customer']= \App\Models\CustomerModel::getCustomer($id);
+
+            return array('status'=>1,'data'=>$data);
+        });
+
+        return view('admin/customer/view',$data);
+    }
+
+
+    public function edit(int $id)
+    {
+        $data['currentRoute']='admin-customers';
+        $data['pageTitle']='Edit Customer';
+
+        $data['response']= run_with_exceptions(function() use ($id){ 
+             
+             $data['customer']= \App\Models\CustomerModel::getCustomer($id);
+
+             $data['states']=\App\Models\StateModel::all();
+
+             return array('status'=>1,'data'=>$data);
+
+        });
+
+      
+
+        return view('admin/customer/edit',$data);
+    }
+
+
+    public function update(int $id)
+    {
+    
+
+      $response=run_with_exceptions(function() use ($id)
+      {
+
+          $data = $this->request->getJSON(true);
+
+
+
+          $rule = [
+                   'first_name'   => 'required',
+                   'last_name' =>'required',
+                   'phone'=>'required',
+                   'email' => 'required|is_unique[users.email,id,'.$id.']',
+                  ];
+
+        if (! $this->validateData($data, $rule)) {
+             return array('status'=>0,
+                             'errors'=>$this->validator->getErrors(),
+                             'message'=>'Validation Error Occur!',
+                             'type'=>'warning');
+            
+        }
+        else
+        {
+            $customer=new \App\Models\CustomerModel();
+            
+            return $customer->updateCustomer($id,$data);
+           
+        }
+         });
+
+
+
+        return $this->response->setJSON($response);
+       
+           }
+
+
 }

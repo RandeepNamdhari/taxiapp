@@ -16,7 +16,7 @@ class CustomerModel extends Model
     protected $useTimestamps = true;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['first_name','last_name','middle_name','state_id','company_name','licence_expiry','licence_number','address','suburb','date_of_birth','interested_party','user_id'];
+    protected $allowedFields    = ['first_name','last_name','middle_name','state_id','company_name','licence_expiry','licence_number','address','suburb','date_of_birth','interested_party','user_id','status','post_code'];
 
  
     protected $dateFormat    = 'datetime';
@@ -36,6 +36,7 @@ class CustomerModel extends Model
 
         $data['user_id']=$user_id;
         $data['state_id']=$data['state'];
+        $data['status']=0;
 
 
 
@@ -55,6 +56,45 @@ class CustomerModel extends Model
 
    }
 
+      public function updateCustomer(int $id,$data)
+   {
+
+
+        $this->transBegin();
+
+        $customer=$this->where('user_id',$id)->first();
+
+        $customer===null ? throw new DatabaseException('Record not found.'):$customer;
+
+
+
+        $userData=['email'=>$data['email'],'phone'=>$data['phone']];
+
+        $user_id=\App\Models\UserModel::updateUser($customer->user_id,$userData);
+
+        unset($data['user_id']);
+        unset($data['status']);
+
+        $data['state_id']=$data['state'];
+
+        if($this->update($customer->id,$data)):
+
+        $this->transCommit();
+
+        return array('status'=>1,'message'=>'The customer is updated successfully.','type'=>'success','redirect'=>base_url('admin/customers'));
+
+        else:
+
+            $this->transRollback();
+
+            throw new DatabaseException('Unable to update the record.Please try again later.');
+
+        endif;
+
+   }
+
+   
+
        public static function datatable()
     {
         $request = service('request');
@@ -65,7 +105,7 @@ class CustomerModel extends Model
 
         $obj=new self();
 
-        $query=$obj->select('customers.*, users.username,users.email,users.phone')
+        $query=$obj->select('customers.*,customers.id as customer_id, users.username,users.email,users.phone,users.id as id')
         ->join('users', 'users.id = customers.user_id')->like('users.username',$search)
         ->limit($length, $start)
             ->get();
@@ -104,11 +144,11 @@ class CustomerModel extends Model
     {
         if($row['status']):
 
-            return '<input class="form-check form-switch" type="checkbox" id="switch'.$row['id'].'" switch="bool" checked=""><label class="form-label  full-switch" for="switch'.$row['id'].'" data-on-label="Active" data-off-label="InActive"></label>';
+            return '<input class="form-check form-switch" onchange="changeStatus('.$row['customer_id'].')" type="checkbox" id="switch'.$row['customer_id'].'" switch="bool" checked=""><label class="form-label  full-switch" for="switch'.$row['customer_id'].'" data-on-label="Active" data-off-label="InActive"></label>';
 
             else:
 
-                 return '<input class="form-check form-switch" type="checkbox" id="switch'.$row['id'].'" switch="bool"><label class="form-label full-switch" for="switch'.$row['id'].'" data-on-label="Active" data-off-label="InActive"></label>';
+                 return '<input class="form-check form-switch" onchange="changeStatus('.$row['customer_id'].')" type="checkbox" id="switch'.$row['customer_id'].'" switch="bool"><label class="form-label full-switch" for="switch'.$row['customer_id'].'" data-on-label="Active" data-off-label="InActive"></label>';
 
             endif;
 
@@ -116,8 +156,37 @@ class CustomerModel extends Model
 
     public static function destroy(int $id)
     {
+        $userObj=new \App\Models\UserModel();
+
+        return $userObj->delete($id);
+    }
+
+    
+
+     public static function changeStatus(int $id)
+    {
         $obj=new self();
 
-        return $obj->delete($id);
+        $customer= $obj->find($id);
+
+        
+
+        $customer->status=!$customer->status;
+
+        return $obj->save($customer);
+    }
+
+
+    public static function getCustomer(int $id)
+    {
+        $obj=new self();
+
+        $customer= $obj->select('customers.*, users.email AS email,users.phone as phone') 
+            ->join('users', 'customers.user_id = users.id') 
+            ->where('customers.user_id',$id)->first();
+
+           return $customer===null ? throw new DatabaseException('Record not found.'):$customer;
+
+
     }
 }

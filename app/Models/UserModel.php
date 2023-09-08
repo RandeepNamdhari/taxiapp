@@ -103,6 +103,13 @@ class UserModel extends Model
          return $obj->allowEmptyInserts()->insert($user);
     }
 
+    public static function updateUser($id,$user)
+    {
+         $obj=new self();
+
+         return $obj->update($id,$user);
+    }
+
 
 
 
