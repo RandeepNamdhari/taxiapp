@@ -5,12 +5,41 @@ if(isset($response['data']['customer'])):
     $customer=$response['data']['customer'];
 
 
+if(isset($customer->media['licence_back'][0])):
+
+    $licence_back=$customer->media['licence_back'][0]['file_name'];
+
+
+
+
+endif;
+
+if(isset($customer->media['licence_front'][0])):
+
+    $licence_back=$customer->media['licence_front'][0]['file_name'];
+
+
+endif;
+
 endif;
 
 
 
 ?>
 <?= $this->extend('admin/layouts/master') ?>
+
+<?=$this->section('page-style')?>
+
+
+      <?=link_tag('admin/assets/css/custom-dropzone.min.css')?>
+
+
+
+     
+
+
+
+<?=$this->endSection()?>
 
 <?= $this->section('content') ?>
 
@@ -98,14 +127,14 @@ endif;
 
                                                        <div class="w-25 text-end" >
 
-                                                       <a href="<?=base_url('admin/customers/'.$customer->user_id.'/edit')?>" class="fs-4 text-primary text-end">
+                                                       <a href="<?=base_url('admin/customers/'.($customer->user_id??'').'/edit')?>" class="fs-4 text-primary text-end">
                                                                    <i class="fas fa-edit"></i> </a>
                                                                </div>
                                                    </div>
                                                         <hr class="mt-1" style="border:3px solid;border-radius: 25px;">
 
-                                                        
-            <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">Full Name:</strong><span class="d-inline-block w-75"> <?=$customer->first_name.' '.$customer->middle_name.' '.$customer->last_name?><span></p>
+
+            <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">Full Name:</strong><span class="d-inline-block w-75"> <?=($customer->first_name??'').' '.($customer->middle_name??'').' '.($customer->last_name??'')?><span></p>
 
                   <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">Company:</strong><span class="d-inline-block w-75"> <?=$customer->company_name??''?><span></p>
 
@@ -133,11 +162,68 @@ endif;
 
                                                        <div class="w-25 text-end" >
 
-                                                       <a href="<?=base_url('admin/customers/'.$customer->user_id.'/edit')?>" class="fs-4 text-primary text-end">
+                                                       <a href="<?=base_url('admin/customers/'.($customer->user_id??'').'/edit')?>" class="fs-4 text-primary text-end">
                                                                    <i class="fas fa-edit"></i> </a>
                                                                </div>
                                                    </div>
                                                      <hr class="mt-1" style="border:3px solid;border-radius: 25px;">
+
+                                                     <div class="row">
+
+                                                        <div class="col-md-12">
+
+
+
+                                                         
+                                        <div class="mb-5">
+
+                                            <p><strong  class="w-50 d-inline-block" style="vertical-align: top;">Licence Number:</strong><span class="d-inline-block w-50"> <?=$customer->licence_number??''?><span></p>
+
+                                                <p><strong  class="w-50 d-inline-block" style="vertical-align: top;">Licence Expiry:</strong><span class="d-inline-block w-50"> <?=$customer->licence_expiry??''?><span></p>
+
+
+                                            <form action="#" class="custom-dropzone" id="licence_front">
+                                                <div class="fallback">
+                                                    <input name="licence_front" type="file">
+                                                </div>
+
+                                                <div class="dz-message needsclick">
+                                                    <div class="mb-3">
+                                                        <i class="mdi mdi-cloud-upload display-4 text-muted"></i>
+                                                    </div>
+                                                    
+                                                    <h5>Drop your licence front image here.</h5>
+                                                </div>
+                                            </form><!-- end form -->
+
+                                          
+                                        </div>
+
+                                                        </div>
+
+                                                        <div class="col-md-12">
+
+                                                                 <div class="mb-5">
+                                            <form action="#" class="custom-dropzone" id="licence_back">
+                                                <div class="fallback">
+                                                    <input name="licence_back" type="file">
+                                                </div>
+
+                                                <div class="dz-message needsclick">
+                                                    <div class="mb-3">
+                                                        <i class="mdi mdi-cloud-upload display-4 text-muted"></i>
+                                                    </div>
+                                                    
+                                                    <h5>Drop your licence back image here.</h5>
+                                                </div>
+                                            </form><!-- end form -->
+                                        </div>
+
+                                                        </div>
+
+                                                         
+
+                                                     </div>
                                                 </div>
                                                
                                             </div>
@@ -189,3 +275,88 @@ endif;
 
 
                 <?= $this->endSection() ?>
+
+
+                <?=$this->section('page-script')?>
+
+      <?=script_tag('admin/assets/libs/dropzone/min/dropzone.min.js')?>
+
+      <script type="text/javascript">
+
+          Dropzone.autoDiscover = false;
+
+          var myDropzone = new Dropzone("#licence_front", {
+            url: "<?=base_url('admin/customers/upload/licence/licence_front/'.($customer->id??''))?>",
+            maxFiles:1,
+            paramName:'licence_front',
+            addRemoveLinks:true,
+             success: function (file, response) {
+                // Handle the success event here
+                console.log(file);
+                if(response.status)
+                {
+
+                    //console.log(file.dataURL);
+                    $('#licence_front').hide();
+                    $('#licence_front').after('<div><img src="'+file.dataURL+'" width="100%"><button class="btn btn-success licence-change-button" onclick="showUploadArea(this)" class="text-secondary text-end"><i class="fas fa-edit"></i>&nbsp;&nbsp;Change</button></div>');
+                }
+                console.log("File uploaded successfully:", response);
+                    __showMessage(response.message);
+
+                // You can perform additional actions here, e.g., display a success message
+            }
+        });
+
+             myDropzone.on("complete", function (file) {
+        if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+            //alert('Your action, Refresh your page here. ');
+        }
+
+        myDropzone.removeFile(file);
+    });
+
+
+              var myDropzone1 = new Dropzone("#licence_back", {
+            url: "<?=base_url('admin/customers/upload/licence/licence_back/'.($customer->id??''))?>",
+            maxFiles:1,
+            paramName:'licence_back',
+            addRemoveLinks:true,
+             success: function (file, response) {
+                // Handle the success event here
+                console.log(file);
+                if(response.status)
+                {
+
+                    
+                    //console.log(file.dataURL);
+                    $('#licence_back').hide();
+                    $('#licence_back').after('<div><img src="'+file.dataURL+'" width="100%"><button class="btn btn-success licence-change-button" onclick="showUploadArea(this)" class="text-secondary text-end"><i class="fas fa-edit"></i>&nbsp;&nbsp;Change</button></div>');
+                }
+                __showMessage(response.message,response.type);
+                console.log("File uploaded successfully:", response);
+                // You can perform additional actions here, e.g., display a success message
+            }
+        });
+
+             myDropzone1.on("complete", function (file) {
+        if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+            //alert('Your action, Refresh your page here. ');
+        }
+
+        myDropzone1.removeFile(file);
+    });
+
+           
+
+           function showUploadArea(selector)
+           {
+             $(selector).parents('div').eq(0).prev().show();
+
+             $(selector).parents(
+                'div').eq(0).remove();
+
+           }
+
+      </script>
+
+      <?=$this->endSection()?>

@@ -111,6 +111,8 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     $routes->post('customers/(:num)/change/status', 'Customer::status/$1');
 
+    $routes->post('customers/upload/licence/(:any)/(:num)','Customer::upload/$1/$2');
+
 
 
 

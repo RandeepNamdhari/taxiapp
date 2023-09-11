@@ -185,8 +185,28 @@ class CustomerModel extends Model
             ->join('users', 'customers.user_id = users.id') 
             ->where('customers.user_id',$id)->first();
 
+        if($customer):
+
+            $customer->media=\App\Models\MediaModel::getMedia('Customer',$customer->id);
+
+        endif;
+
            return $customer===null ? throw new DatabaseException('Record not found.'):$customer;
 
+
+    }
+
+    public function UploadLicence(string $type,int $id)
+    {
+        $customer=$this->find($id);
+
+        return \App\Models\MediaModel::attach(['model'=>'Customer',
+                                         'type'=>$type,
+                                         'user_id'=>$customer->user_id,
+                                         'model_id'=>$customer->id,
+                                         'file'=>$type],true);
+
+        
 
     }
 }

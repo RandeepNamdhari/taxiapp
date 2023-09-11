@@ -59,6 +59,16 @@ if (!function_exists('run_with_exceptions')) {
          
         }
         
+        catch (HTTPException $e) {
+
+          log_message('error', $e->getMessage());
+
+
+            $arrayResponse=array('status'=>0,'development_error_message'=>$e->getMessage(),'type'=>'warning','object'=>$e);
+
+         
+        }
+        
 
         if(isset($arrayResponse['development_error_message'])):
 
@@ -74,6 +84,8 @@ if (!function_exists('run_with_exceptions')) {
 
 
             endif;
+
+         //   echo '<pre>';print_r($arrayResponse);die;
 
             return $arrayResponse;
 

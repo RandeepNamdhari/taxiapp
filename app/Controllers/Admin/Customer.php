@@ -145,6 +145,8 @@ class Customer extends BaseController
             return array('status'=>1,'data'=>$data);
         });
 
+     //   echo '<pre>';print_r($data);die;
+
         return view('admin/customer/view',$data);
     }
 
@@ -208,6 +210,46 @@ class Customer extends BaseController
 
         return $this->response->setJSON($response);
        
+           }
+
+     public function upload(string $type,int $id)
+           {
+            
+               $response=run_with_exceptions(function() use ($type,$id)
+      {
+
+          $file = $this->request->getFile($type);
+
+        $validation = service('validation');
+
+       
+        $validation->setRules([
+            $type => 'uploaded['.$type.']|is_image['.$type.']',
+        ]);
+
+        if (!$validation->run([$type => $file])):
+             return array('status'=>0,
+                             'errors'=>$validation->getErrors(),
+                             'message'=>'Invalid file validation Error Occur!',
+                             'type'=>'warning');
+            
+     
+        else:
+        
+            $customer=new \App\Models\CustomerModel();
+            
+            $customer->UploadLicence($type,$id);
+
+            return array('status'=>1,'message'=>'Licence image uploaded successfully.');
+           
+        endif;
+         });
+
+
+
+        return $this->response->setJSON($response);
+       
+         
            }
 
 

@@ -18,6 +18,22 @@
 
           <style>
 
+            .custom-dropzone{
+                    min-height: 230px;
+    border: 2px dashed var(--bs-border-color) !important;
+    background: var(--bs-secondary-bg);
+    border-radius: 6px;
+    padding:15px 15px;
+    box-sizing: border-box;
+            }
+
+            .licence-change-button
+            {
+                    position: relative;
+    bottom: 35px;
+    left: 273px;
+            }
+
            .full-switch
             {
                 width: 84px !important;
