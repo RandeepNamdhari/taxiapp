@@ -81,7 +81,7 @@ class CustomerModel extends Model
 
         $this->transCommit();
 
-        return array('status'=>1,'message'=>'The customer is updated successfully.','type'=>'success','redirect'=>base_url('admin/customers'));
+        return array('status'=>1,'message'=>'The customer is updated successfully.','type'=>'success','redirect'=>base_url('admin/customers/'.$customer->user_id.'/view'));
 
         else:
 
@@ -187,7 +187,8 @@ class CustomerModel extends Model
 
         if($customer):
 
-            $customer->media=\App\Models\MediaModel::getMedia('Customer',$customer->id);
+            $customer->getMedia();
+
 
         endif;
 

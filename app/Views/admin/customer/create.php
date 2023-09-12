@@ -27,7 +27,7 @@
                                 <div class="col-md-4">
                                     <div class="text-end">
                                      
-                                         <a href="javascript:void(0)" onclick="goBack()" class="btn btn-outline-primary waves-effect waves-light">
+                                         <a href="<?=base_url('admin/customers')?>"  class="btn btn-outline-primary waves-effect waves-light">
                                               <i class="fas fa-arrow-alt-circle-left "></i>&nbsp;Go Back
                                             </a>
                                       

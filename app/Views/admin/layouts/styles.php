@@ -18,6 +18,12 @@
 
           <style>
 
+            .modalImageStyle
+            {
+                width: 100%;
+                max-height: 500px;
+            }
+
             .custom-dropzone{
                     min-height: 230px;
     border: 2px dashed var(--bs-border-color) !important;
@@ -27,11 +33,23 @@
     box-sizing: border-box;
             }
 
+            .mh-207
+            {
+                min-height: 207px;
+            }
+
             .licence-change-button
             {
                     position: relative;
-    bottom: 35px;
-    left: 273px;
+    bottom: 170px;
+    left: 330px;
+            }
+
+            .licence-view-button
+            {
+                    position: relative;
+    bottom: 207px;
+    left: 290px;
             }
 
            .full-switch

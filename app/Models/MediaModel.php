@@ -109,8 +109,8 @@ class MediaModel extends Model
                 // File uploaded successfully
                 $image = \Config\Services::image()
                     ->withFile(WRITEPATH.$filePath . $newName)
-                    ->fit(100, 100, 'center')
-                    ->save(WRITEPATH.$thumbPath . $newName);
+                    ->fit(300, 300,'center')
+                    ->save(WRITEPATH.$thumbPath . $newName,80);
 
                 $fileInfo['file_orignal_name']=$file->getClientName();
                 $fileInfo['file_name']=$newName;
@@ -131,7 +131,7 @@ class MediaModel extends Model
     
 }
 
-public static function getMedia($model,$model_id='')
+public static function getMedia($model,$model_id='',$type='')
 {
     $mediaObj=new self();
 
@@ -143,6 +143,12 @@ public static function getMedia($model,$model_id='')
 
     endif;
 
+    if($type):
+
+        $mediaObj->where('type',$type);
+
+    endif;
+
     $media=$mediaObj->select('media_files.*,media.type,media.model')->join('media_files','media_files.media_id=media.id')->orderBy('media_files.id','desc')->findAll();
     $records=[];
 
@@ -151,6 +157,11 @@ public static function getMedia($model,$model_id='')
         $records[$file['type']][]=$file;
 
     endforeach;
+
+    if($type && count($media)==1)
+    {
+        return $records[$type][0];
+    }
 
     return $records;
 

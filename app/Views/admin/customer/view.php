@@ -5,21 +5,12 @@ if(isset($response['data']['customer'])):
     $customer=$response['data']['customer'];
 
 
-if(isset($customer->media['licence_back'][0])):
-
-    $licence_back=$customer->media['licence_back'][0]['file_name'];
 
 
+    $licence_front=$customer->getFile('licence_front');
 
+    $licence_back=$customer->getFile('licence_back');
 
-endif;
-
-if(isset($customer->media['licence_front'][0])):
-
-    $licence_back=$customer->media['licence_front'][0]['file_name'];
-
-
-endif;
 
 endif;
 
@@ -62,7 +53,7 @@ endif;
                                 <div class="col-md-4">
                                     <div class="text-end">
                                      
-                                        <a href="javascript:void(0)" onclick="goBack()" class="btn btn-outline-primary waves-effect waves-light">
+                                        <a href="<?=base_url('admin/customers')?>"  class="btn btn-outline-primary waves-effect waves-light">
                                               <i class="fas fa-arrow-alt-circle-left "></i>&nbsp;Go Back
                                             </a>
                                       
@@ -131,7 +122,7 @@ endif;
                                                                    <i class="fas fa-edit"></i> </a>
                                                                </div>
                                                    </div>
-                                                        <hr class="mt-1" style="border:3px solid;border-radius: 25px;">
+                                                        <hr class="mt-1" style="border:1px solid;border-radius: 25px;">
 
 
             <p><strong  class="w-25 d-inline-block" style="vertical-align: top;">Full Name:</strong><span class="d-inline-block w-75"> <?=($customer->first_name??'').' '.($customer->middle_name??'').' '.($customer->last_name??'')?><span></p>
@@ -161,12 +152,12 @@ endif;
                                                        <h3 class="d-inline-block w-75">Licence Information</h3>
 
                                                        <div class="w-25 text-end" >
-
+<!-- 
                                                        <a href="<?=base_url('admin/customers/'.($customer->user_id??'').'/edit')?>" class="fs-4 text-primary text-end">
-                                                                   <i class="fas fa-edit"></i> </a>
+                                                                   <i class="fas fa-edit"></i> </a> -->
                                                                </div>
                                                    </div>
-                                                     <hr class="mt-1" style="border:3px solid;border-radius: 25px;">
+                                                     <hr class="mt-1" style="border:1px solid;border-radius: 25px;">
 
                                                      <div class="row">
 
@@ -182,7 +173,7 @@ endif;
                                                 <p><strong  class="w-50 d-inline-block" style="vertical-align: top;">Licence Expiry:</strong><span class="d-inline-block w-50"> <?=$customer->licence_expiry??''?><span></p>
 
 
-                                            <form action="#" class="custom-dropzone" id="licence_front">
+                                            <form action="#" style="display:<?php if($licence_front)echo 'none';?>;" class="custom-dropzone" id="licence_front">
                                                 <div class="fallback">
                                                     <input name="licence_front" type="file">
                                                 </div>
@@ -196,6 +187,15 @@ endif;
                                                 </div>
                                             </form><!-- end form -->
 
+                                            <?php if($licence_front):
+
+
+
+                                                echo '<div><img class="mh-207" src="'.base_url($licence_front).'" width="100%"><button class="btn btn-dark licence-change-button" onclick="showUploadArea(this)" class="text-secondary text-end"><i class="fas fa-edit"></i></button><button class="btn btn-dark licence-view-button" onclick="OpenImageModel(this,\''.base_url($licence_front).'\')" class="text-secondary text-end"><i class="fas fa-external-link-alt"></i></button></div>';
+
+
+                                              endif;?>
+
                                           
                                         </div>
 
@@ -204,7 +204,7 @@ endif;
                                                         <div class="col-md-12">
 
                                                                  <div class="mb-5">
-                                            <form action="#" class="custom-dropzone" id="licence_back">
+                                            <form action="#" style="display:<?php if($licence_front)echo 'none';?>;" class="custom-dropzone" id="licence_back">
                                                 <div class="fallback">
                                                     <input name="licence_back" type="file">
                                                 </div>
@@ -217,6 +217,14 @@ endif;
                                                     <h5>Drop your licence back image here.</h5>
                                                 </div>
                                             </form><!-- end form -->
+                                             <?php if($licence_back):
+
+
+
+                                                   echo '<div><img class="mh-207" src="'.base_url($licence_back).'" width="100%"><button class="btn btn-dark licence-change-button" onclick="showUploadArea(this)" class="text-secondary text-end"><i class="fas fa-edit"></i></button><button class="btn btn-dark licence-view-button" onclick="OpenImageModel(this,\''.base_url($licence_back).'\')" class="text-secondary text-end"><i class="fas fa-external-link-alt"></i></button></div>';
+
+
+                                              endif;?>
                                         </div>
 
                                                         </div>
@@ -271,7 +279,7 @@ endif;
                     </div>
 
 
-
+<?=view('admin/partials/image-modal')?>
 
 
                 <?= $this->endSection() ?>
@@ -280,6 +288,9 @@ endif;
                 <?=$this->section('page-script')?>
 
       <?=script_tag('admin/assets/libs/dropzone/min/dropzone.min.js')?>
+
+      <?=script_tag('admin/assets/js/showimagemodal.js')?>
+
 
       <script type="text/javascript">
 
@@ -292,15 +303,15 @@ endif;
             addRemoveLinks:true,
              success: function (file, response) {
                 // Handle the success event here
-                console.log(file);
+              //  console.log(file);
                 if(response.status)
                 {
 
                     //console.log(file.dataURL);
                     $('#licence_front').hide();
-                    $('#licence_front').after('<div><img src="'+file.dataURL+'" width="100%"><button class="btn btn-success licence-change-button" onclick="showUploadArea(this)" class="text-secondary text-end"><i class="fas fa-edit"></i>&nbsp;&nbsp;Change</button></div>');
+                    $('#licence_front').after('<div><img src="'+file.dataURL+'" width="100%"><button class="btn btn-dark licence-change-button" onclick="showUploadArea(this)" class="text-secondary text-end"><i class="fas fa-edit"></i></button><button class="btn btn-dark licence-view-button" onclick="OpenImageModel(this,'+file.dataURL+')" class="text-secondary text-end"><i class="fas fa-external-link-alt"></i></button>');
                 }
-                console.log("File uploaded successfully:", response);
+              //  console.log("File uploaded successfully:", response);
                     __showMessage(response.message);
 
                 // You can perform additional actions here, e.g., display a success message
@@ -355,6 +366,18 @@ endif;
              $(selector).parents(
                 'div').eq(0).remove();
 
+           }
+
+           let files=<?php echo json_encode(array($licence_back,$licence_front))?>;
+
+           let imageModal=new showImageModal({files:files});
+
+           console.log(imageModal);     
+
+           function OpenImageModel(selector,url)
+           {
+              imageModal.currentItem=url;
+              imageModal.show();
            }
 
       </script>

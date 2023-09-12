@@ -145,7 +145,9 @@ class Customer extends BaseController
             return array('status'=>1,'data'=>$data);
         });
 
-     //   echo '<pre>';print_r($data);die;
+      
+
+        //echo '<pre>';print_r($data['response']['data']['customer']->getFile('licence_front'));die;
 
         return view('admin/customer/view',$data);
     }
