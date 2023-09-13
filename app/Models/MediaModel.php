@@ -154,7 +154,11 @@ public static function getMedia($model,$model_id='',$type='')
 
     foreach($media as $file):
 
+        if(file_exists(WRITEPATH.$file['file_path'])):
+
         $records[$file['type']][]=$file;
+
+    endif;
 
     endforeach;
 

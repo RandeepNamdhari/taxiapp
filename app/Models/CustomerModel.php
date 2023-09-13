@@ -197,6 +197,13 @@ class CustomerModel extends Model
 
     }
 
+    public static function customerRow($id)
+    {
+        $obj=new self();
+
+        return $obj->where('user_id',$id)->first();
+    }
+
     public function UploadLicence(string $type,int $id)
     {
         $customer=$this->find($id);

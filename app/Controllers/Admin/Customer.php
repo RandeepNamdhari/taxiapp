@@ -138,6 +138,11 @@ class Customer extends BaseController
 
         $data['pageTitle']='View Customer';
 
+        $data['activeTab']='profile';
+
+        $data['activeContent']='profile';
+
+
         $data['response']=run_with_exceptions(function() use ($id){
 
             $data['customer']= \App\Models\CustomerModel::getCustomer($id);

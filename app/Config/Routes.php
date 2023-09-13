@@ -113,6 +113,31 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     $routes->post('customers/upload/licence/(:any)/(:num)','Customer::upload/$1/$2');
 
+   
+  // Customer Vehicles //
+       $routes->get('customers/(:num)/vehicles/create', 'Vehicle::create/$1');
+
+    $routes->post('customers/(:num)/vehicles/store', 'Vehicle::store/$1');
+
+    $routes->get('customers/(:num)/vehicles/view', 'Vehicle::view/$1');
+
+    $routes->get('customers/(:num)/vehicles/(:num)/gallery', 'Vehicle::gallery/$1/$2');
+
+    $routes->post('customers/(:num)/vehicles/(:num)/gallery/upload', 'Vehicle::upload/$1/$2');
+
+
+
+
+    $routes->get('customers/vehicles/(:num)/edit', 'Vehicle::edit/$1');
+
+    $routes->post('customers/vehicles/(:num)/update', 'Vehicle::update/$1');
+
+    $routes->post('customers/vehicles/(:num)/delete', 'Vehicle::delete/$1');
+
+    $routes->post('customers/vehicles/(:num)/change/status', 'Vehicle::status/$1');
+
+    // End Customer Vehicles //
+
 
 
 
