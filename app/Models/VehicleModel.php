@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use CodeIgniter\Database\Exceptions\DatabaseException;
+
 
 class VehicleModel extends Model
 {
@@ -22,12 +24,25 @@ class VehicleModel extends Model
     protected $updatedField  = 'updated_at';
 
 
-    public static function getCustomerVehicles(int $customer_id)
+    public static function getCustomerVehicles(int $user_id)
     {
-            return [];
+            $obj=new self();
+
+            $response=$obj->where('user_id',$user_id)->findAll();
+
+            return $response;
     }
 
-    public function create($data,$user_id)
+    public static function getCustomerVehicle(int $user_id,$vehicle_id)
+    {
+         $obj=new self();
+
+            $response=$obj->where('user_id',$user_id)->where('id',$vehicle_id)->first();
+
+            return $response?$response: throw new DatabaseException('Unable to find the record.');
+    }
+
+    public function create(array $data,int $user_id)
     {
 
         $data['state_id']=$data['state'];
@@ -49,7 +64,36 @@ class VehicleModel extends Model
 
             else:
 
-                 $this->rollback();
+               
+
+                return array('status'=>0,'message'=>'Something went wrong.Please check your details and try again.','type'=>'warning');
+
+            endif;
+    }
+
+    public function updateVehicle(array $data,int $user_id,int $id)
+    {
+          $data['state_id']=$data['state'];      
+
+         $customer=\App\Models\CustomerModel::customerRow($user_id);
+
+
+        $data['customer_id']=$customer->id;
+        $data['user_id']=$customer->user_id;
+
+
+
+        $vehicle_id=$this->where('user_id',$user_id)->update($id,$data);
+
+
+            if($vehicle_id):
+
+
+                return array('status'=>1,'message'=>'Vehicle is updated successfully!','type'=>'success','redirect'=>base_url('admin/customers/'.$customer->user_id.'/vehicles/view'),'vehicle_id'=>$vehicle_id);
+
+            else:
+
+               
 
                 return array('status'=>0,'message'=>'Something went wrong.Please check your details and try again.','type'=>'warning');
 

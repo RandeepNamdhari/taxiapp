@@ -10,7 +10,21 @@ class VehicleEntity extends Entity
     protected $dates   = ['created_at', 'updated_at', 'deleted_at'];
     protected $casts   = [];
 
+    protected $attributes=['media'];
+
     public $media=[];
+
+
+     public function getMediaList()
+    {
+        $media = \App\Models\MediaModel::getMedia('Vehicle',$this->id);
+        return $media['vehicle']??[];
+    }
+
+    public function getDefaultMedia()
+    {
+        return \App\Models\MediaModel::getFirstOrDefaultMedia('Vehicle',$this->id);
+    }
 
 
     public function getMedia()

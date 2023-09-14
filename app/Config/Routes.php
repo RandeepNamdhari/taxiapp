@@ -128,13 +128,13 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
 
 
-    $routes->get('customers/vehicles/(:num)/edit', 'Vehicle::edit/$1');
+    $routes->get('customers/(:num)/vehicles/(:num)/edit', 'Vehicle::edit/$1/$2');
 
-    $routes->post('customers/vehicles/(:num)/update', 'Vehicle::update/$1');
+    $routes->post('customers/(:num)/vehicles/(:num)/update', 'Vehicle::update/$1/$2');
 
-    $routes->post('customers/vehicles/(:num)/delete', 'Vehicle::delete/$1');
+    $routes->post('customers/(:num)/vehicles/(:num)/delete', 'Vehicle::delete/$1/$2');
 
-    $routes->post('customers/vehicles/(:num)/change/status', 'Vehicle::status/$1');
+    $routes->post('customers/(:num)/vehicles/(:num)/change/status', 'Vehicle::status/$1/$2');
 
     // End Customer Vehicles //
 

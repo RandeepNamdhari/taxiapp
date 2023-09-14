@@ -135,17 +135,17 @@ public static function getMedia($model,$model_id='',$type='')
 {
     $mediaObj=new self();
 
-    $mediaObj->where('model',$model);
+    $mediaObj->where('media.model',$model);
 
     if($model_id):
 
-        $mediaObj->where('model_id',$model_id);
+        $mediaObj->where('media.model_id',$model_id);
 
     endif;
 
     if($type):
 
-        $mediaObj->where('type',$type);
+        $mediaObj->where('media.type',$type);
 
     endif;
 
@@ -168,6 +168,43 @@ public static function getMedia($model,$model_id='',$type='')
     }
 
     return $records;
+
+}
+
+public static function getFirstOrDefaultMedia(string $model,int $model_id)
+{
+    $mediaObj=new self();
+    $query=$mediaObj->builder();
+
+    $query->select('media_files.*,media.type,media.model')->join('media_files','media_files.media_id=media.id')->where('media.model',$model);
+
+    if($model_id):
+
+     $query->where('media.model_id',$model_id);
+
+    endif;
+
+    $query1= clone $query;
+  
+
+    $defaultMedia=$query->where('media_files.is_default',1)->orderBy('media_files.id','desc')->get()->getRowArray();
+
+
+
+    if(!$defaultMedia):
+    
+     $defaultMedia=$query1->orderBy('media_files.id','desc')->get()->getRowArray();
+
+    endif;  
+   
+
+        if(isset($defaultMedia['file_path']) && file_exists(WRITEPATH.$defaultMedia['file_path'])):
+
+      return $defaultMedia;
+
+    endif;
+
+    return '';
 
 }
 

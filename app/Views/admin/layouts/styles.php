@@ -18,6 +18,15 @@
 
           <style>
 
+        .vehicle-card:hover
+        {
+/*            background-color: lightgray;*/
+        }
+        .vehicle-card
+        {
+            min-height: 227px;
+        }
+
             .modalImageStyle
             {
                 width: 100%;

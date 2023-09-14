@@ -32,7 +32,7 @@ class Vehicle extends BaseController
 
       
 
-        //echo '<pre>';print_r($data['response']['data']['customer']->getFile('licence_front'));die;
+      //  echo '<pre>';print_r($data['response']);die;
 
         return view('admin/customer/view',$data);
     }
@@ -206,5 +206,81 @@ class Vehicle extends BaseController
        
          
            }
+
+
+           public function edit(int $user_id,int $id)
+    {
+        $data['currentRoute']='admin-customers';
+
+        $data['pageTitle']='Edit Vehicle';
+
+        $data['activeTab']='vehicles';
+
+        $data['activeContent']='edit-vehicle';
+
+
+        $data['response']=run_with_exceptions(function() use ($id,$user_id){
+
+            $data['vehicle']= \App\Models\VehicleModel::getCustomerVehicle($user_id,$id);
+             $data['customer']= \App\Models\CustomerModel::getCustomer($user_id);
+
+            $data['states']=\App\Models\StateModel::all();
+             
+
+            return array('status'=>1,'data'=>$data);
+        });
+
+      
+
+      //  echo '<pre>';print_r($data['response']);die;
+
+        return view('admin/customer/view',$data);
+    }
+
+
+           public function update(int $user_id,int $id)
+    {
+    
+
+      $response=run_with_exceptions(function() use ($id,$user_id)
+      {
+
+          $data = $this->request->getJSON(true);
+
+          $rule = [
+                   'regd_no'   => 'required',
+                   'make' =>'required',
+                   'model'=>'required|is_unique[vehicles.model,id,'.$id.']',
+                   'year'=>'required',
+                   'body_type'=>'required',
+                   'color'=>'required',
+                   'state'=>'required',
+                  ];
+
+        if (! $this->validateData($data, $rule)) {
+             return array('status'=>0,
+                             'errors'=>$this->validator->getErrors(),
+                             'message'=>'Validation Error Occur!',
+                             'type'=>'warning');
+            
+        }
+        else
+        {
+            $vehicle=new \App\Models\VehicleModel();
+            
+            return $vehicle->updateVehicle($data,$user_id,$id);
+           
+        }
+         });
+
+
+
+        return $this->response->setJSON($response);
+       
+           }
+
+
+
+
 
 }
