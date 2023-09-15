@@ -15,7 +15,7 @@ class VehicleModel extends Model
     protected $returnType       = \App\Entities\VehicleEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['regd_no','model','state_id','color','body_type','customer_id','user_id','engine_no','vin','kilometers_driven','year','make'];
+    protected $allowedFields    = ['regd_no','model','state_id','color','body_type','engine_no','vin','kilometers_driven','year','make','status'];
 
     // Dates
     protected $useTimestamps = true;
@@ -23,46 +23,49 @@ class VehicleModel extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
 
+    // public static function CustomerVehicles(array $vehicle_ids)
+    // {
+    //   $obj=new self();
 
-    public static function getCustomerVehicles(int $user_id)
-    {
-            $obj=new self();
-
-            $response=$obj->where('user_id',$user_id)->findAll();
-
-            return $response;
-    }
-
-    public static function getCustomerVehicle(int $user_id,$vehicle_id)
-    {
-         $obj=new self();
-
-            $response=$obj->where('user_id',$user_id)->where('id',$vehicle_id)->first();
-
-            return $response?$response: throw new DatabaseException('Unable to find the record.');
-    }
-
-    public function create(array $data,int $user_id)
+    //   return $obj->whereIn('id',$vehicle_ids)->findAll();
+    // }
+  
+    public function create(array $data,int $customer_id=0)
     {
 
         $data['state_id']=$data['state'];
 
-      
-
-        $customer=\App\Models\CustomerModel::customerRow($user_id);
-
-        $data['customer_id']=$customer->id;
-        $data['user_id']=$customer->user_id;
+        $this->transBegin();  
 
         $vehicle_id=$this->insert($data);
+
+        $redirect_url='';
+
+
+
+        if($customer_id && $vehicle_id)
+        {     
+
+
+         $vehicle_id=\App\Models\CustomerVehicleModel::attach($customer_id,$vehicle_id);
+
+         $redirect_url=base_url('admin/customers/'.$customer_id.'/vehicles/'.$vehicle_id.'/gallery');
+
+
+        }
+
 
 
             if($vehicle_id):
 
+              $this->transCommit();
 
-                return array('status'=>1,'message'=>'Vehicle is created successfully!','type'=>'success','redirect'=>base_url('admin/customers/'.$customer->user_id.'/vehicles/'.$vehicle_id.'/gallery'),'vehicle_id'=>$vehicle_id);
+                return array('status'=>1,'message'=>'Vehicle is created successfully!','type'=>'success','redirect'=>$redirect_url,'vehicle_id'=>$vehicle_id);
 
             else:
+
+              $this->transRollback();
+
 
                
 
@@ -71,25 +74,25 @@ class VehicleModel extends Model
             endif;
     }
 
-    public function updateVehicle(array $data,int $user_id,int $id)
+    public function updateVehicle(array $data,int $vehicle_id,$customer_id=0)
     {
           $data['state_id']=$data['state'];      
 
-         $customer=\App\Models\CustomerModel::customerRow($user_id);
+          $result=$this->update($vehicle_id,$data);
+
+          $redirect_url='';
+
+          if($customer_id):
+
+            $redirect_url=base_url('admin/customers/'.$customer_id.'/vehicles/view');
+
+          endif;
 
 
-        $data['customer_id']=$customer->id;
-        $data['user_id']=$customer->user_id;
+            if($result):
 
 
-
-        $vehicle_id=$this->where('user_id',$user_id)->update($id,$data);
-
-
-            if($vehicle_id):
-
-
-                return array('status'=>1,'message'=>'Vehicle is updated successfully!','type'=>'success','redirect'=>base_url('admin/customers/'.$customer->user_id.'/vehicles/view'),'vehicle_id'=>$vehicle_id);
+                return array('status'=>1,'message'=>'Vehicle is updated successfully!','type'=>'success','redirect'=>$redirect_url,'vehicle_id'=>$vehicle_id);
 
             else:
 
@@ -124,6 +127,46 @@ class VehicleModel extends Model
        return $vehicle;
 
 
+    }
+
+     public static function destroy(int $id)
+    {
+        $vehicleObj=new self();
+
+        $vehicleObj->transBegin();
+
+        $vehicleObj->find($id)->deleteMedia();
+
+       if($vehicleObj->delete($id)):
+
+        $vehicleObj->transCommit();
+
+    return array('status'=>1,'message'=>'The Vehicle is deleted successfully!','type'=>'success');
+
+     else:
+
+       $vehicleObj->transRollback();
+
+       return array('status'=>0,'message'=>'Something went wrong! Please try again later.','type'=>'success');
+
+
+
+   endif;
+
+    }
+
+
+     public static function changeStatus(int $id)
+    {
+        $obj=new self();
+
+        $vehicle= $obj->find($id);
+
+        
+
+        $vehicle->status=!$vehicle->status;
+
+        return $obj->save($vehicle);
     }
   
 

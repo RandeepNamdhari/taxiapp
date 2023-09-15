@@ -16,7 +16,7 @@
                 {
 
                     //console.log(file.dataURL);
-                    $('#gallerDiv').prepend('<div class="col-md-3 m-1"><img src="'+file.dataURL+'" width="100%"></div>');
+                    $('#gallerDiv').prepend('<div class="col-md-3 m-2" style="width:23%"><img src="'+file.dataURL+'" width="100%"></div>');
                   
                 }
               //  console.log("File uploaded successfully:", response);
@@ -33,5 +33,62 @@
 
         myDropzone.removeFile(file);
     });
+
+
+
+
+
+                   function deleteFile(selector,id)
+    {
+        if(id)
+        {
+                var data={'id':id};
+
+               var url='<?=base_url('admin/media/file/')?>'+id+'/delete';
+
+                        __askThenDelete(url,data,function(response)
+                                {
+                                       response.then(function(data){
+
+                                          if(data.status)
+                                          {
+                                              $(selector).parents('.image-card').eq(0).remove();
+                                          }
+                                       })
+                                });
+        }
+    }
+
+
+     function changeFileStatus(selector,id)
+    {
+        if(id)
+        {
+                var data={'id':id};
+
+                var url='<?=base_url('admin/media/file/')?>'+id+'/change/status';
+
+                        var response=__postRequest(url,data,__showMessage);
+
+                        response.then(function(res)
+                        {
+
+                            console.log(res);
+
+                            if(res.status)
+                        {
+                           
+                            if($(selector).prop('checked'))
+                            {
+                               
+                               $('input.statusInput').not(selector).prop('checked',false);
+                            }
+                        }
+
+                        })
+
+                        
+        }
+    }
 
   </script>

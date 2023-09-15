@@ -15,18 +15,7 @@ class CreateVehiclesTable extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-             'user_id' => [
-                'type' => 'INT',
-                'constraint' => 11,
-                'unsigned' => true,
-              
-            ],
-             'customer_id' => [
-                'type' => 'INT',
-                'constraint' => 11,
-                'unsigned' => true,
-              
-            ],
+                   
             'regd_no' => [
                 'type' => 'VARCHAR',
                 'constraint' => 250,
@@ -91,8 +80,7 @@ class CreateVehiclesTable extends Migration
         ]);
 
             $this->forge->addPrimaryKey('id');
-        $this->forge->addForeignKey('user_id', 'users', 'id', 'NO ACTION', 'CASCADE');
-        $this->forge->addForeignKey('customer_id', 'customers', 'id', 'NO ACTION', 'CASCADE');
+       
         $this->forge->createTable('vehicles');
            
     }

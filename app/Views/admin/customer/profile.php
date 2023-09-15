@@ -10,7 +10,7 @@
 
                                                        <div class="w-25 text-end" >
 
-                                                       <a href="<?=base_url('admin/customers/'.($customer->user_id??'').'/edit')?>" class="fs-4 text-primary text-end">
+                                                       <a href="<?=base_url('admin/customers/'.($customer->id??'').'/edit')?>" class="fs-4 text-primary text-end">
                                                                    <i class="fas fa-edit"></i> </a>
                                                                </div>
                                                    </div>

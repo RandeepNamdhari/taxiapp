@@ -60,5 +60,14 @@ class VehicleEntity extends Entity
         endif;
     }
 
+    public function deleteMedia()
+    {
+        $obj=new \App\Models\MediaModel();
+
+        $obj->deleteMedia('Vehicle',$this->id);
+
+        
+    }
+
    
 }

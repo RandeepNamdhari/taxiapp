@@ -42,16 +42,16 @@
                                      <div class="d-flex justify-content-between p-2 position-relative" style="">
 
                                          <div>
-                                            <input class="form-check form-switch" onchange="changeStatus(1)" type="checkbox" id="switch1" switch="bool" checked="">
-                                            <label class="form-label  full-switch" for="switch1" data-on-label="Active" data-off-label="InActive"></label>
+                                            <input class="form-check form-switch" onchange="changeStatus(<?=$vehicle->id?>)" type="checkbox" id="switch<?=$vehicle->id?>" switch="bool" <?php if($vehicle->status)echo 'checked';?>>
+                                            <label class="form-label  full-switch" for="switch<?=$vehicle->id?>" data-on-label="Active" data-off-label="InActive"></label>
 
                                         </div> 
                                         <div>
-                                           <a href="<?=base_url('admin/customers/'.($customer->user_id??'').'/vehicles/'.($vehicle->id??'').'/edit')?>" class="fs-5 text-info"><i class="fas fa-edit"></i></a>
+                                           <a href="<?=base_url('admin/customers/'.($customer->id??'').'/vehicles/'.($vehicle->id??'').'/edit')?>" class="fs-5 text-info"><i class="fas fa-edit"></i></a>
 
 
                                         
-                                        <a href="<?=base_url('admin/customers/'.($customer->user_id??'').'/vehicles/'.($vehicle->id??'').'/gallery')?>" class="fs-5 text-warning"><i class="fas fa-images"></i></a>
+                                        <a href="<?=base_url('admin/customers/'.($customer->id??'').'/vehicles/'.($vehicle->id??'').'/gallery')?>" class="fs-5 text-warning"><i class="fas fa-images"></i></a>
 
                                           <a href="javascript:void(0)" onclick="deleteVehicle(this,<?=$vehicle->id??''?>)" class="fs-5 text-danger"><i class="fas fa-trash"></i></a>
                                     </div>  
@@ -81,7 +81,7 @@
 
                                      
                                      <div class="text-center" style="">
-                                        <a href="<?=base_url('admin/customers/'.($customer->user_id??'').'/vehicles/create')?>" class="btn btn-outline-warning">Add New Vehicle</a>
+                                        <a href="<?=base_url('admin/customers/'.($customer->id??'').'/vehicles/create')?>" class="btn btn-outline-warning">Add New Vehicle</a>
                                      </div>
 
                                     

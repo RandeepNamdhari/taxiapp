@@ -115,26 +115,26 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
    
   // Customer Vehicles //
-       $routes->get('customers/(:num)/vehicles/create', 'Vehicle::create/$1');
+       $routes->get('customers/(:num)/vehicles/create', 'CustomerVehicle::create/$1');
 
-    $routes->post('customers/(:num)/vehicles/store', 'Vehicle::store/$1');
+    $routes->post('customers/(:num)/vehicles/store', 'CustomerVehicle::store/$1');
 
-    $routes->get('customers/(:num)/vehicles/view', 'Vehicle::view/$1');
+    $routes->get('customers/(:num)/vehicles/view', 'CustomerVehicle::view/$1');
 
-    $routes->get('customers/(:num)/vehicles/(:num)/gallery', 'Vehicle::gallery/$1/$2');
+    $routes->get('customers/(:num)/vehicles/(:num)/gallery', 'CustomerVehicle::gallery/$1/$2');
 
     $routes->post('customers/(:num)/vehicles/(:num)/gallery/upload', 'Vehicle::upload/$1/$2');
 
 
 
 
-    $routes->get('customers/(:num)/vehicles/(:num)/edit', 'Vehicle::edit/$1/$2');
+    $routes->get('customers/(:num)/vehicles/(:num)/edit', 'CustomerVehicle::edit/$1/$2');
 
-    $routes->post('customers/(:num)/vehicles/(:num)/update', 'Vehicle::update/$1/$2');
+    $routes->post('customers/(:num)/vehicles/(:num)/update', 'CustomerVehicle::update/$1/$2');
 
-    $routes->post('customers/(:num)/vehicles/(:num)/delete', 'Vehicle::delete/$1/$2');
+    $routes->post('customers/(:num)/vehicles/(:num)/delete', 'CustomerVehicle::delete/$1/$2');
 
-    $routes->post('customers/(:num)/vehicles/(:num)/change/status', 'Vehicle::status/$1/$2');
+    $routes->post('customers/(:num)/vehicles/(:num)/change/status', 'CustomerVehicle::status/$1/$2');
 
     // End Customer Vehicles //
 
@@ -148,6 +148,16 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
 
     // End Customer Routes
+
+
+    // Media Route
+
+    $routes->post('media/file/(:num)/delete','Media::delete/$1');
+
+    $routes->post('media/file/(:num)/change/status','Media::status/$1');
+
+
+    // End Media Routes
 
 
     

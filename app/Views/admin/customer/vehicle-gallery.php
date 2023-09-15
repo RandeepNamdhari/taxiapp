@@ -32,7 +32,21 @@
 
                                             foreach($response['data']['vehicle']->media['vehicle'] as $file):?>
 
-                                                <div class="col-md-3"><img src="<?=base_url($file['file_thumb_path'])?>" width="100%"></div>
+                                                <div class="col-md-3 mb-3 image-card"><img src="<?=base_url($file['file_thumb_path'])?>" width="100%">
+
+                                                    <div class="d-flex justify-content-between p-1" style="height:0;position: relative;top: -30px;">
+
+                                                         <div>
+                                            <input class="form-check form-switch statusInput" onchange="changeFileStatus(this,<?=$file['id']?>)" type="checkbox" id="switch<?=$file['id']?>" switch="warning" <?php if($file['is_default'])echo 'checked';?>>
+                                            <label class="form-label  full-switch" for="switch<?=$file['id']?>" data-on-label="Default" data-off-label="None"></label>
+
+                                        </div> 
+
+                                                         <a href="javascript:void(0)" onclick="deleteFile(this,<?=$file['id']??''?>)" class="fs-5 text-danger"><i class="fas fa-trash"></i></a>
+
+                                                    </div>
+
+                                                </div>
 
                                             <?php endforeach; endif;?>
 

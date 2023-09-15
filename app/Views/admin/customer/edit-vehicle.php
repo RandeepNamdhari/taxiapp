@@ -35,10 +35,16 @@
  <label> Body Type</label>
  <select class="form-select" name="body_type"  >
  <option value="">Select Body Type</option>
-<?php if(isset($response['data']['states']) && count($response['data']['states'])):
-      foreach($response['data']['states'] as $state): ?>
+<?php if(isset($response['data']['body_types']) && count($response['data']['body_types'])):
+      foreach($response['data']['body_types'] as $type): 
+        $sel='';
 
-        <option value="<?=$state['id']?>"><?=$state['code'];?></option>
+        if(isset($vehicle->body_type) && $vehicle->body_type===$type['id']):
+            $sel='selected';
+        endif;
+        ?>
+
+        <option value="<?=$type['id']?>" <?=$sel?>><?=$type['name'];?></option>
 
       <?php endforeach;
             endif; ?>

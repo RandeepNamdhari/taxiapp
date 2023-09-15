@@ -53,7 +53,7 @@ endif;
                                         <li class="breadcrumb-item"><a href="<?=base_url('admin')?>">Home</a></li>
                                         <li class="breadcrumb-item"><a href="#">User Management</a></li>
                                         <li class="breadcrumb-item"><a href="<?=base_url('admin/customers')?>">Customers</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Create New Customer</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Customer <?=ucwords($activeTab)?></li>
                                     </ol>
                                 </div>
 

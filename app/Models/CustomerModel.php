@@ -81,7 +81,7 @@ class CustomerModel extends Model
 
         $this->transCommit();
 
-        return array('status'=>1,'message'=>'The customer is updated successfully.','type'=>'success','redirect'=>base_url('admin/customers/'.$customer->user_id.'/view'));
+        return array('status'=>1,'message'=>'The customer is updated successfully.','type'=>'success','redirect'=>base_url('admin/customers/'.$customer->id.'/view'));
 
         else:
 
@@ -135,7 +135,7 @@ class CustomerModel extends Model
 
     public function actions($row)
     {
-      return '<div class="btn-group"><button class="btn btn-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions<i class="mdi mdi-chevron-down"></i></button><div class="dropdown-menu" style=""><a class="dropdown-item" href="'.base_url('admin/customers/'.$row['id'].'/view').'"><i class="fas fa-eye"></i>&nbsp;&nbsp;&nbsp;&nbsp;View</a><a class="dropdown-item" href="'.base_url('admin/customers/'.$row['id'].'/edit').'"><i class="fas fa-user-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit</a><a class="dropdown-item" href="javascript:void(0)" onclick="deleteCustomer('.$row['id'].')"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></div></div>';
+      return '<div class="btn-group"><button class="btn btn-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions<i class="mdi mdi-chevron-down"></i></button><div class="dropdown-menu" style=""><a class="dropdown-item" href="'.base_url('admin/customers/'.$row['customer_id'].'/view').'"><i class="fas fa-eye"></i>&nbsp;&nbsp;&nbsp;&nbsp;View</a><a class="dropdown-item" href="'.base_url('admin/customers/'.$row['id'].'/edit').'"><i class="fas fa-user-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit</a><a class="dropdown-item" href="javascript:void(0)" onclick="deleteCustomer('.$row['id'].')"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></div></div>';
 
       // <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Separated link</a>
     }
@@ -183,7 +183,7 @@ class CustomerModel extends Model
 
         $customer= $obj->select('customers.*, users.email AS email,users.phone as phone') 
             ->join('users', 'customers.user_id = users.id') 
-            ->where('customers.user_id',$id)->first();
+            ->where('customers.id',$id)->first();
 
         if($customer):
 

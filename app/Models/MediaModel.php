@@ -35,16 +35,11 @@ class MediaModel extends Model
 
              $mediaObj->transBegin();
 
-            if($do_update):
+          
 
             $media=$mediaObj->where('model_id',$info['model_id'])
                             ->where('type',$info['type'])
-                            ->where('model',$info['model'])->first();
-
-
-
-
-              endif;        
+                            ->where('model',$info['model'])->first();     
 
          
 
@@ -66,7 +61,6 @@ class MediaModel extends Model
 
             $media_file['media_id']=$media_id;
 
-           // echo '<pre>';print_r($media_file);die;
 
             if($media_file):
 
@@ -207,5 +201,23 @@ public static function getFirstOrDefaultMedia(string $model,int $model_id)
     return '';
 
 }
+
+
+public function deleteMedia($model,$model_id)
+{
+    
+    $allFiles=$this->select('media_files.*,media.type,media.model')->join('media_files','media_files.media_id=media.id')->where('media.model',$model)->where('model_id',$model_id)->findAll();
+
+    foreach($allFiles as $file):
+    
+        \App\Models\MediaFileModel::removeExistingFile($file);
+
+    endforeach;
+
+    return $this->where('model_id',$model_id)->where('model',$model)->delete();
+
+
+}
+
 
 }

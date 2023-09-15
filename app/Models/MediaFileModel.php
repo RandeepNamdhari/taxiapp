@@ -16,7 +16,7 @@ class MediaFileModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['file_path','file_thumb_path','file_name','file_orignal_name','file_extension','media_id','file_size'];
+    protected $allowedFields    = ['file_path','file_thumb_path','file_name','file_orignal_name','file_extension','media_id','file_size','is_default'];
 
     // Dates
     protected $useTimestamps = true;
@@ -43,7 +43,7 @@ class MediaFileModel extends Model
                if(isset($media_file['id'])):
 
 
-                $media_file_obj->removeExistingFile($media_file);
+                self::removeExistingFile($media_file);
 
                $media_file_obj->update($media_file['id'],$file)?true:throw new DatabaseException('Unable to update file details');
 
@@ -57,7 +57,7 @@ class MediaFileModel extends Model
         endif;
     }
 
-    public function removeExistingFile($file)
+    public static function removeExistingFile($file)
     {
         if(isset($file['file_path']) && file_exists(WRITEPATH.$file['file_path'])):
 
@@ -70,5 +70,33 @@ class MediaFileModel extends Model
             unlink(WRITEPATH.$file['file_thumb_path']);
 
         endif;
+    }
+
+    public static function destroy(int $file_id)
+    {
+          $obj= new self();
+
+          $file= $obj->find($file_id);
+
+          self::removeExistingFile($file);
+
+          $obj->delete($file);
+    }
+
+    public static function changeStatus(int $file_id)
+    {
+        $obj=new self();
+
+        $file=$obj->find($file_id); 
+
+        if(!$file['is_default']):
+
+        $obj2=new self();
+
+        $obj2->where('media_id',$file['media_id'])->set(['is_default'=>0])->update();
+
+       endif;
+
+        return $obj->update($file_id,['is_default'=>!$file['is_default']]);
     }
 }
