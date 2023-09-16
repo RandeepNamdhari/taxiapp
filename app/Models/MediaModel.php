@@ -64,7 +64,7 @@ class MediaModel extends Model
 
             if($media_file):
 
-               \App\Models\MediaFileModel::addFile($media_file,$do_update);
+               $file_id=\App\Models\MediaFileModel::addFile($media_file,$do_update);
 
                $mediaObj->transCommit();
 
@@ -77,6 +77,10 @@ class MediaModel extends Model
             $mediaObj->transRollback();
 
         endif;
+
+          $media_file['file_id']=$file_id;
+
+          return $media_file;
 
 
         endif;

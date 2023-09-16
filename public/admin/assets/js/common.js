@@ -168,4 +168,65 @@
 }
 
 
+  const __postRequestWithFile=async (url,formData,callback=null)=>
+  {
+    const _token=csrfToken;
+    const rawResponse =  await fetch(url, {
+    method: 'POST',
+    headers: {
+    
+        'X-CSRF-TOKEN':_token,
+    },
+    body: formData
+  });  
+      let response=await rawResponse.json();
+       if(callback)
+       {
+           callback(response.message,response.type,response);
+       }
+
+         return response;
+       
+  }
+
+
+       const submitFormWithMedia=(formId,url,data,callback=null)=>{
+
+             
+
+              toggleLoaderButton(formId,'show');
+
+
+
+               var response=__postRequestWithFile(url,data,__showMessage);
+
+        response.then(function(data){
+
+            $('.validation-error').remove();
+            $('.alert-danger').remove();
+
+           if(!data.status && data.errors)
+          {
+            Object.keys(data.errors).forEach(key => {
+
+              
+                     $('#'+formId).find('[name="'+key+'"]').after('<div class="validation-error">'+data.errors[key].replace('_',' ')+'</div>');
+                 
+              
+              });
+          }
+
+          if(callback)
+          {
+            callback(data);
+          }
+
+          toggleLoaderButton(formId,'hide')
+         
+        })
+
+
+        }
+
+
 

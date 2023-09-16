@@ -54,7 +54,7 @@ class Customer extends BaseController
           $rule = [
                    'first_name'   => 'required',
                    'last_name' =>'required',
-                   'phone'=>'required',
+                   'phone'=>'required|is_unique[users.phone]',
                    'email' => 'required|is_unique[users.email]',
                   ];
 
@@ -193,7 +193,7 @@ class Customer extends BaseController
           $rule = [
                    'first_name'   => 'required',
                    'last_name' =>'required',
-                   'phone'=>'required',
+                   'phone'=>'required|is_unique[users.phone,id,'.$id.']',
                    'email' => 'required|is_unique[users.email,id,'.$id.']',
                   ];
 

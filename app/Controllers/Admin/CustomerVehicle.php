@@ -186,9 +186,9 @@ class CustomerVehicle extends BaseController
         
             $vehicle=new \App\Models\VehicleModel();
             
-            $vehicle->UploadVehicleImage($id,$vehicle_id);
+            $file=$vehicle->UploadVehicleImage($id,$vehicle_id);
 
-            return array('status'=>1,'message'=>'Vehicle gallery is updated successfully.');
+            return array('status'=>1,'message'=>'Vehicle gallery is updated successfully.','file'=>$file);
            
         endif;
          });

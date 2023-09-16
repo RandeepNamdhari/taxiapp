@@ -45,13 +45,18 @@ class MediaFileModel extends Model
 
                 self::removeExistingFile($media_file);
 
+                $file_id=$media_file['id'];
+
                $media_file_obj->update($media_file['id'],$file)?true:throw new DatabaseException('Unable to update file details');
 
               else:
+                 $file_id=$media_file_obj->insert($file);
+              $res=$file_id?true:throw new DatabaseException('Unable to insert file details');
 
-                $response=$media_file_obj->insert($file)?true:throw new DatabaseException('Unable to insert file details');
 
             endif;
+
+            return $file_id;
 
 
         endif;

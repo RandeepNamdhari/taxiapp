@@ -115,6 +115,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
    
   // Customer Vehicles //
+
        $routes->get('customers/(:num)/vehicles/create', 'CustomerVehicle::create/$1');
 
     $routes->post('customers/(:num)/vehicles/store', 'CustomerVehicle::store/$1');
@@ -123,7 +124,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     $routes->get('customers/(:num)/vehicles/(:num)/gallery', 'CustomerVehicle::gallery/$1/$2');
 
-    $routes->post('customers/(:num)/vehicles/(:num)/gallery/upload', 'Vehicle::upload/$1/$2');
+    $routes->post('customers/(:num)/vehicles/(:num)/gallery/upload', 'CustomerVehicle::upload/$1/$2');
 
 
 
@@ -137,6 +138,27 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     $routes->post('customers/(:num)/vehicles/(:num)/change/status', 'CustomerVehicle::status/$1/$2');
 
     // End Customer Vehicles //
+
+
+    // Customer Drivers
+
+      $routes->get('customers/(:num)/drivers/create', 'CustomerDriver::create/$1');
+
+    $routes->post('customers/(:num)/drivers/store', 'CustomerDriver::store/$1');
+
+    $routes->get('customers/(:num)/drivers/view', 'CustomerDriver::view/$1');
+
+    $routes->get('customers/(:num)/drivers/(:num)/edit', 'CustomerDriver::edit/$1/$2');
+
+    $routes->post('customers/(:num)/drivers/(:num)/update', 'CustomerDriver::update/$1/$2');
+
+    $routes->post('customers/(:num)/drivers/(:num)/delete', 'CustomerDriver::delete/$1/$2');
+
+    $routes->post('customers/(:num)/drivers/(:num)/change/status', 'CustomerDriver::status/$1/$2');
+
+
+
+    // End Customer Drivers
 
 
 

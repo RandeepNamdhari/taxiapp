@@ -11,7 +11,7 @@
                                                 </a>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <a class="nav-link <?=$activeTab=='drivers'?'active':''?>" data-bs-toggle="tab" href="#drivers" role="tab" aria-selected="false" tabindex="-1">
+                                                <a class="nav-link <?=$activeTab=='drivers'?'active':''?>"  href="<?=base_url('admin/customers/'.($customer->id??'').'/drivers/view')?>" role="tab" aria-selected="false" tabindex="-1">
                                                     <span class="d-none d-md-block fs-3"><i class="fas fa-users-cog"></i>&nbsp;Drivers</span><span class="d-block d-md-none"><i class="mdi mdi-cog h5"></i></span>
                                                 </a>
                                             </li>
