@@ -20,6 +20,14 @@ class CustomerVehicleModel extends Model
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+
+
+    public static function vehicleCount(int $customer_id)
+    {
+        $obj=new self();
+
+        return $obj->where('customer_id',$customer_id)->countAll();
+    }
    
 
      public static function getCustomerVehicles(int $customer_id)

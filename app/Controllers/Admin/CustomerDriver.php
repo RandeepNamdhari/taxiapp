@@ -163,23 +163,23 @@ class CustomerDriver extends BaseController
     }
 
 
-           public function update(int $customer_id,int $vehicle_id)
+           public function update(int $customer_id,int $driver_id)
     {
     
 
-      $response=run_with_exceptions(function() use ($vehicle_id,$customer_id)
+      $response=run_with_exceptions(function() use ($driver_id,$customer_id)
       {
 
-          $data = $this->request->getJSON(true);
+          $data = $this->request->getPOST();
+
+          $user_id=\App\Models\DriverModel::getDriver($driver_id)->user_id;
 
           $rule = [
-                   'regd_no'   => 'required',
-                   'make' =>'required',
-                   'model'=>'required|is_unique[vehicles.model,id,'.$vehicle_id.']',
-                   'year'=>'required',
-                   'body_type'=>'required',
-                   'color'=>'required',
-                   'state'=>'required',
+                   'first_name'   => 'required',
+                   'last_name' =>'required',
+                   'phone'=>'required|is_unique[users.phone,id,'.$user_id.']',
+                   'email' => 'required|is_unique[users.email,id,'.$user_id.']',
+                   'driver_picture' => 'is_image[driver_picture]',
                   ];
 
         if (! $this->validateData($data, $rule)) {
@@ -191,9 +191,9 @@ class CustomerDriver extends BaseController
         }
         else
         {
-            $vehicle=new \App\Models\VehicleModel();
+            $driver=new \App\Models\DriverModel();
             
-            return $vehicle->updateVehicle($data,$vehicle_id,$customer_id);
+            return $driver->updateDriver($driver_id,$data,$customer_id);
            
         }
          });

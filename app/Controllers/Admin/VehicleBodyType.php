@@ -4,7 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 
-class State extends BaseController
+class VehicleBodyType extends BaseController
 {
     public function index()
     {
@@ -12,16 +12,16 @@ class State extends BaseController
         if($this->request->isAJAX())
         {
           
-         $data = \App\Models\StateModel::datatable();
+         $data = \App\Models\VehicleBodyTypeModel::datatable();
 
          return $this->response->setJSON($data);
         }
 
-        $data['currentRoute']='admin-settings-states';
+        $data['currentRoute']='admin-settings-vehicle-body-type';
 
-        $data['pageTitle']='State Settings';
+        $data['pageTitle']='Vehicle Body Type Settings';
 
-        return view('admin/setting/states');
+        return view('admin/setting/bodytypes');
     }
 
       public function status($id)
@@ -34,9 +34,9 @@ class State extends BaseController
      
              $response=run_with_exceptions(function() use ($id){ 
 
-             \App\Models\StateModel::changeStatus($id);
+             \App\Models\VehicleBodyTypeModel::changeStatus($id);
 
-            return array('status'=>1,'message'=>'The State status is updated successfully!','type'=>'success');
+            return array('status'=>1,'message'=>'The status is updated successfully!','type'=>'success');
 
         });
 
@@ -60,9 +60,9 @@ class State extends BaseController
      
              $response=run_with_exceptions(function() use ($id){ 
 
-             \App\Models\StateModel::destroy($id);
+             \App\Models\VehicleBodyTypeModel::destroy($id);
 
-            return array('status'=>1,'message'=>'The State is deleted successfully!','type'=>'success');
+            return array('status'=>1,'message'=>'The Vehicle body type is deleted successfully!','type'=>'success');
 
         });
            
@@ -85,7 +85,7 @@ class State extends BaseController
           $data = $this->request->getJSON(true);
 
           $rule = [
-                   'name'   => 'required|is_unique[states.code]',
+                   'name'   => 'required|is_unique[vehicle_body_types.name]',
                   
                   ];
 
@@ -98,9 +98,9 @@ class State extends BaseController
         }
         else
         {
-            $state=new \App\Models\StateModel();
+            $bodyType=new \App\Models\VehicleBodyTypeModel();
             
-            return $state->create($data);
+            return $bodyType->create($data);
            
         }
          });

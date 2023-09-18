@@ -33,7 +33,7 @@
  </div>
  <div class="col-md-4 mb-3">
  <label>Phone Number</label>
- <input  type="text" name="phone" value="<?=$driver->phone_number?>" class="form-control" placeholder="Phone Number" >
+ <input  type="text" name="phone" value="<?=$driver->phone?>" class="form-control" placeholder="Phone Number" >
  </div>
 
   <div class="col-md-4  mb-3">
@@ -54,9 +54,16 @@
  <select class="form-select" name="state"  >
  <option value="">Select State</option>
 <?php if(isset($response['data']['states']) && count($response['data']['states'])):
-      foreach($response['data']['states'] as $state): ?>
+      foreach($response['data']['states'] as $state):
+        $sel='';
 
-        <option value="<?=$state['id']?>"><?=$state['code'];?></option>
+        if($driver->state_id==$state['id']):
+            $sel='selected';
+        endif;
+
+       ?>
+
+        <option value="<?=$state['id']?>" <?=$sel?>><?=$state['code'];?></option>
 
       <?php endforeach;
             endif; ?>
@@ -84,6 +91,21 @@
  <input type="date" name="licence_expiry" class="form-control 
  " placeholder="Licence Expiry" value="<?=$driver->licence_expiry?>">
  </div>
+<?php $media=$driver->getDefaultMedia();
+
+   if(isset($media['file_thumb_path'])): ?>
+
+
+  <div class="col-md-4 mb-3">
+
+  <label for="formFile" class="form-label">Old Driver Picture</label>
+ <img style="width:100%" src="<?=base_url($media['file_thumb_path'])?>"/>
+
+                                            </div>
+
+                                        <?php endif;?>
+
+
 
  <div class="col-md-4 mb-3">
 

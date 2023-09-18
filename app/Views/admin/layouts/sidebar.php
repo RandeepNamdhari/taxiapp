@@ -45,6 +45,26 @@
                                 </ul>
                             </li>
 
+                            <!--Settings-->
+
+
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="ti-user"></i>
+                                    <span>Settings</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="true">
+                                    <!-- <li><a href="javascript: void(0);">Users</a></li> -->
+                                    <li class="<?php echo ($currentRoute=='admin-settings-states')?'mm-active':''?>"><a href="<?=base_url('admin/settings/states')?>">States</a></li>
+                                     <li class="<?php echo ($currentRoute=='admin-settomgs-vechile-body-types')?'mm-active':''?>"><a href="<?=base_url('admin/settings/vehicle/bodytypes')?>">Vehicle Body Types</a></li>
+
+                               
+                                </ul>
+                            </li>
+
+                            <!--End Settings -->
+
                         </ul>
                     </div>
                     <!-- Sidebar -->

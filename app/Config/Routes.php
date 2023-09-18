@@ -161,14 +161,6 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     // End Customer Drivers
 
 
-
-
-
-
-
-
-
-
     // End Customer Routes
 
 
@@ -179,7 +171,34 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     $routes->post('media/file/(:num)/change/status','Media::status/$1');
 
 
+
+
     // End Media Routes
+
+
+    // Setting Routes
+
+    $routes->get('settings/states','State::index');
+    $routes->post('settings/states','State::index');
+    $routes->post('settings/states/store','State::store');
+
+    $routes->post('settings/states/(:num)/change/status', 'State::status/$1');
+    $routes->post('settings/states/(:num)/delete', 'State::delete/$1');
+
+
+    $routes->get('settings/vehicle/bodytypes','VehicleBodyType::index');
+    $routes->post('settings/vehicle/bodytypes','VehicleBodyType::index');
+    $routes->post('settings/vehicle/bodytypes/store','VehicleBodyType::store');
+
+    $routes->post('settings/vehicle/bodytypes/(:num)/change/status', 'VehicleBodyType::status/$1');
+    $routes->post('settings/vehicle/bodytypes/(:num)/delete', 'VehicleBodyType::delete/$1');
+
+
+
+
+
+
+    //End Settings Routes
 
 
     

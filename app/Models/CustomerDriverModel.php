@@ -23,6 +23,13 @@ class CustomerDriverModel extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
 
+     public static function driverCount(int $customer_id)
+    {
+        $obj=new self();
+
+        return $obj->where('customer_id',$customer_id)->countAll();
+    }
+
 
      public static function getCustomerDriver(int $customer_id,int $driver_id)
     {

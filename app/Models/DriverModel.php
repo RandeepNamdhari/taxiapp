@@ -81,32 +81,44 @@ class DriverModel extends Model
 
    }
 
-      public function updateDriver(int $id,$data)
+      public function updateDriver(int $driver_id,array $data,int $customer_id=0)
    {
 
 
         $this->transBegin();
 
-        $customer=$this->where('user_id',$id)->first();
+        $driver=$this->where('id',$driver_id)->first();
 
-        $customer===null ? throw new DatabaseException('Record not found.'):$customer;
+        $driver===null ? throw new DatabaseException('Record not found.'):$driver;
 
 
 
         $userData=['email'=>$data['email'],'phone'=>$data['phone']];
 
-        $user_id=\App\Models\UserModel::updateUser($customer->user_id,$userData);
+        $user_id=\App\Models\UserModel::updateUser($driver->user_id,$userData);
 
         unset($data['user_id']);
         unset($data['status']);
 
         $data['state_id']=$data['state'];
 
-        if($this->update($customer->id,$data)):
+        if($this->update($driver->id,$data)):
+
+        \App\Models\MediaModel::attach(['model'=>'Driver',
+                                         'type'=>'driver',
+                                         'user_id'=>$user_id,
+                                         'model_id'=>$driver->id,
+                                         'file'=>'driver_picture'],true);
+
+        $redirect_url='';
+
+        if($customer_id):
+            $redirect_url=base_url('admin/customers/'.$customer_id.'/drivers/view');
+        endif;
 
         $this->transCommit();
 
-        return array('status'=>1,'message'=>'The customer is updated successfully.','type'=>'success','redirect'=>base_url('admin/customers/'.$customer->id.'/view'));
+        return array('status'=>1,'message'=>'The driver is updated successfully.','type'=>'success','redirect'=>$redirect_url);
 
         else:
 
@@ -156,6 +168,13 @@ class DriverModel extends Model
 
    endif;
 
+    }
+
+    public static function getDriver(int $driver_id)
+    {
+        $obj=new self();
+
+        return $obj->find($driver_id);
     }
 
 

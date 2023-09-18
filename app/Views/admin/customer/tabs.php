@@ -7,12 +7,12 @@
                                            
                                             <li class="nav-item" role="presentation">
                                                 <a class="nav-link <?=$activeTab=='vehicles'?'active':''?>" href="<?=base_url('admin/customers/'.($customer->id??'').'/vehicles/view')?>" role="tab" aria-selected="false" tabindex="-1">
-                                                    <span class="d-none d-md-block fs-3"><i class="fas fa-car-side"></i>&nbsp;Vehicles</span><span class="d-block d-md-none"><i class="mdi mdi-email h5"></i></span>
+                                                    <span class="d-none d-md-block fs-3"><i class="fas fa-car-side"></i>&nbsp;Vehicles &nbsp;(<?=$customer->vehicle_count?>)</span><span class="d-block d-md-none"><i class="mdi mdi-email h5"></i></span>
                                                 </a>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <a class="nav-link <?=$activeTab=='drivers'?'active':''?>"  href="<?=base_url('admin/customers/'.($customer->id??'').'/drivers/view')?>" role="tab" aria-selected="false" tabindex="-1">
-                                                    <span class="d-none d-md-block fs-3"><i class="fas fa-users-cog"></i>&nbsp;Drivers</span><span class="d-block d-md-none"><i class="mdi mdi-cog h5"></i></span>
+                                                    <span class="d-none d-md-block fs-3"><i class="fas fa-users-cog"></i>&nbsp;Drivers &nbsp;(<?=$customer->driver_count?>)</span><span class="d-block d-md-none"><i class="mdi mdi-cog h5"></i></span>
                                                 </a>
                                             </li>
                                         </ul>
