@@ -200,6 +200,29 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     //End Settings Routes
 
+    // Bookings Routes
+    $routes->get('bookings', 'Booking::index');
+    $routes->post('bookings', 'Booking::index');
+    $routes->post('bookings/(:num)/delete', 'Booking::delete/$1');
+
+    $routes->get('bookings/create', 'Booking::create');
+
+    $routes->post('bookings/store', 'Booking::store');
+
+    $routes->get('bookings/(:num)/view', 'Booking::view/$1');
+
+
+
+    $routes->get('bookings/(:num)/edit', 'Booking::edit/$1');
+
+    $routes->post('bookings/(:num)/update', 'Booking::update/$1');
+
+
+
+
+
+    // End Bookinks
+
 
     
 

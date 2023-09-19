@@ -77,7 +77,7 @@ class CustomerDriver extends BaseController
                    'last_name' =>'required',
                    'phone'=>'required|is_unique[users.phone]',
                    'email' => 'required|is_unique[users.email]',
-                   'driver_picture' => 'uploaded[driver_picture]|is_image[driver_picture]',
+                   'driver_picture' => 'is_image[driver_picture]',
                   ];
 
         if (! $this->validateData($data, $rule)) {

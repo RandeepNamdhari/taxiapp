@@ -45,6 +45,28 @@
                                 </ul>
                             </li>
 
+
+
+                            <!--Bookings-->
+
+
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="ti-user"></i>
+                                    <span>Booking Management</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="true">
+                                    <!-- <li><a href="javascript: void(0);">Users</a></li> -->
+                                    <li class="<?php echo ($currentRoute=='admin-bookings')?'mm-active':''?>"><a href="<?=base_url('admin/bookings')?>">Bookings</a></li>
+                                  
+
+                               
+                                </ul>
+                            </li>
+
+                            <!--End Bookings -->
+
                             <!--Settings-->
 
 
