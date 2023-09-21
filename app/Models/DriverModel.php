@@ -177,5 +177,29 @@ class DriverModel extends Model
         return $obj->find($driver_id);
     }
 
+       public function list(string $search)
+    {
+        $result=$this->select('drivers.*,users.email,users.phone')
+                     ->join('users','users.id=drivers.user_id')
+                     ->where('drivers.status',1)
+                     ->groupStart()
+                     ->like('drivers.first_name',$search)
+                     ->orLike('drivers.last_name',$search)
+                     ->orLike('users.phone',$search)
+                     ->orLike('users.email',$search)
+                     ->groupEnd()
+                     ->findAll();
+
+        $content='';
+
+       
+
+            $content.=view('admin/partials/drivers',['drivers'=>$result]);
+
+   
+
+        return $content;
+    }
+
 
 }

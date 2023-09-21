@@ -280,6 +280,37 @@ class Vehicle extends BaseController
            }
 
 
+           public function list()
+           {
+
+
+              $response=run_with_exceptions(function()
+      {
+
+          $data = $this->request->getJSON(true);
+
+          $search=$data['search'];
+
+          $content='';
+
+         if($search):
+            $vehicle=new \App\Models\VehicleModel();
+            
+            $content= $vehicle->list($search);
+           
+          endif;
+
+            return array('status'=>1,'content'=>$content);
+
+         });
+
+
+
+        return $this->response->setJSON($response);
+
+           }
+
+
 
 
 

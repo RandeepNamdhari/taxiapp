@@ -224,6 +224,37 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     // End Bookinks
 
 
+    // Vechile Routes
+
+    $routes->post('vehicles/search/list', 'Vehicle::list');
+
+
+    
+
+
+    // End Vehicle Routes
+
+
+    // Vechile Routes
+
+    $routes->post('drivers/search/list', 'Driver::list');
+
+
+    
+
+
+    // End Vehicle Routes
+
+
+    // User Routes
+
+    $routes->post('users/check/user', 'User::check');
+
+
+
+    // End User Routes
+
+
     
 
 

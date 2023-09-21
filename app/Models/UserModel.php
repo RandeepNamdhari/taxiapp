@@ -110,6 +110,16 @@ class UserModel extends Model
          return $obj->update($id,$user);
     }
 
+    public static function checkExisitngUser(string $search)
+    {
+       $obj=new self();
+
+       $user=$obj->where('email',$search)->orWhere('phone',$search)->first();
+
+       return $user;
+
+    }
+
 
 
 

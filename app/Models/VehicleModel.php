@@ -168,6 +168,27 @@ class VehicleModel extends Model
 
         return $obj->save($vehicle);
     }
+
+    public function list(string $search)
+    {
+        $result=$this->where('status',1)
+                     ->groupStart()
+                     ->like('model',$search)
+                     ->orLike('make',$search)
+                     ->groupEnd()
+
+                     ->findAll();
+
+        $content='';
+
+       
+
+            $content.=view('admin/partials/vehicles',['vehicles'=>$result]);
+
+   
+
+        return $content;
+    }
   
 
   

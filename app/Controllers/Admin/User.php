@@ -15,4 +15,20 @@ class User extends BaseController
 
          return $this->response->setJSON($response);
     }
+
+    public function check()
+    {
+
+        $response=run_with_exceptions(function()
+        {
+            $search=$this->request->getJSON(true)['search']??'';
+
+            $user= \App\Models\UserModel::checkExisitngUser($search);
+
+            return array('status'=>1,'user'=>$user);
+        });
+
+         return $this->response->setJSON($response);
+
+    }
 }

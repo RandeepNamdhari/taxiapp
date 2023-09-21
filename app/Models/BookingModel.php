@@ -20,6 +20,39 @@ class BookingModel extends Model
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+
+
+       public function create($data)
+   {
+
+
+        $this->transBegin();
+
+        $userData=['email'=>$data['email'],'phone'=>$data['phone']];
+
+        $user_id=\App\Models\UserModel::createUser($userData);
+
+        $data['user_id']=$user_id;
+        $data['state_id']=$data['state'];
+        $data['status']=0;
+
+
+
+        if($user_id && $this->insert($data)):
+
+        $this->transCommit();
+
+        return array('status'=>1,'message'=>'The customer is created successfully.','type'=>'success','redirect'=>base_url('admin/customers'));
+
+        else:
+
+            $this->transRollback();
+
+            throw new DatabaseException('Unable to insert the record.Please try again later.');
+
+        endif;
+
+   }
    
 
        public static function datatable()
