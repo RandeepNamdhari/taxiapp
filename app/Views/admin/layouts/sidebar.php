@@ -36,6 +36,8 @@
                                     <li class="<?php echo ($currentRoute=='admin-roles')?'mm-active':''?>"><a href="<?=base_url('admin/roles')?>">Roles</a></li>
                                      <li class="<?php echo ($currentRoute=='admin-customers')?'mm-active':''?>"><a href="<?=base_url('admin/customers')?>">Customers</a></li>
 
+                                       <li class="<?php echo ($currentRoute=='admin-companies')?'mm-active':''?>"><a href="<?=base_url('admin/companies')?>">Companies</a></li>
+
                                   <!--   <li><a href="javascript: void(0);" class="has-arrow">Level 1.2</a>
                                         <ul class="sub-menu" aria-expanded="true">
                                             <li><a href="javascript: void(0);">Level 2.1</a></li>

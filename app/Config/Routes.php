@@ -255,6 +255,54 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     // End User Routes
 
 
+    // Company Routes
+
+        // Customer Routes
+
+    $routes->get('companies', 'Company::index');
+
+
+    $routes->get('companies/create', 'Company::create');
+
+    $routes->post('companies/store', 'Company::store');
+
+    $routes->get('companies/(:num)/view', 'Company::view/$1');
+
+
+
+    $routes->get('companies/(:num)/edit', 'Company::edit/$1');
+
+    $routes->post('companies/(:num)/update', 'Company::update/$1');
+
+    $routes->post('companies/(:num)/delete', 'Company::delete/$1');
+
+    $routes->post('companies/(:num)/change/status', 'Company::status/$1');
+
+
+    // Company Employees
+
+      $routes->get('companies/(:num)/employees/create', 'CompanyEmployee::create/$1');
+
+    $routes->post('companies/(:num)/employees/store', 'CompanyEmployee::store/$1');
+
+    $routes->get('companies/(:num)/employees/view', 'CompanyEmployee::view/$1');
+
+    $routes->get('companies/(:num)/employees/(:num)/edit', 'CompanyEmployee::edit/$1/$2');
+
+    $routes->post('companies/(:num)/employees/(:num)/update', 'CompanyEmployee::update/$1/$2');
+
+    $routes->post('companies/(:num)/employees/(:num)/delete', 'CompanyEmployee::delete/$1/$2');
+
+    $routes->post('companies/(:num)/employees/(:num)/change/status', 'CompanyEmployee::status/$1/$2');
+
+
+
+    // End Company Employees
+
+
+    // End Company Routes
+
+
     
 
 

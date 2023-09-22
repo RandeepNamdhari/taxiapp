@@ -67,7 +67,7 @@
                                             </div>
                                            
 
-                                            <div class="row d-none" id="moreDetails">
+                                            <div class="row" id="moreDetails">
  <div class="col-md-6 mb-3">
  <label> First Name</label>
  <input  type="text" name="first_name" id="userFirstName" class="form-control" placeholder="First Name">
@@ -94,7 +94,7 @@
 
              <div class="col-md-6 mb-6">
  <label>From Where</label>
- <input  type="text" name="from_location" class="form-control" placeholder="Location From" >
+ <input  type="text" name="from_location" id="locationInput" class="form-control" placeholder="Location From" >
  </div>    
 
       <div class="col-md-6 mb-6">
@@ -315,6 +315,35 @@
 
         
                 </script>
+
+
+
+ 
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnRDajZI2xL9eCWCozJ_I8Hyz3BNE7kLs&libraries=places"></script>
+  <script>
+    function initialize() {
+      const input = document.getElementById('locationInput');
+      const coordinatesOutput = document.getElementById('coordinates');
+      const autocomplete = new google.maps.places.Autocomplete(input);
+
+      autocomplete.addListener('place_changed', function() {
+        const place = autocomplete.getPlace();
+
+        if (!place.geometry) {
+          alert('Place details not available for input: ' + place.name);
+          return;
+        }
+
+        const location = place.geometry.location;
+        const coordinates = `Latitude: ${location.lat()}, Longitude: ${location.lng()}`;
+        coordinatesOutput.textContent = `Selected location: ${place.name}\n${coordinates}`;
+      });
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+  </script>
+
 
                
       

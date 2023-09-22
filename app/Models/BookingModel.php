@@ -22,23 +22,47 @@ class BookingModel extends Model
     protected $updatedField  = 'updated_at';
 
 
-       public function create($data)
+
+
+   public function updateIfUserExist(array $data)
+   {
+       $user= $this->where('email',$data['email'])
+                   ->orWhere('phone',$data['phone'])->first();
+
+                   if($user)
+                   {
+                      $this->update($user->id,$data);
+                   }
+
+            return $user;
+   }
+       public function create($data)   
    {
 
 
         $this->transBegin();
 
-        $userData=['email'=>$data['email'],'phone'=>$data['phone']];
+        $userData=['email'=>$data['email'],'phone'=>$data['phone'],'first_name'=>$data['first_name'],'last_name'=>$data['last_name'],'address'=>$data['address']];
+
+        if(!$user=$this->updateIfUserExist($userData)):
 
         $user_id=\App\Models\UserModel::createUser($userData);
 
         $data['user_id']=$user_id;
-        $data['state_id']=$data['state'];
-        $data['status']=0;
+
+    else:
+
+        $data['user_id']=$user->id;
 
 
+         endif;
 
-        if($user_id && $this->insert($data)):
+         $booking=array('status'=>'pending','user_id'=>$data['user_id'],
+                       'booking_fares'=>100,'booking_date'=>date('Y-m-d-His_'));
+
+         $booking=$this->insert($booking);
+
+        if($booking && $data['user_id']):
 
         $this->transCommit();
 
