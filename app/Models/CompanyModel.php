@@ -202,17 +202,31 @@ class CompanyModel extends Model
         return $obj->where('user_id',$id)->first();
     }
 
-    // public function UploadLicence(string $type,int $id)
-    // {
-    //     $customer=$this->find($id);
+    public function list(string $search)
+    {
+        $result=$this->where('status',1)
+                     ->groupStart()
+                     ->like('company_name',$search)
+                     ->orLike('acn_number',$search)
+                     ->orLike('abn_number',$search)
+                     ->orLike('trading_name',$search)
 
-    //     return \App\Models\MediaModel::attach(['model'=>'Customer',
-    //                                      'type'=>$type,
-    //                                      'user_id'=>$customer->user_id,
-    //                                      'model_id'=>$customer->id,
-    //                                      'file'=>$type],true);
 
-        
+                     ->groupEnd()
 
-    // }
+                     ->findAll();
+
+        $content='';
+
+       
+
+            $content.=view('admin/partials/companies',['companies'=>$result]);
+
+   
+
+        return $content;
+    }
+
+
+
 }

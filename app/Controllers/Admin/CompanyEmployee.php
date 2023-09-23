@@ -6,9 +6,11 @@ use App\Controllers\BaseController;
 
 class CompanyEmployee extends BaseController
 {
-    public function index()
+    public function index(int $company_id)
     {
-        
+        $data = \App\Models\CompanyEmployeeModel::datatable($company_id);
+
+         return $this->response->setJSON($data);
     }
 
       public function view(int $id)
@@ -24,7 +26,7 @@ class CompanyEmployee extends BaseController
 
         $data['response']=run_with_exceptions(function() use ($id){
 
-            $data['employees']= \App\Models\CompanyEmployeeModel::getCompanyEmployees($id);
+           
              $data['company']= \App\Models\CompanyModel::getCompany($id);
 
             return array('status'=>1,'data'=>$data);
@@ -146,7 +148,7 @@ class CompanyEmployee extends BaseController
 
             $data['employee']= \App\Models\CompanyEmployeeModel::getCompanyEmployee($company_id,$employee_id);
 
-             $data['customer']= \App\Models\CompanyModel::getCompany($company_id);
+             $data['company']= \App\Models\CompanyModel::getCompany($company_id);
 
                
 
@@ -157,7 +159,7 @@ class CompanyEmployee extends BaseController
 
       //  echo '<pre>';print_r($data['response']);die;
 
-        return view('admin/customer/view',$data);
+        return view('admin/company/view',$data);
     }
 
 
@@ -177,7 +179,7 @@ class CompanyEmployee extends BaseController
                    'last_name' =>'required',
                    'phone'=>'required|is_unique[users.phone,id,'.$user_id.']',
                    'email' => 'required|is_unique[users.email,id,'.$user_id.']',
-                   'limt'=>'required'
+                   'limit'=>'required'
                   ];
 
         if (! $this->validateData($data, $rule)) {
@@ -228,6 +230,36 @@ class CompanyEmployee extends BaseController
 
        
     }
+
+     public function list(int $company_id)
+           {
+
+
+              $response=run_with_exceptions(function() use ($company_id)
+      {
+
+          $data = $this->request->getJSON(true);
+
+          $search=$data['search'];
+
+          $content='';
+
+         if($search):
+            $company=new \App\Models\CompanyEmployeeModel();
+            
+            $content= $company->list($search,$company_id);
+           
+          endif;
+
+            return array('status'=>1,'content'=>$content);
+
+         });
+
+
+
+        return $this->response->setJSON($response);
+
+           }
 
 
 

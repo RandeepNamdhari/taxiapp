@@ -50,7 +50,7 @@ class EmployeeModel extends Model
 
         if($employee_id && $company_id):
 
-            \App\Models\CustomerDriverModel::attach($employee_id,$company_id);
+            \App\Models\CompanyEmployeeModel::attach($employee_id,$company_id);
 
             $redirect_url=base_url('admin/companies/'.$company_id.'/employees/view');
 
@@ -88,14 +88,12 @@ class EmployeeModel extends Model
 
 
 
-        $userData=['email'=>$data['email'],'phone'=>$data['phone']];
+        $userData=['email'=>$data['email'],'phone'=>$data['phone'],'first_name'=>$data['first_name'],'last_name'=>$data['last_name']];
 
         $user_id=\App\Models\UserModel::updateUser($employee->user_id,$userData);
 
         unset($data['user_id']);
         unset($data['status']);
-
-        $data['state_id']=$data['state'];
 
         if($this->update($employee->id,$data)):
 
@@ -136,11 +134,12 @@ class EmployeeModel extends Model
 
          public static function destroy(int $id)
     {
-        $employeeObj=new self();
+        $userObj=new \App\Models\UserModel();
+
 
        
 
-       if($employeeObj->delete($id)):
+       if($userObj->delete($id)):
 
 
     return array('status'=>1,'message'=>'The Employee is deleted successfully!','type'=>'success');
@@ -186,5 +185,7 @@ class EmployeeModel extends Model
         return $content;
     }
 
+     
 
+    
 }

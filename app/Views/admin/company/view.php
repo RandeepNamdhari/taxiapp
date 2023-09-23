@@ -24,6 +24,8 @@ endif;
 
 <?=$this->section('page-style')?>
 
+  <?=link_tag('admin/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css')?>
+
 
    
 

@@ -1,19 +1,16 @@
                  <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title mb-0">Add Driver</h4>
-                                        <small class="card-title-desc ">Please enter the driver details correctly and check the details before submit.</small>
-               <form class="mt-3" id="driverForm" enctype="multipart/form-data" method="POST">
+                                        <h4 class="card-title mb-0">Add Employee</h4>
+                                        <small class="card-title-desc ">Please enter the employee details correctly and check the details before submit.</small>
+               <form class="mt-3" id="employeeForm" enctype="multipart/form-data" method="POST">
 
                                             <div class="row">
  <div class="col-md-4 mb-3">
  <label> First Name</label>
  <input  type="text" name="first_name" class="form-control" placeholder="First Name">
  </div>
- <div class="col-md-4 mb-3">
- <label>Middle Name</label>
- <input  type="text" name="middle_name" class="form-control" placeholder="Middle Name">
- </div>
+
  <div class="col-md-4 mb-3">
  <label>Last Name</label>
  <input type="text" name="last_name" class="form-control" placeholder="Last Name" >
@@ -28,62 +25,12 @@
  <input  type="text" name="phone" class="form-control" placeholder="Phone Number" >
  </div>
 
-  <div class="col-md-4  mb-3">
- <label> Suburb</label>
- <input  type="text" name="suburb" class="form-control" placeholder="Suburb" >
- </div>
-
- <div class="col-md-8 mb-3">
- <label> Address</label>
- <textarea  rows="5" type="text" name="address" class="form-control" placeholder="Address"></textarea>
- </div>
-
  <div class="col-md-4 mb-3">
-    <div class="row">
-
-        <div class="col-md-12 mb-3">
- <label> State</label>
- <select class="form-select" name="state"  >
- <option value="">Select State</option>
-<?php if(isset($response['data']['states']) && count($response['data']['states'])):
-      foreach($response['data']['states'] as $state): ?>
-
-        <option value="<?=$state['id']?>"><?=$state['code'];?></option>
-
-      <?php endforeach;
-            endif; ?>
-  </select>
- </div>
- 
-
- <div class="col-md-12 mb-3">
- <label> Post Code</label>
- <input  type="text" name="post_code" class="form-control" placeholder="Post Code" >
- </div>
-</div>
-</div>
- <div class="col-md-4 mb-3">
- <label>Date of Birth</label>
- <input  type="date" name="date_of_birth" class="form-control" >
- </div>
- 
- <div class="col-md-4 mb-3">
- <label> Licence No</label>
- <input type="text" name="licence_number" class="form-control" placeholder="Licence No">
- </div>
- <div class="col-md-4 mb-3">
- <label> Licence Expiry</label>
- <input type="date" name="licence_expiry" class="form-control 
- " placeholder="Licence Expiry">
+ <label>Allowded Limit</label>
+ <input  type="number" name="limit" class="form-control" placeholder="Enter Limit" >
  </div>
 
- <div class="col-md-4 mb-3">
-
-  <label for="formFile" class="form-label">Driver Picture</label>
-  <input class="form-control" name="driver_picture" type="file" id="formFile">
-
-                                            </div>
-
+  
 
 
 

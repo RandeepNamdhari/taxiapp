@@ -257,9 +257,12 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     // Company Routes
 
-        // Customer Routes
+     
 
     $routes->get('companies', 'Company::index');
+
+    $routes->post('companies/search/list', 'Company::list');
+
 
 
     $routes->get('companies/create', 'Company::create');
@@ -285,6 +288,9 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     $routes->post('companies/(:num)/employees/store', 'CompanyEmployee::store/$1');
 
+    $routes->get('companies/(:num)/employees', 'CompanyEmployee::index/$1');
+
+
     $routes->get('companies/(:num)/employees/view', 'CompanyEmployee::view/$1');
 
     $routes->get('companies/(:num)/employees/(:num)/edit', 'CompanyEmployee::edit/$1/$2');
@@ -294,6 +300,11 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     $routes->post('companies/(:num)/employees/(:num)/delete', 'CompanyEmployee::delete/$1/$2');
 
     $routes->post('companies/(:num)/employees/(:num)/change/status', 'CompanyEmployee::status/$1/$2');
+
+    $routes->post('companies/(:num)/employees/search/list', 'CompanyEmployee::list/$1');
+
+
+   
 
 
 

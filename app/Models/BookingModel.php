@@ -42,6 +42,8 @@ class BookingModel extends Model
 
         $this->transBegin();
 
+        if($data['customer_type']!=2):
+
         $userData=['email'=>$data['email'],'phone'=>$data['phone'],'first_name'=>$data['first_name'],'last_name'=>$data['last_name'],'address'=>$data['address']];
 
         if(!$user=$this->updateIfUserExist($userData)):
@@ -50,12 +52,22 @@ class BookingModel extends Model
 
         $data['user_id']=$user_id;
 
-    else:
+        else:
 
         $data['user_id']=$user->id;
 
 
          endif;
+
+
+         else:
+
+            $data['user_id']=$data['employee'];
+
+
+       endif;
+
+
 
          $booking=array('status'=>'pending','user_id'=>$data['user_id'],
                        'booking_fares'=>100,'booking_date'=>date('Y-m-d-His_'));

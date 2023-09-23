@@ -108,6 +108,9 @@ class Company extends BaseController
     }
 
 
+
+
+
     public function status($id)
     {
 
@@ -221,6 +224,37 @@ class Company extends BaseController
 
         return $this->response->setJSON($response);
        
+           }
+
+
+           public function list()
+           {
+
+
+              $response=run_with_exceptions(function()
+      {
+
+          $data = $this->request->getJSON(true);
+
+          $search=$data['search'];
+
+          $content='';
+
+         if($search):
+            $company=new \App\Models\CompanyModel();
+            
+            $content= $company->list($search);
+           
+          endif;
+
+            return array('status'=>1,'content'=>$content);
+
+         });
+
+
+
+        return $this->response->setJSON($response);
+
            }
 
 

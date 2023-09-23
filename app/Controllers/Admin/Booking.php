@@ -81,16 +81,25 @@ class Booking extends BaseController
           $data = $this->request->getJSON(true);
 
           $rule = [
-                   'first_name'   => 'required',
-                   'last_name' =>'required',
-                   'phone'=>'required|is_unique[users.phone,id,'.$data['user_id'].']',
-                   'email' => 'required|is_unique[users.email,id,'.$data['user_id'].']',
+                   
                    'pickup_time'=>'required',
                    'vehicle'=>'required',
                    'driver'=>'required',
                    'from_location'=>'required',
                    'to_location'=>'required'
                   ];
+
+        if($data['customer_type']==2):
+            $rule+=['company'=>'required','employee'=>'required'];
+
+        else:
+
+            $rule+=['first_name'   => 'required',
+                   'last_name' =>'required',
+                   'phone'=>'required|is_unique[users.phone,id,'.$data['user_id'].']',
+                   'email' => 'required|is_unique[users.email,id,'.$data['user_id'].']',];
+
+        endif;
 
         if (! $this->validateData($data, $rule)) {
              return array('status'=>0,

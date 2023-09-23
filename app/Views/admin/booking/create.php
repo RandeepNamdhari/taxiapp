@@ -48,34 +48,89 @@
 
                                         <form class="mt-3" id="bookingForm">
 
+                                            <input type="hidden" id="customerTypeId" name="customer_type">
+
                                             
 
 
 
                                             <h6 class="p-2 bg-light">Customer Details:</h6>
 
-                                            <div class="row">
+                                            <div class="row mb-3">
+
+                                                <label>Booking Customer Type</label>
+
+                                                 <div class="d-flex justify-content-around w-75">
+
+                                                    <div onclick="changeCustomerType(this,1)" class="col-md-4 p-2 text-center border rounded-5 border-light text-center bg-warning customer-types" style="cursor:pointer;">
+
+                                                  <span class="fs-5">Individual</span>
+                                                </div>
+
+                                                <div onclick="changeCustomerType(this,2)" class="col-md-4 p-2 text-center border rounded-5 border-light text-center customer-types" style="cursor:pointer;">
+
+                                                    <span class="fs-5">Carporate</span>
+                                                </div>
+
+                                                
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row carporate d-none mb-3">
+                                            <div class="col-md-4 mb-6">
+ <label>Select Company</label>
+ <input  type="text" name="" onkeyup="showCompanies(this,'#companyList')" class="form-control" id="companySearchBox" placeholder="Choose Company" >
+ <div id="companyList" class="" style="border:1px solid lightgray;border-top:none;">
+
+     
+ </div>
+ <input type="hidden" value="" name="company" id="companyId">
+
+ </div>   
+
+     <div class="col-md-4 mb-6">
+ <label>Select Company</label>
+ <input  type="text" name="" onkeyup="showEmployees(this,'#employeeList')" class="form-control" id="employeeSearchBox" placeholder="Choose Employee" >
+ <div id="employeeList" class="" style="border:1px solid lightgray;border-top:none;">
+
+     
+ </div>
+ <input type="hidden" value="" name="employee" id="employeeId">
+
+ </div>   
+
+                                            </div>
+
+
+                                            <div class="row individual" id="">
+
+
                                                  <div class="col-md-4 mb-3">
  <label> Email</label>
  <input  type="text" name="email" class="form-control" placeholder="Email"  onfocusout ="checkIfUserExist(this)" autocomplete="no-autofill" >
  <input type="hidden" name="user_id" id="userId">
  </div>
- <div class="col-md-4 mb-3">
+ <div class="col-md-6 mb-3">
  <label>Phone Number</label>
  <input  type="text" id="userPhone" name="phone" class="form-control" placeholder="Phone Number" >
  </div>
                                             </div>
                                            
 
-                                            <div class="row" id="moreDetails">
- <div class="col-md-6 mb-3">
+                                            <div class="row individual" id="moreDetails">
+
+ <div class="col-md-4">                                               
+ <div class="col-md-12 mb-3">
  <label> First Name</label>
  <input  type="text" name="first_name" id="userFirstName" class="form-control" placeholder="First Name">
  </div>
- <div class="col-md-6 mb-3">
+ <div class="col-md-12 mb-3">
  <label>Last Name</label>
  <input  type="text" id="userLastName" name="last_name" class="form-control" placeholder="Last Name">
  </div>
+</div>
 
 
 
@@ -260,6 +315,90 @@
                      }
 
 
+                 function showCompanies(selector,placeholder){
+
+                        let search=$(selector).val();
+
+                        let url='<?=base_url('admin/companies/search/list')?>';
+
+                        let data={'search':search};
+
+                      let response=__postRequest(url,data,null);
+
+                    response.then(function(data)
+                    {
+                        if(data.status)
+                        {
+                            $(placeholder).html(data.content);
+                        }
+                    })
+
+                     }
+
+
+                     function selectCompany(selector,company_id)
+                     {
+                        $('.selectedCompany').remove();
+                        $('#companyId').val(company_id);
+
+                        var company=$(selector).clone();
+                        company.attr('onclick','')
+                        company.addClass('border border-rounder border-success mt-1 p-2 selectedCompany')
+                        $('#companyList').after(company);
+
+
+                        $('#companyList').html('');                
+
+                        $('#companySearchBox').val('');
+                     }
+
+                     function showEmployees(selector,placeholder){
+
+                        let company_id=$('#companyId').val();
+
+                        if(company_id){
+
+                        let search=$(selector).val();
+
+                        let url='<?=base_url('admin/companies/')?>'+company_id+'/employees/search/list';
+
+                        let data={'search':search};
+
+                      let response=__postRequest(url,data,null);
+
+                    response.then(function(data)
+                    {
+                        if(data.status)
+                        {
+                            $(placeholder).html(data.content);
+                        }
+                    })
+                }
+                else
+                {
+                     __showMessage('Please select company before searching employee.','warning')
+                }
+
+                     }
+
+
+                     function selectEmployee(selector,employee_id)
+                     {
+                        $('.selectEmployee').remove();
+                        $('#employeeId').val(employee_id);
+
+                        var company=$(selector).clone();
+                        company.attr('onclick','')
+                        company.addClass('border border-rounder border-success mt-1 p-2 selectEmployee')
+                        $('#employeeList').after(company);
+
+
+                        $('#employeeList').html('');                
+
+                        $('#employeeSearchBox').val('');
+                     }
+
+
                      function checkIfUserExist(selector)
                      {
                         let email=$('#userEmail').val();
@@ -293,7 +432,7 @@
 
                           //   if(!$('#moreDetails').hasClass('d-none'))
 
-                             $('#moreDetails').removeClass('d-none');
+                           //  $('#moreDetails').removeClass('d-none');
 
 
 
@@ -309,6 +448,32 @@
                 }
 
                      }
+
+
+                      function changeCustomerType(selector,type)
+    {
+       if(!$(selector).hasClass('bg-warning'))
+       {
+           $('.customer-types').removeClass('bg-warning');
+
+           $(selector).addClass('bg-warning');
+
+           $('#customerTypeId').val(type);
+
+           if(type==2)
+           {
+               $('.carporate').removeClass('d-none');
+             $('.individual').addClass('d-none');
+
+           }
+           else
+           {
+             $('.individual').removeClass('d-none');
+               $('.carporate').addClass('d-none');
+
+           }
+       }
+    }
 
 
 
@@ -342,6 +507,10 @@
     }
 
     google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+   
   </script>
 
 
