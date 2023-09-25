@@ -177,7 +177,9 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
 
     // Setting Routes
+   
 
+   // state
     $routes->get('settings/states','State::index');
     $routes->post('settings/states','State::index');
     $routes->post('settings/states/store','State::store');
@@ -185,6 +187,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     $routes->post('settings/states/(:num)/change/status', 'State::status/$1');
     $routes->post('settings/states/(:num)/delete', 'State::delete/$1');
 
+   // vehicle body types
 
     $routes->get('settings/vehicle/bodytypes','VehicleBodyType::index');
     $routes->post('settings/vehicle/bodytypes','VehicleBodyType::index');
@@ -192,6 +195,26 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     $routes->post('settings/vehicle/bodytypes/(:num)/change/status', 'VehicleBodyType::status/$1');
     $routes->post('settings/vehicle/bodytypes/(:num)/delete', 'VehicleBodyType::delete/$1');
+
+    // tax types
+
+    $routes->get('settings/taxes','TaxType::index');
+    $routes->post('settings/taxes','TaxType::index');
+    $routes->post('settings/taxes/store','TaxType::store');
+
+    $routes->post('settings/taxes/(:num)/change/status', 'TaxType::status/$1');
+    $routes->post('settings/taxes/(:num)/delete', 'TaxType::delete/$1');
+
+    // Fare Types
+
+      $routes->get('settings/fare/types','FareType::index');
+    $routes->post('settings/fare/types','FareType::index');
+    $routes->post('settings/fare/types/store','FareType::store');
+
+    $routes->post('settings/fare/types/(:num)/change/status', 'TaxType::status/$1');
+    $routes->post('settings/fare/types/(:num)/delete', 'FareType::delete/$1');
+
+
 
 
 

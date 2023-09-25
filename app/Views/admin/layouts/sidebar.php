@@ -82,6 +82,8 @@
                                     <!-- <li><a href="javascript: void(0);">Users</a></li> -->
                                     <li class="<?php echo ($currentRoute=='admin-settings-states')?'mm-active':''?>"><a href="<?=base_url('admin/settings/states')?>">States</a></li>
                                      <li class="<?php echo ($currentRoute=='admin-settomgs-vechile-body-types')?'mm-active':''?>"><a href="<?=base_url('admin/settings/vehicle/bodytypes')?>">Vehicle Body Types</a></li>
+                                     <li class="<?php echo ($currentRoute=='admin-settings-taxes')?'mm-active':''?>"><a href="<?=base_url('admin/settings/taxes')?>">Taxes</a></li>
+                                      <li class="<?php echo ($currentRoute=='admin-settings-fare-types')?'mm-active':''?>"><a href="<?=base_url('admin/settings/fare/types')?>">Fare Types</a></li>
 
                                
                                 </ul>

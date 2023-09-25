@@ -21,7 +21,18 @@ class BookingModel extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
 
+public static function getBooking(int $booking_id)
+{
+    $obj=new self();
 
+    $booking=$obj->select('bookings.*,users.email,users.first_name,users.last_name,users.phone,users.address,users.id as main_user_id,companies.abn_number,companies.acn_number,companies.company_name,companies.id as company_id')->join('users','users.id=bookings.user_id')->join('company_bookings','bookings.id=company_bookings.booking_id','left')->join('companies','companies.id=company_bookings.company_id','left')
+    ->find($booking_id);
+
+    $booking['booking_details']=\App\Models\BookingDetailModel::getDetails($booking_id);
+
+
+    return $booking;
+}
 
 
    public function updateIfUserExist(array $data)

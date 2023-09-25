@@ -59,7 +59,7 @@ class Booking extends BaseController
 
         $data['response']= run_with_exceptions(function(){ 
              
-             $data['states']= \App\Models\StateModel::all();
+             $data['taxes']= \App\Models\TaxTypeModel::all();
 
              return array('status'=>1,'data'=>$data);
 
@@ -122,6 +122,29 @@ class Booking extends BaseController
         return $this->response->setJSON($response);
        
            }
+
+
+           public function edit(int $booking_id)
+    {
+        $data['currentRoute']='admin-bookings';
+        $data['pageTitle']='Edit Booking';
+
+        $data['response']= run_with_exceptions(function() use($booking_id){ 
+             
+             $data['taxes']= \App\Models\TaxTypeModel::all();
+
+             $data['booking']=\App\Models\BookingModel::getBooking($booking_id);
+
+             return array('status'=>1,'data'=>$data);
+
+        });
+
+      //  echo '<pre>';print_r($data);die;
+
+      
+
+        return view('admin/booking/edit',$data);
+    }
 
 
    

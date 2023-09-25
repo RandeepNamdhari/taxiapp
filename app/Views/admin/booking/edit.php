@@ -1,3 +1,13 @@
+
+<?php
+
+    $booking=$response['data']['booking']??[];
+
+    $booking_detail=$response['data']['booking']['booking_details'][0];
+
+    //echo '<pre>';print_r($booking);die;
+
+ ?>
 <?= $this->extend('admin/layouts/master') ?>
 
 <?=$this->section('page-style')?>
@@ -15,12 +25,12 @@
                         <div class="page-title-box">
                             <div class="row align-items-center">
                                 <div class="col-md-8">
-                                    <h6 class="page-title">Create Booking</h6>
+                                    <h6 class="page-title">Edit Booking</h6>
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="<?=base_url('admin')?>">Home</a></li>
                                         <li class="breadcrumb-item"><a href="#">Booking Management</a></li>
                                         <li class="breadcrumb-item"><a href="<?=base_url('admin/bookings')?>">Bookings</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Create New Booking</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Edit Booking</li>
                                     </ol>
                                 </div>
 
@@ -48,7 +58,7 @@
 
                                         <form class="mt-3" id="bookingForm">
 
-                                            <input type="hidden" id="customerTypeId" name="customer_type">
+                                            <input type="hidden" id="customerTypeId" value="<?=$booking['customer_type']??''?>" name="customer_type">
 
                                             
 
@@ -62,12 +72,12 @@
 
                                                  <div class="d-flex justify-content-around w-75">
 
-                                                    <div onclick="changeCustomerType(this,1)" class="col-md-4 p-2 text-center border rounded-5 border-light text-center bg-warning customer-types" style="cursor:pointer;">
+                                                    <div onclick="changeCustomerType(this,1)" class="col-md-4 p-2 text-center border rounded-5 border-light text-center <?=($booking['customer_type']==1)?'bg-warning':''?> customer-types" style="cursor:pointer;">
 
                                                   <span class="fs-5">Individual</span>
                                                 </div>
 
-                                                <div onclick="changeCustomerType(this,2)" class="col-md-4 p-2 text-center border rounded-5 border-light text-center customer-types" style="cursor:pointer;">
+                                                <div onclick="changeCustomerType(this,2)" class="col-md-4 p-2 text-center border rounded-5 border-light text-center customer-types <?=($booking['customer_type']==2)?'bg-warning':''?>" style="cursor:pointer;">
 
                                                     <span class="fs-5">Carporate</span>
                                                 </div>
@@ -78,57 +88,91 @@
 
                                             </div>
 
-                                            <div class="row carporate d-none mb-3">
+                                            <div class="row carporate <?=($booking['customer_type']==1)?'d-none':''?> mb-3">
                                             <div class="col-md-4 mb-6">
  <label>Select Company</label>
  <input  type="text" name="" onkeyup="showCompanies(this,'#companyList')" class="form-control" id="companySearchBox" placeholder="Choose Company" >
  <div id="companyList" class="" style="border:1px solid lightgray;border-top:none;">
 
+
+
      
  </div>
- <input type="hidden" value="" name="company" id="companyId">
+
+ <?php if(isset($booking['company_id']) && $booking['company_id'] && $booking['customer_type']==2):
+
+        $company['id']=$booking['company_id'];
+        $company['company_name']=$booking['company_name'];
+        $company['abn_number']=$booking['abn_number'];
+        $company['acn_number']=$booking['acn_number'];
+
+
+
+
+        ?>
+
+ <?=view('admin/partials/single_company',['company'=>(object)$company])?>
+
+<?php endif;?>
+ <input type="hidden" value="<?=$booking['company_id']??''?>" name="company" id="companyId">
 
  </div>   
 
      <div class="col-md-4 mb-6">
- <label>Select Company</label>
+ <label>Select Employee</label>
  <input  type="text" name="" onkeyup="showEmployees(this,'#employeeList')" class="form-control" id="employeeSearchBox" placeholder="Choose Employee" >
  <div id="employeeList" class="" style="border:1px solid lightgray;border-top:none;">
 
+     <?php if(isset($booking['user_id']) && $booking['user_id'] && $booking['customer_type']==2):
+
+        $employee['id']=$booking['user_id'];
+        $employee['first_name']=$booking['first_name'];
+        $employee['phone']=$booking['phone'];
+        $employee['email']=$booking['email'];
+
+
+
+
+        ?>
+
+ <?=view('admin/partials/single_employee',['employee'=>(object)$employee])?>
+
+<?php endif;?>
+
      
  </div>
- <input type="hidden" value="" name="employee" id="employeeId">
+ <input type="hidden" value="<?=$booking['user_id']??''?>" name="employee" id="employeeId">
 
  </div>   
 
                                             </div>
 
 
-                                            <div class="row individual" id="">
+                                            <div class="row individual <?=($booking['customer_type']==2)? 'd-none':''?>" id="">
 
 
                                                  <div class="col-md-4 mb-3">
  <label> Email</label>
- <input  type="text" name="email" class="form-control" placeholder="Email"  onfocusout ="checkIfUserExist(this)" autocomplete="no-autofill" >
- <input type="hidden" name="user_id" id="userId">
+ <input  type="text" name="email" value="<?=$booking['email']??''?>" class="form-control" placeholder="Email"  onfocusout ="checkIfUserExist(this)" autocomplete="no-autofill" >
+ <input type="hidden" value="<?=$booking['user_id']??''?>" name="user_id" id="userId">
  </div>
  <div class="col-md-6 mb-3">
  <label>Phone Number</label>
- <input  type="text" id="userPhone" name="phone" class="form-control" placeholder="Phone Number" >
+ <input  type="text" id="userPhone" value="<?=$booking['phone']??''?>" name="phone" class="form-control" placeholder="Phone Number" >
  </div>
                                             </div>
                                            
 
-                                            <div class="row individual" id="moreDetails">
+                                            <div class="row individual <?=($booking['customer_type']==2)? 'd-none':''?>" id="moreDetails">
 
  <div class="col-md-4">                                               
  <div class="col-md-12 mb-3">
  <label> First Name</label>
- <input  type="text" name="first_name" id="userFirstName" class="form-control" placeholder="First Name">
+ <input  type="text" value="<?=$booking['first_name']??''?>" name="first_name" id="userFirstName" class="form-control" placeholder="First Name">
  </div>
  <div class="col-md-12 mb-3">
  <label>Last Name</label>
- <input  type="text" id="userLastName" name="last_name" class="form-control" placeholder="Last Name">
+ <input  type="text" value="<?=$booking['last_name']??''?>" id="userLastName" name="last_name" class="form-control" placeholder="Last Name">
  </div>
 </div>
 
@@ -136,7 +180,7 @@
 
  <div class="col-md-8 mb-3">
  <label> Address</label>
- <textarea  rows="5" type="text" name="address" class="form-control" placeholder="Address" id="userAddress"></textarea>
+ <textarea  rows="5" type="text" name="address" class="form-control" placeholder="Address" id="userAddress"><?=$booking['address']??''?></textarea>
  </div>
 </div>
 
@@ -149,12 +193,12 @@
 
              <div class="col-md-6 mb-6">
  <label>From Where</label>
- <input  type="text" name="from_location" id="locationInput" class="form-control" placeholder="Location From" >
+ <input  type="text" name="from_location" value="<?=$booking_detail['from_location']??''?>" id="locationInput" class="form-control" placeholder="Location From" >
  </div>    
 
       <div class="col-md-6 mb-6">
  <label>To Where</label>
- <input  type="text" name="to_location" class="form-control" placeholder="Location To" >
+ <input  type="text" value="<?=$booking_detail['to_location']??''?>" name="to_location" class="form-control" placeholder="Location To" >
  </div>     
  <div class="row mt-2">     
 
@@ -165,24 +209,33 @@
 
      
  </div>
- <input type="hidden" value="" name="vehicle" id="vehicleId">
+  <?php if(isset($booking_detail['vehicle']) && $booking_detail['vehicle']):?>
+
+ <?=view('admin/partials/single_vehicle',['vehicle'=>$booking_detail['vehicle']])?>
+
+<?php endif;?>
+ <input type="hidden" value="<?=$booking_detail['vehicle_id']??''?>" name="vehicle" id="vehicleId">
 
  </div>      
 
   <div class="col-md-4 mb-6">
  <label>Select Driver</label>
  <input  type="text" name="" onkeyup="showDrivers(this,'#driverListByAjax')" class="form-control" id="driverSearchBox" placeholder="Choose Driver" >
- <div id="driverListByAjax" class="" style="border:1px solid lightgray;border-top:none;">
-
-     
+ <div id="driverListByAjax" class="" style="border:1px solid lightgray;border-top:none;">   
  </div>
- <input type="hidden" value="" name="driver" id="driverId">
+ <?php if(isset($booking_detail['driver']) && $booking_detail['driver']):?>
+
+ <?=view('admin/partials/single_driver',['driver'=>$booking_detail['driver']])?>
+
+<?php endif;?>
+
+ <input type="hidden" value="<?=$booking_detail['driver_id']??''?>" name="driver" id="driverId">
 
  </div>     
 
    <div class="col-md-4 mb-6">
  <label>Pick Up Date & Time</label>
- <input  type="datetime-local" name="pickup_time" class="form-control" placeholder="set pickup time" >
+ <input  type="datetime-local" value="<?=$booking_detail['pickup_time']??''?>" name="pickup_time" class="form-control" placeholder="set pickup time" >
  
  </div> 
 
@@ -196,9 +249,17 @@
  <select class="form-select" name="state"  >
  <option value="">Select Tax Type</option>
 <?php if(isset($response['data']['taxes']) && count($response['data']['taxes'])):
-      foreach($response['data']['taxes'] as $tax): ?>
+      foreach($response['data']['taxes'] as $tax):
 
-        <option value="<?=$tax['id']?>"><?=$tax['name'];?></option>
+        $sel='';
+
+        if(isset($booking['tax_type_id']) && $booking['tax_type_id'] == $tax['id']):
+            $sel='selected';
+        endif;
+
+       ?>
+
+        <option <?=$sel;?> value="<?=$tax['id']?>"><?=$tax['name'];?></option>
 
       <?php endforeach;
             endif; ?>

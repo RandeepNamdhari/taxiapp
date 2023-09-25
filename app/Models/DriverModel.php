@@ -174,7 +174,7 @@ class DriverModel extends Model
     {
         $obj=new self();
 
-        return $obj->find($driver_id);
+        return $obj->select('drivers.*,users.email,users.phone')->join('users','users.id=drivers.user_id')->find($driver_id);
     }
 
        public function list(string $search)

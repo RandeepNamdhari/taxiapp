@@ -189,6 +189,13 @@ class VehicleModel extends Model
 
         return $content;
     }
+
+    public static function getVehicle(int $vehicle_id)
+    {
+        $obj=new self();
+
+        return $obj->find($vehicle_id);
+    }
   
 
   

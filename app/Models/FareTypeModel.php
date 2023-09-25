@@ -4,16 +4,16 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class TaxTypeModel extends Model
+class FareTypeModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'tax_types';
+    protected $table            = 'fare_types';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['percent','name','status'];
+    protected $allowedFields    = ['name','min_range','max_range','amount','status'];
 
     // Dates
     protected $useTimestamps = true;
@@ -56,7 +56,7 @@ class TaxTypeModel extends Model
         if($res):
 
 
-        return array('status'=>1,'message'=>'The tax type is create or updated successfully.','type'=>'success');
+        return array('status'=>1,'message'=>'The fare type is create or updated successfully.','type'=>'success');
 
         else:
 
@@ -78,8 +78,8 @@ class TaxTypeModel extends Model
 
         $obj=new self();
 
-        $query=$obj->select('tax_types.*')->like('name',$search)
-        ->limit($length, $start)->orderBy('percent',$order)
+        $query=$obj->select('fare_types.*')->like('name',$search)
+        ->limit($length, $start)->orderBy('name',$order)
             ->get();
 
            $rows= $query->getResultArray();
@@ -107,7 +107,7 @@ class TaxTypeModel extends Model
 
     public function actions($row)
     {
-      return '<div class="btn-group"><button class="btn btn-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions<i class="mdi mdi-chevron-down"></i></button><div class="dropdown-menu" style=""><a class="dropdown-item" href="javascript:void(0)" onclick="editRow(this)"><i class="fas fa-user-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit</a><a class="dropdown-item" href="javascript:void(0)" onclick="deleteTaxType('.$row['id'].')"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></div></div>';
+      return '<div class="btn-group"><button class="btn btn-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions<i class="mdi mdi-chevron-down"></i></button><div class="dropdown-menu" style=""><a class="dropdown-item" href="javascript:void(0)" onclick="editRow(this)"><i class="fas fa-user-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit</a><a class="dropdown-item" href="javascript:void(0)" onclick="deleteFareType('.$row['id'].')"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></div></div>';
 
       // <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Separated link</a>
     }
