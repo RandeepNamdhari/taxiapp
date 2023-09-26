@@ -33,11 +33,21 @@ class FareTypeModel extends Model
 
     }
 
-       public function create($data)
+    public static function getType(int $id)
+    {
+        $obj=new self();
+
+        return $obj->find($id);
+    }
+
+       public function createOrUpdate($data)
    {
 
 
+      $range=explode(';', $data['range']);
 
+      $data['min_range']=$range[0]??1;
+      $data['max_range']=$range[1]??100;
        
 
         if(isset($data['hid'])):
@@ -56,7 +66,7 @@ class FareTypeModel extends Model
         if($res):
 
 
-        return array('status'=>1,'message'=>'The fare type is create or updated successfully.','type'=>'success');
+        return array('status'=>1,'message'=>'The fare type is create or updated successfully.','type'=>'success','redirect'=>base_url('admin/settings/fare/types'));
 
         else:
 
@@ -107,7 +117,7 @@ class FareTypeModel extends Model
 
     public function actions($row)
     {
-      return '<div class="btn-group"><button class="btn btn-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions<i class="mdi mdi-chevron-down"></i></button><div class="dropdown-menu" style=""><a class="dropdown-item" href="javascript:void(0)" onclick="editRow(this)"><i class="fas fa-user-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit</a><a class="dropdown-item" href="javascript:void(0)" onclick="deleteFareType('.$row['id'].')"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></div></div>';
+      return '<div class="btn-group"><button class="btn btn-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions<i class="mdi mdi-chevron-down"></i></button><div class="dropdown-menu" style=""><a class="dropdown-item" href="'.base_url('admin/settings/fare/types/'.$row['id'].'/edit').'" ><i class="fas fa-user-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit</a><a class="dropdown-item" href="javascript:void(0)" onclick="deleteFareType('.$row['id'].')"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></div></div>';
 
       // <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Separated link</a>
     }
@@ -139,12 +149,12 @@ class FareTypeModel extends Model
     {
         $obj=new self();
 
-        $tax= $obj->find($id);
+        $fare_type= $obj->find($id);
 
         
 
 
-        return $obj->update($id,['status'=>!$tax['status']]);
+        return $obj->update($id,['status'=>!$fare_type['status']]);
     }
 
 

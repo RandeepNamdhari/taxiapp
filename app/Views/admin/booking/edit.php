@@ -125,7 +125,7 @@
 
      <?php if(isset($booking['user_id']) && $booking['user_id'] && $booking['customer_type']==2):
 
-        $employee['id']=$booking['user_id'];
+        $employee['id']=$booking['employee_id'];
         $employee['first_name']=$booking['first_name'];
         $employee['phone']=$booking['phone'];
         $employee['email']=$booking['email'];
@@ -141,7 +141,7 @@
 
      
  </div>
- <input type="hidden" value="<?=$booking['user_id']??''?>" name="employee" id="employeeId">
+ <input type="hidden" value="<?=$booking['employee_id']??''?>" name="employee" id="employeeId">
 
  </div>   
 
@@ -266,18 +266,44 @@
   </select>
 </div>
 
+   <div class="col-md-4 mb-6">
+
+    <label> Fare Type</label>
+ <select class="form-select" name="fares_type"  >
+ <option value="">Select Fare Type</option>
+<?php if(isset($response['data']['fare_types']) && count($response['data']['fare_types'])):
+      foreach($response['data']['fare_types'] as $fare_type):
+         $sel='';
+
+        if(isset($booking['fares_type']) && $booking['fares_type'] == $fare_type['id']):
+            $sel='selected';
+        endif;
+
+       ?>
+
+        <option <?=$sel?> value="<?=$fare_type['id']?>"><?=$fare_type['name'].' '.$fare_type['amount'].' '.'('.round($fare_type['min_range']).'km - '.round($fare_type['max_range']).'kms)';?></option>
+
+      <?php endforeach;
+            endif; ?>
+  </select>
 </div>
 
-
-
- <div class="col-md-4 mb-3">
+<div class="col-md-4 mb-3">
     <label>&nbsp;</label>
-  <button class="btn btn-primary form-control serverSaveButton" type="submit">Save</button>
+  <button class="btn btn-primary form-control serverSaveButton" type="submit">Update</button>
   <div class="text-center serverLoader d-none">
   <div class="spinner-border text-primary m-1" role="status">
                                                 <span class="sr-only">Loading...</span>
                                             </div></div>
  </div>
+
+
+
+</div>
+
+
+
+ 
 
  </div>
 

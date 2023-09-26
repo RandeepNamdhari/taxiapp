@@ -68,7 +68,7 @@ class CreateBookingDetailTable extends Migration
                 'constraint'=>'10,2',
                                 
             ],
-            'asstimate_time'=>[
+            'estimate_time'=>[
                 'type'=>'DECIMAL',
                 'constraint'=>'10,2',
                 'null'=>true],

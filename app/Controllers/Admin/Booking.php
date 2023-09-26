@@ -61,6 +61,8 @@ class Booking extends BaseController
              
              $data['taxes']= \App\Models\TaxTypeModel::all();
 
+             $data['fare_types']=\App\Models\FareTypeModel::all();
+
              return array('status'=>1,'data'=>$data);
 
         });
@@ -75,10 +77,14 @@ class Booking extends BaseController
     {
     
 
+
+
       $response=run_with_exceptions(function()
       {
 
           $data = $this->request->getJSON(true);
+
+
 
           $rule = [
                    
@@ -86,7 +92,9 @@ class Booking extends BaseController
                    'vehicle'=>'required',
                    'driver'=>'required',
                    'from_location'=>'required',
-                   'to_location'=>'required'
+                   'to_location'=>'required',
+                   'fares_type'=>'required',
+
                   ];
 
         if($data['customer_type']==2):
@@ -118,7 +126,7 @@ class Booking extends BaseController
          });
 
 
-
+        //echo '<pre>';print_r($response);die;
         return $this->response->setJSON($response);
        
            }
@@ -134,6 +142,9 @@ class Booking extends BaseController
              $data['taxes']= \App\Models\TaxTypeModel::all();
 
              $data['booking']=\App\Models\BookingModel::getBooking($booking_id);
+
+             $data['fare_types']=\App\Models\FareTypeModel::all();
+
 
              return array('status'=>1,'data'=>$data);
 

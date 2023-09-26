@@ -209,9 +209,17 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
       $routes->get('settings/fare/types','FareType::index');
     $routes->post('settings/fare/types','FareType::index');
+      $routes->get('settings/fare/types/create','FareType::create');
+
+
     $routes->post('settings/fare/types/store','FareType::store');
 
-    $routes->post('settings/fare/types/(:num)/change/status', 'TaxType::status/$1');
+     $routes->get('settings/fare/types/(:num)/edit','FareType::edit/$1');
+      
+
+    $routes->post('settings/fare/types/(:num)/update','FareType::update/$1');
+
+    $routes->post('settings/fare/types/(:num)/change/status', 'FareType::status/$1');
     $routes->post('settings/fare/types/(:num)/delete', 'FareType::delete/$1');
 
 

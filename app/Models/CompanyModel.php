@@ -108,9 +108,17 @@ class CompanyModel extends Model
 
         $obj=new self();
 
-        $query=$obj->select('companies.*,companies.id as company_id, users.username,users.email,users.phone,users.id as id')
-        ->join('users', 'users.id = companies.user_id')->like('users.first_name',$search)
-        ->limit($length, $start)
+        $query=$obj->builder();
+
+
+        $query->select('companies.*,companies.id as company_id, users.username,users.email,users.phone,users.id as id')
+        ->join('users', 'users.id = companies.user_id')->like('users.first_name',$search);
+
+
+         $query1= clone $query;
+
+
+        $query=$query->limit($length, $start)
             ->get();
 
            $rows= $query->getResultArray();
@@ -128,8 +136,8 @@ class CompanyModel extends Model
 
         $data = [
             'draw' => $draw,
-            'recordsTotal' => $obj->countAll(),
-            'recordsFiltered' => $obj->countAllResults(),
+            'recordsTotal' => $query1->countAll(),
+            'recordsFiltered' => $query1->countAllResults(),
             'data' => $rows,
         ];
 

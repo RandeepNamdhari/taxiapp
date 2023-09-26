@@ -189,11 +189,11 @@
 
 </div>
 
-<div class="row">
+<div class="row mt-3">
     <div class="col-md-4 mb-6">
 
     <label> Tax</label>
- <select class="form-select" name="state"  >
+ <select class="form-select" name="tax"  >
  <option value="">Select Tax Type</option>
 <?php if(isset($response['data']['taxes']) && count($response['data']['taxes'])):
       foreach($response['data']['taxes'] as $tax): ?>
@@ -205,9 +205,21 @@
   </select>
 </div>
 
+
+    <div class="col-md-4 mb-6">
+
+    <label> Fare Type</label>
+ <select class="form-select" name="fares_type"  >
+ <option value="">Select Fare Type</option>
+<?php if(isset($response['data']['fare_types']) && count($response['data']['fare_types'])):
+      foreach($response['data']['fare_types'] as $fare_type): ?>
+
+        <option value="<?=$fare_type['id']?>"><?=$fare_type['name'].' '.$fare_type['amount'].' '.'('.round($fare_type['min_range']).'km - '.round($fare_type['max_range']).'kms)';?></option>
+
+      <?php endforeach;
+            endif; ?>
+  </select>
 </div>
-
-
 
  <div class="col-md-4 mb-3">
     <label>&nbsp;</label>
@@ -217,6 +229,12 @@
                                                 <span class="sr-only">Loading...</span>
                                             </div></div>
  </div>
+
+</div>
+
+
+
+
 
  </div>
 
@@ -524,7 +542,7 @@
       });
     }
 
-    google.maps.event.addDomListener(window, 'load', initialize);
+    //google.maps.event.addDomListener(window, 'load', initialize);
 
 
 

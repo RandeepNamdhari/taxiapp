@@ -13,7 +13,7 @@ class BookingModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['user_id','status','booking_date','customer_type','fares_type','tax_type_id'];
 
     // Dates
     protected $useTimestamps = true;
@@ -25,7 +25,7 @@ public static function getBooking(int $booking_id)
 {
     $obj=new self();
 
-    $booking=$obj->select('bookings.*,users.email,users.first_name,users.last_name,users.phone,users.address,users.id as main_user_id,companies.abn_number,companies.acn_number,companies.company_name,companies.id as company_id')->join('users','users.id=bookings.user_id')->join('company_bookings','bookings.id=company_bookings.booking_id','left')->join('companies','companies.id=company_bookings.company_id','left')
+    $booking=$obj->select('bookings.*,users.email,users.first_name,users.last_name,users.phone,users.address,users.id as main_user_id,companies.abn_number,companies.acn_number,companies.company_name,companies.id as company_id,company_bookings.employee_id')->join('users','users.id=bookings.user_id')->join('company_bookings','bookings.id=company_bookings.booking_id','left')->join('companies','companies.id=company_bookings.company_id','left')
     ->find($booking_id);
 
     $booking['booking_details']=\App\Models\BookingDetailModel::getDetails($booking_id);
@@ -37,12 +37,13 @@ public static function getBooking(int $booking_id)
 
    public function updateIfUserExist(array $data)
    {
-       $user= $this->where('email',$data['email'])
+      $userObj=new \App\Models\UserModel;
+       $user= $userObj->where('email',$data['email'])
                    ->orWhere('phone',$data['phone'])->first();
 
                    if($user)
                    {
-                      $this->update($user->id,$data);
+                      $userObj->update($user['id'],$data);
                    }
 
             return $user;
@@ -65,7 +66,7 @@ public static function getBooking(int $booking_id)
 
         else:
 
-        $data['user_id']=$user->id;
+        $data['user_id']=$user['id'];
 
 
          endif;
@@ -73,7 +74,11 @@ public static function getBooking(int $booking_id)
 
          else:
 
-            $data['user_id']=$data['employee'];
+            \App\Models\CompanyBookingModel::attach($data['employee'],$data['company']);
+
+           $employee= \App\Models\EmployeeModel::getEmployee($data['employee']);
+
+            $data['user_id']=$employee->user_id;
 
 
        endif;
@@ -81,15 +86,19 @@ public static function getBooking(int $booking_id)
 
 
          $booking=array('status'=>'pending','user_id'=>$data['user_id'],
-                       'booking_fares'=>100,'booking_date'=>date('Y-m-d-His_'));
+                       'customer_type'=>$data['customer_type'],'fares_type'=>$data['fares_type'],'tax_type_id'=>$data['tax'],'booking_date'=>date('Y-m-d-His_'));
 
-         $booking=$this->insert($booking);
+         $booking_id=$this->insert($booking);
 
-        if($booking && $data['user_id']):
+         $bookingDetail=\App\Models\BookingDetailModel::createOrUpdate($data,$booking_id);
+
+        if($booking && $data['user_id'] && $bookingDetail):
+
+        
 
         $this->transCommit();
 
-        return array('status'=>1,'message'=>'The customer is created successfully.','type'=>'success','redirect'=>base_url('admin/customers'));
+        return array('status'=>1,'message'=>'The booking is created successfully.','type'=>'success','redirect'=>base_url('admin/bookings'));
 
         else:
 
@@ -112,7 +121,10 @@ public static function getBooking(int $booking_id)
 
         $obj=new self();
 
-        $query=$obj->select('bookings.*,users.username,GROUP_CONCAT(booking_details.to_location SEPARATOR "____") as to_locations,GROUP_CONCAT(booking_details.from_location SEPARATOR "____") as from_locations,vehicles.model as vehicle_name,drivers.first_name as driver_name,vehicles.id as vehicle_id')
+        $query=$obj->builder();
+
+
+        $query->select('bookings.*,users.username,GROUP_CONCAT(booking_details.to_location SEPARATOR "____") as to_locations,GROUP_CONCAT(booking_details.from_location SEPARATOR "____") as from_locations,vehicles.model as vehicle_name,drivers.first_name as driver_name,vehicles.id as vehicle_id')
         ->join('booking_details','booking_details.booking_id=bookings.id')
         ->join('users', 'users.id = bookings.user_id')
         ->join('vehicles','booking_details.vehicle_id=vehicles.id')
@@ -122,15 +134,17 @@ public static function getBooking(int $booking_id)
         ->like('vehicles.model',$search)
         ->like('booking_details.to_location',$search)
         ->like('booking_details.from_location',$search)
-        ->groupBy('booking_details.booking_id')
+        ->groupBy('booking_details.booking_id');
 
 
-        ->limit($length, $start)
+
+       $query1= clone $query;
+
+
+        $query=$query->limit($length, $start)
             ->get();
 
            $rows= $query->getResultArray();
-
-
 
            foreach($rows as $index => $row):
 
@@ -147,8 +161,8 @@ public static function getBooking(int $booking_id)
 
         $data = [
             'draw' => $draw,
-            'recordsTotal' => $obj->countAll(),
-            'recordsFiltered' => $obj->countAllResults(),
+            'recordsTotal' => $query1->countAll(),
+            'recordsFiltered' => $query1->countAllResults(),
             'data' => $rows,
         ];
 

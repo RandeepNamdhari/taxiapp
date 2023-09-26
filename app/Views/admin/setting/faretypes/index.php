@@ -114,13 +114,13 @@
         });
     });
 
-    function deleteTaxType(id)
+    function deleteFareType(id)
     {
         if(id)
         {
                 var data={'id':id};
 
-                var url='<?=base_url('admin/settings/taxes/')?>'+id+'/delete';
+                var url='<?=base_url('admin/settings/fare/types/')?>'+id+'/delete';
 
                         __askThenDelete(url,data,function(response)
                                 {
@@ -141,65 +141,15 @@
         {
                 var data={'id':id};
 
-                var url='<?=base_url('admin/settings/taxes/')?>'+id+'/change/status';
+                var url='<?=base_url('admin/settings/fare/types/')?>'+id+'/change/status';
 
                         __postRequest(url,data,__showMessage);
         }
     }
 
-    function editRow(selector)
-    {
-          var rowData = taxesTable.row($(selector).parents('tr').eq(0)).data();
-          console.log(rowData);
-        let code=rowData.code;
+  
 
-        $('#hid').remove();
-
-        $('#addButton').addClass('d-none');
-        $('#updateButton').removeClass('d-none');
-
-
-        $('#taxName').val(rowData.name);
-        $('#taxPercent').val(rowData.percent);
-
-
-        $('#taxName').after('<input type="hidden" id="hid" name="hid" value="'+rowData.id+'"/>');
-
-        $('#taxName').focus();
-
-
-
-
-
-        
-
-    }
-
-   document.getElementById("saveTax").addEventListener("submit", function(event) {
-  event.preventDefault(); // Prevents the form from submitting
-   let data=getFormData('saveTax');
-   let url='<?=base_url('admin/settings/taxes/store')?>';
-  // console.log(data);return false;
-   submitNormalForm('saveTax',url,data,function(data)
-    {
-        
-            if(data.status)
-            {
-         $('#taxName').val('');
-         $('#taxPercent').val('');
-
-
-                $('#hid').remove();
-                 $('#addButton').removeClass('d-none');
-                 if(!$('#updateButton').hasClass('d-none')){
-        $('#updateButton').addClass('d-none');
-
-                 }
-                taxesTable.draw();
-            }
-       
-    });
-});
+  
 </script>
 
 

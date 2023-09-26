@@ -105,9 +105,16 @@ class CustomerModel extends Model
 
         $obj=new self();
 
-        $query=$obj->select('customers.*,customers.id as customer_id, users.username,users.email,users.phone,users.id as id')
-        ->join('users', 'users.id = customers.user_id')->like('users.username',$search)
-        ->limit($length, $start)
+        $query=$obj->builder();
+
+
+      $query->select('customers.*,customers.id as customer_id, users.username,users.email,users.phone,users.id as id')
+        ->join('users', 'users.id = customers.user_id')->like('users.username',$search);
+
+          $query1= clone $query;
+
+
+        $query=$query->limit($length, $start)
             ->get();
 
            $rows= $query->getResultArray();
@@ -125,8 +132,8 @@ class CustomerModel extends Model
 
         $data = [
             'draw' => $draw,
-            'recordsTotal' => $obj->countAll(),
-            'recordsFiltered' => $obj->countAllResults(),
+            'recordsTotal' => $query1->countAll(),
+            'recordsFiltered' => $query1->countAllResults(),
             'data' => $rows,
         ];
 
