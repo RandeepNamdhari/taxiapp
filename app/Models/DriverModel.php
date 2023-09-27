@@ -32,7 +32,7 @@ class DriverModel extends Model
 
         $this->transBegin();
 
-        $userData=['email'=>$data['email'],'phone'=>$data['phone']];
+        $userData=['email'=>$data['email'],'phone'=>$data['phone'],'first_name'=>$data['first_name'],'last_name'=>$data['last_name'],'address'=>$data['address']??'','middle_name'=>$data['middle_name']??''];
 
         $user_id=\App\Models\UserModel::createUser($userData);
 
@@ -93,7 +93,7 @@ class DriverModel extends Model
 
 
 
-        $userData=['email'=>$data['email'],'phone'=>$data['phone']];
+        $userData=['email'=>$data['email'],'phone'=>$data['phone'],'first_name'=>$data['first_name'],'last_name'=>$data['last_name'],'address'=>$data['address']??'','middle_name'=>$data['middle_name']??''];
 
         $user_id=\App\Models\UserModel::updateUser($driver->user_id,$userData);
 
@@ -179,7 +179,7 @@ class DriverModel extends Model
 
        public function list(string $search)
     {
-        $result=$this->select('drivers.*,users.email,users.phone')
+        $result=$this->select('drivers.*,users.email')
                      ->join('users','users.id=drivers.user_id')
                      ->where('drivers.status',1)
                      ->groupStart()

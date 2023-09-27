@@ -136,7 +136,7 @@ class CompanyEmployeeModel extends Model
 
      public function list(string $search,int $company_id)
     {
-        $result=$this->select('users.*')->join('employees','company_employees.employee_id=employees.id')
+        $result=$this->select('users.*,employees.id as id')->join('employees','company_employees.employee_id=employees.id')
         ->join('users','users.id=employees.user_id')
         ->where('company_id',$company_id)->where('employees.status',1)
                      ->groupStart()

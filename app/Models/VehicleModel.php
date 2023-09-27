@@ -194,7 +194,7 @@ class VehicleModel extends Model
     {
         $obj=new self();
 
-        return $obj->find($vehicle_id);
+        return $obj->select('vehicles.*,vehicle_body_types.name as body_type_name')->join('vehicle_body_types','vehicle_body_types.id=vehicles.body_type','left')->find($vehicle_id);
     }
   
 

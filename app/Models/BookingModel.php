@@ -13,7 +13,7 @@ class BookingModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['user_id','status','booking_date','customer_type','fares_type','tax_type_id'];
+    protected $allowedFields    = ['user_id','status','booking_date','customer_type','fares_type','tax_type_id','booking_uid'];
 
     // Dates
     protected $useTimestamps = true;
@@ -25,7 +25,11 @@ public static function getBooking(int $booking_id)
 {
     $obj=new self();
 
-    $booking=$obj->select('bookings.*,users.email,users.first_name,users.last_name,users.phone,users.address,users.id as main_user_id,companies.abn_number,companies.acn_number,companies.company_name,companies.id as company_id,company_bookings.employee_id')->join('users','users.id=bookings.user_id')->join('company_bookings','bookings.id=company_bookings.booking_id','left')->join('companies','companies.id=company_bookings.company_id','left')
+    $booking=$obj->select('bookings.*,users.email,users.first_name,users.last_name,users.phone as user_phone,users.address,users.id as main_user_id,companies.abn_number,companies.acn_number,companies.company_name,companies.id as company_id,employees.id as employee_id,fare_types.amount,fare_types.min_range as fares_min_range,fare_types.max_range as fares_max_range')
+    ->join('fare_types','bookings.fares_type=fare_types.id','left')
+    ->join('users','users.id=bookings.user_id')
+    ->join('employees','users.id=employees.user_id','left')
+    ->join('company_bookings','bookings.id=company_bookings.booking_id','left')->join('companies','companies.id=company_bookings.company_id','left')
     ->find($booking_id);
 
     $booking['booking_details']=\App\Models\BookingDetailModel::getDetails($booking_id);
@@ -74,7 +78,84 @@ public static function getBooking(int $booking_id)
 
          else:
 
-            \App\Models\CompanyBookingModel::attach($data['employee'],$data['company']);
+
+          
+           $employee= \App\Models\EmployeeModel::getEmployee($data['employee']);
+
+           // echo '<pre>';print_r($employee);die;
+
+
+            $data['user_id']=$employee->user_id;
+
+
+       endif;
+
+
+
+         $booking=array('status'=>'pending','user_id'=>$data['user_id'],
+                       'customer_type'=>$data['customer_type'],'fares_type'=>$data['fares_type'],'tax_type_id'=>$data['tax'],'booking_date'=>date('Y-m-d-H:i:s'));
+
+         $booking_id=$this->insert($booking);
+
+         $this->update($booking_id,['booking_uid'=>rand(1111,9999).$booking_id]);
+
+
+         $bookingDetail=\App\Models\BookingDetailModel::createOrUpdate($data,$booking_id);
+
+          if($data['customer_type']==2):
+
+        
+
+           $companyBooking=\App\Models\CompanyBookingModel::attach($booking_id,$data['company']);
+             
+
+      endif;
+
+
+        if($booking && $data['user_id'] && $bookingDetail ):
+
+        
+
+        $this->transCommit();
+
+        return array('status'=>1,'message'=>'The booking is created successfully.','type'=>'success','redirect'=>base_url('admin/bookings'));
+
+        else:
+
+            $this->transRollback();
+
+            throw new DatabaseException('Unable to insert the record.Please try again later.');
+
+        endif;
+
+   }
+
+
+          public function updateBooking(array $data,int $booking_id)   
+   {
+
+
+        $this->transBegin();
+
+        if($data['customer_type']!=2):
+
+        $userData=['email'=>$data['email'],'phone'=>$data['phone'],'first_name'=>$data['first_name'],'last_name'=>$data['last_name'],'address'=>$data['address']];
+
+        if(!$user=$this->updateIfUserExist($userData)):
+
+        $user_id=\App\Models\UserModel::createUser($userData);
+
+        $data['user_id']=$user_id;
+
+        else:
+
+        $data['user_id']=$user['id'];
+
+
+         endif;
+
+
+         else:
 
            $employee= \App\Models\EmployeeModel::getEmployee($data['employee']);
 
@@ -88,7 +169,21 @@ public static function getBooking(int $booking_id)
          $booking=array('status'=>'pending','user_id'=>$data['user_id'],
                        'customer_type'=>$data['customer_type'],'fares_type'=>$data['fares_type'],'tax_type_id'=>$data['tax'],'booking_date'=>date('Y-m-d-His_'));
 
-         $booking_id=$this->insert($booking);
+         $update=$this->update($booking_id,$booking);
+
+         if($data['customer_type']==2):
+
+          \App\Models\CompanyBookingModel::CheckAndAttach($booking_id,$data['company']);
+      else:
+
+         \App\Models\CompanyBookingModel::CheckAndDetach($booking_id,$data['company']);
+
+
+
+      endif;
+
+  
+
 
          $bookingDetail=\App\Models\BookingDetailModel::createOrUpdate($data,$booking_id);
 
@@ -98,7 +193,7 @@ public static function getBooking(int $booking_id)
 
         $this->transCommit();
 
-        return array('status'=>1,'message'=>'The booking is created successfully.','type'=>'success','redirect'=>base_url('admin/bookings'));
+        return array('status'=>1,'message'=>'The booking is updated successfully.','type'=>'success','redirect'=>base_url('admin/bookings'));
 
         else:
 
@@ -124,7 +219,7 @@ public static function getBooking(int $booking_id)
         $query=$obj->builder();
 
 
-        $query->select('bookings.*,users.username,GROUP_CONCAT(booking_details.to_location SEPARATOR "____") as to_locations,GROUP_CONCAT(booking_details.from_location SEPARATOR "____") as from_locations,vehicles.model as vehicle_name,drivers.first_name as driver_name,vehicles.id as vehicle_id')
+        $query->select('bookings.*,users.first_name,GROUP_CONCAT(booking_details.to_location SEPARATOR "____") as to_locations,GROUP_CONCAT(booking_details.from_location SEPARATOR "____") as from_locations,vehicles.model as vehicle_name,drivers.first_name as driver_name,vehicles.id as vehicle_id')
         ->join('booking_details','booking_details.booking_id=bookings.id')
         ->join('users', 'users.id = bookings.user_id')
         ->join('vehicles','booking_details.vehicle_id=vehicles.id')
@@ -152,7 +247,7 @@ public static function getBooking(int $booking_id)
             $row['actions']=$obj->actions($row);
             $row['booking_date']=date('d M Y',strtotime($row['booking_date']));
             $row['status']=$obj->getStatus($row);
-            $row['vehicle_name']=$obj->getVehicleWithImg($row['vehicle_id'])??$row['vehicle_name'];
+            $row['vehicle_name']=$obj->getVehicleWithImg($row['vehicle_id'],$row['vehicle_name']);
             $row['locations']='<b>From:</b>'.$row['from_locations'].' <br><b>To:</b> '.$row['to_locations'];
 
                 $rows[$index]=$row;
@@ -169,16 +264,16 @@ public static function getBooking(int $booking_id)
         return $data;
     }
 
-    public function getVehicleWithImg($vehicle_id)
+    public function getVehicleWithImg($vehicle_id,$vehicle_name)
     {
         $file=\App\Models\MediaModel::getFirstOrDefaultMedia('Vehicle',$vehicle_id);
 
      
         if(isset($file['file_thumb_path'])):
 
-            return '<img src="'.base_url($file['file_thumb_path']).'" class="w-100">';
+            return '<img src="'.base_url($file['file_thumb_path']).'" class="w-100"><br>'.$vehicle_name;
         else:
-             return false;
+             return $vehicle_name;
 
          endif;
     }

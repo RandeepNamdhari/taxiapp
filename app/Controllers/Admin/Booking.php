@@ -24,6 +24,23 @@ class Booking extends BaseController
 
     }
 
+    public function view(int $booking_id)
+    {
+        $data['currentRoute']='admin-bookings';
+        $data['pageTitle']='View Booking';
+
+        $data['response']= run_with_exceptions(function() use($booking_id){ 
+             
+             $data['booking']=\App\Models\BookingModel::getBooking($booking_id);
+
+
+             return array('status'=>1,'data'=>$data);
+
+        });      
+
+        return view('admin/booking/view',$data);
+    }
+
 
 
 
@@ -156,6 +173,66 @@ class Booking extends BaseController
 
         return view('admin/booking/edit',$data);
     }
+
+
+
+        public function update(int $id)
+    {
+    
+
+
+
+      $response=run_with_exceptions(function() use ($id)
+      {
+
+          $data = $this->request->getJSON(true);
+
+
+
+          $rule = [
+                   
+                   'pickup_time'=>'required',
+                   'vehicle'=>'required',
+                   'driver'=>'required',
+                   'from_location'=>'required',
+                   'to_location'=>'required',
+                   'fares_type'=>'required',
+
+                  ];
+
+        if($data['customer_type']==2):
+            $rule+=['company'=>'required','employee'=>'required'];
+
+        else:
+
+            $rule+=['first_name'   => 'required',
+                   'last_name' =>'required',
+                   'phone'=>'required|is_unique[users.phone,id,'.$data['user_id'].']',
+                   'email' => 'required|is_unique[users.email,id,'.$data['user_id'].']',];
+
+        endif;
+
+        if (! $this->validateData($data, $rule)) {
+             return array('status'=>0,
+                             'errors'=>$this->validator->getErrors(),
+                             'message'=>'Validation Error Occur!',
+                             'type'=>'warning');
+            
+        }
+        else
+        {
+            $booking=new \App\Models\BookingModel();
+            
+            return $booking->updateBooking($data,$id);
+           
+        }
+         });
+
+
+        //echo '<pre>';print_r($response);die;
+        return $this->response->setJSON($response);
+       
+           }
 
 
    

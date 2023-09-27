@@ -48,7 +48,7 @@
 
                                         <form class="mt-3" id="bookingForm">
 
-                                            <input type="hidden" id="customerTypeId" name="customer_type">
+                                            <input type="hidden" id="customerTypeId" value="1" name="customer_type">
 
                                             
 
@@ -81,7 +81,7 @@
                                             <div class="row carporate d-none mb-3">
                                             <div class="col-md-4 mb-6">
  <label>Select Company</label>
- <input  type="text" name="" onkeyup="showCompanies(this,'#companyList')" class="form-control" id="companySearchBox" placeholder="Choose Company" >
+ <input  type="text" name="companySearchBox" onkeyup="showCompanies(this,'#companyList')" class="form-control" id="companySearchBox" placeholder="Choose Company" >
  <div id="companyList" class="" style="border:1px solid lightgray;border-top:none;">
 
      
@@ -91,8 +91,8 @@
  </div>   
 
      <div class="col-md-4 mb-6">
- <label>Select Company</label>
- <input  type="text" name="" onkeyup="showEmployees(this,'#employeeList')" class="form-control" id="employeeSearchBox" placeholder="Choose Employee" >
+ <label>Select Employee</label>
+ <input  type="text" name="employeeSearchBox" onkeyup="showEmployees(this,'#employeeList')" class="form-control" id="employeeSearchBox" placeholder="Choose Employee" >
  <div id="employeeList" class="" style="border:1px solid lightgray;border-top:none;">
 
      
@@ -160,7 +160,7 @@
 
  <div class="col-md-4 mb-6">
  <label>Select Vehicle</label>
- <input  type="text" name="" onkeyup="showVehicles(this,'#vehicleListByAjax')" class="form-control" id="vehicleSearchBox" placeholder="Choose Vehicle" >
+ <input  type="text" name="vehicleSearchBox" onkeyup="showVehicles(this,'#vehicleListByAjax')" class="form-control" id="vehicleSearchBox" placeholder="Choose Vehicle" >
  <div id="vehicleListByAjax" class="" style="border:1px solid lightgray;border-top:none;">
 
      
@@ -171,7 +171,7 @@
 
   <div class="col-md-4 mb-6">
  <label>Select Driver</label>
- <input  type="text" name="" onkeyup="showDrivers(this,'#driverListByAjax')" class="form-control" id="driverSearchBox" placeholder="Choose Driver" >
+ <input  type="text" name="driverSearchBox" onkeyup="showDrivers(this,'#driverListByAjax')" class="form-control" id="driverSearchBox" placeholder="Choose Driver" >
  <div id="driverListByAjax" class="" style="border:1px solid lightgray;border-top:none;">
 
      
@@ -494,8 +494,7 @@
 
            $(selector).addClass('bg-warning');
 
-           $('#customerTypeId').val(type);
-
+       
            if(type==2)
            {
                $('.carporate').removeClass('d-none');
@@ -509,6 +508,9 @@
 
            }
        }
+
+           $('#customerTypeId').val(type);
+
     }
 
 

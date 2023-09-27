@@ -52,6 +52,7 @@
                                             <thead>
                                             <tr>
                                                 <th>S.No.</th>
+                                                <th>Booking ID</th>
                                                 <th>Customer Name</th>
                                                 <th>Driver</th>
                                                 <th>Vehicle</th>
@@ -96,7 +97,9 @@
             serverSide:true,
             columns: [
                 {data:'serial_no'},
-                { data: 'username' },
+                {data:'booking_uid'},
+
+                { data: 'first_name' },
                 { data: 'driver_name' },
                 { data: 'vehicle_name' },
                 { data: 'booking_fares' },

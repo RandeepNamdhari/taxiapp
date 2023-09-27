@@ -20,7 +20,7 @@ class BookingDetailModel extends Model
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+   
 
     public static function getDetails(int $booking_id)
     {
@@ -38,10 +38,11 @@ class BookingDetailModel extends Model
     }
 
 
-    public static function createOrUpdate(array $data,int $booking_id)
+    public static function createOrUpdate($data,int $booking_id)
     {
       
       $obj=new self();
+
 
 
 
@@ -49,16 +50,20 @@ class BookingDetailModel extends Model
                            'driver_id'=>$data['driver'],
                            'booking_id'=>$booking_id,
                            'from_location'=>$data['from_location'],
-                           // 'to_location'=>$data['to_location'],'from_location_latitude'=>$data['from_location_latitude']??'0',
-                            // 'from_location_longitude'=>$data['from_location_longitude']??'0',
-                            // 'to_location_latitude'=>$data['to_location_latitude']??'0','to_location_longitude'=>$data['to_location_longitude']??'0'
-                            // ,'distance'=>$data['distance']??'0',
-                            // 'estimate_time'=>$data['estimate_time']??'0',
-                            'pickup_time'=>$data['pickup_time']??'dlfld',
-                            // 'drop_time'=>$data['drop_time']??'0',
-                            // 'fares'=>$data['fares']??'0',
-                            // 'note'=>$data['note']??'0',
-                            ,'status'=>'pending');
+                           'to_location'=>$data['to_location'],
+                           'from_location_latitude'=>$data['from_location_latitude']??'',
+                            'from_location_longitude'=>$data['from_location_longitude']??'',
+                            'to_location_latitude'=>$data['to_location_latitude']??'0',
+                            'to_location_longitude'=>$data['to_location_longitude']??'',
+                            'distance'=>$data['distance']??'',
+                            'estimate_time'=>$data['estimate_time']??'',
+                            'pickup_time'=>$data['pickup_time']??'',
+                            'drop_time'=>$data['drop_time']??'',
+                            'fares'=>$data['fares']??'0',
+                            'note'=>$data['note']??'',
+                            'status'=>'pending');
+
+      //print_r($data);die;
 
       if(isset($data['booking_detail_id'])):
 

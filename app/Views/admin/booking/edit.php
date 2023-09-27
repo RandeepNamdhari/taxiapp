@@ -190,6 +190,8 @@
 
                                             <div class="row">
 
+                                                <input type="hidden" name="booking_detail_id" value="<?=$booking_detail['id']??''?>">
+
 
              <div class="col-md-6 mb-6">
  <label>From Where</label>
@@ -246,7 +248,7 @@
     <div class="col-md-4 mb-6">
 
     <label> Tax</label>
- <select class="form-select" name="state"  >
+ <select class="form-select" name="tax"  >
  <option value="">Select Tax Type</option>
 <?php if(isset($response['data']['taxes']) && count($response['data']['taxes'])):
       foreach($response['data']['taxes'] as $tax):
@@ -336,7 +338,7 @@
                      document.getElementById("bookingForm").addEventListener("submit", function(event) {
   event.preventDefault(); // Prevents the form from submitting
    let data=getFormData('bookingForm');
-   let url='<?=base_url('admin/bookings/store')?>'
+   let url='<?=base_url('admin/bookings/'.($booking['id']??'').'/update')?>'
   // console.log(data);return false;
    submitNormalForm('bookingForm',url,data);
 });
@@ -563,7 +565,6 @@
 
            $(selector).addClass('bg-warning');
 
-           $('#customerTypeId').val(type);
 
            if(type==2)
            {
@@ -578,6 +579,8 @@
 
            }
        }
+           $('#customerTypeId').val(type);
+
     }
 
 
