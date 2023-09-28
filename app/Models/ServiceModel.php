@@ -4,16 +4,16 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class FareTypeModel extends Model
+class ServiceModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'fare_types';
+    protected $table            = 'services';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['name','min_range','max_range','amount','status'];
+    protected $allowedFields    = ['name','amount','status'];
 
     // Dates
     protected $useTimestamps = true;
@@ -27,13 +27,13 @@ class FareTypeModel extends Model
     {
         $obj=new self();
 
-        return $obj->findAll();
+        return $obj->where('status',1)->findAll();
 
      
 
     }
 
-    public static function getType(int $id)
+    public static function getService(int $id)
     {
         $obj=new self();
 
@@ -43,11 +43,6 @@ class FareTypeModel extends Model
        public function createOrUpdate($data)
    {
 
-
-      $range=explode(';', $data['range']);
-
-      $data['min_range']=$range[0]??1;
-      $data['max_range']=$range[1]??100;
        
 
         if(isset($data['hid'])):
@@ -66,12 +61,12 @@ class FareTypeModel extends Model
         if($res):
 
 
-        return array('status'=>1,'message'=>'The fare type is create or updated successfully.','type'=>'success','redirect'=>base_url('admin/settings/fare/types'));
+        return array('status'=>1,'message'=>'The service is create or updated successfully.','type'=>'success','redirect'=>base_url('admin/services'));
 
         else:
 
 
-            throw new DatabaseException('Unable to insert the record.Please try again later.');
+            throw new DatabaseException('Unable to insert or update the record.Please try again later.');
 
         endif;
 
@@ -88,13 +83,14 @@ class FareTypeModel extends Model
 
         $obj=new self();
 
-        $query=$obj->builder();
+           $query=$obj->builder();
 
-        $query->select('fare_types.*')->like('name',$search);
+
+
+        $query->select('services.*')->like('name',$search);
 
         $query1=clone $query;
-
-
+        
         $query=$query->limit($length, $start)->orderBy('name',$order)
             ->get();
 
@@ -104,8 +100,7 @@ class FareTypeModel extends Model
 
             $row['serial_no']=$index+1;
             $row['actions']=$obj->actions($row);
-            $row['min_range']=$row['min_range'].' km';
-            $row['max_range']=$row['max_range'].' km';
+           
             $row['amount']=system_setting('currency_icon').''.$row['amount'];
 
            
@@ -127,7 +122,7 @@ class FareTypeModel extends Model
 
     public function actions($row)
     {
-      return '<div class="btn-group"><button class="btn btn-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions<i class="mdi mdi-chevron-down"></i></button><div class="dropdown-menu" style=""><a class="dropdown-item" href="'.base_url('admin/settings/fare/types/'.$row['id'].'/edit').'" ><i class="fas fa-user-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit</a><a class="dropdown-item" href="javascript:void(0)" onclick="deleteFareType('.$row['id'].')"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></div></div>';
+      return '<div class="btn-group"><button class="btn btn-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions<i class="mdi mdi-chevron-down"></i></button><div class="dropdown-menu" style=""><a class="dropdown-item" href="'.base_url('admin/services/'.$row['id'].'/edit').'" ><i class="fas fa-user-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit</a><a class="dropdown-item" href="javascript:void(0)" onclick="deleteService('.$row['id'].')"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></div></div>';
 
       // <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Separated link</a>
     }
@@ -159,12 +154,10 @@ class FareTypeModel extends Model
     {
         $obj=new self();
 
-        $fare_type= $obj->find($id);
-
-        
+        $serviceObj= $obj->find($id);        
 
 
-        return $obj->update($id,['status'=>!$fare_type['status']]);
+        return $obj->update($id,['status'=>!$serviceObj['status']]);
     }
 
 

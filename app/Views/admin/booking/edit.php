@@ -283,7 +283,7 @@
 
        ?>
 
-        <option <?=$sel?> value="<?=$fare_type['id']?>"><?=$fare_type['name'].' '.$fare_type['amount'].' '.'('.round($fare_type['min_range']).'km - '.round($fare_type['max_range']).'kms)';?></option>
+        <option <?=$sel?> value="<?=$fare_type['id']?>"><?=$fare_type['name'].' '.system_setting('currency_icon').$fare_type['amount'].' '.'('.round($fare_type['min_range']).'km - '.round($fare_type['max_range']).'kms)';?></option>
 
       <?php endforeach;
             endif; ?>

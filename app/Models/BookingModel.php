@@ -224,11 +224,15 @@ public static function getBooking(int $booking_id)
         ->join('users', 'users.id = bookings.user_id')
         ->join('vehicles','booking_details.vehicle_id=vehicles.id')
         ->join('drivers','booking_details.driver_id=drivers.id')
+        ->groupStart()
         ->like('users.username',$search)
-        ->like('drivers.first_name',$search)
-        ->like('vehicles.model',$search)
-        ->like('booking_details.to_location',$search)
-        ->like('booking_details.from_location',$search)
+        ->orlike('drivers.first_name',$search)
+        ->orlike('vehicles.model',$search)
+        ->orlike('booking_details.to_location',$search)
+        ->orlike('booking_details.from_location',$search)
+        ->orlike('bookings.booking_uid',$search)
+
+        ->groupEnd()
         ->groupBy('booking_details.booking_id');
 
 
@@ -256,7 +260,7 @@ public static function getBooking(int $booking_id)
 
         $data = [
             'draw' => $draw,
-            'recordsTotal' => $query1->countAll(),
+            'recordsTotal' => $obj->countAll(),
             'recordsFiltered' => $query1->countAllResults(),
             'data' => $rows,
         ];
@@ -280,7 +284,9 @@ public static function getBooking(int $booking_id)
 
     public function actions($row)
     {
-      return '<div class="btn-group"><button class="btn btn-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions<i class="mdi mdi-chevron-down"></i></button><div class="dropdown-menu" style=""><a class="dropdown-item" href="'.base_url('admin/bookings/'.$row['id'].'/view').'"><i class="fas fa-eye"></i>&nbsp;&nbsp;&nbsp;&nbsp;View</a><a class="dropdown-item" href="'.base_url('admin/bookings/'.$row['id'].'/edit').'"><i class="fas fa-user-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit</a><a class="dropdown-item" href="javascript:void(0)" onclick="deleteBooking('.$row['id'].')"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></div></div>';
+      return '<div class="btn-group"><button class="btn btn-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions<i class="mdi mdi-chevron-down"></i></button><div class="dropdown-menu" style="">
+      <a class="dropdown-item" href="javascript:void(0)" onclick="showAddons('.$row['id'].')"><i class="fas fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Addon</a>
+      <a class="dropdown-item" href="'.base_url('admin/bookings/'.$row['id'].'/view').'"><i class="fas fa-eye"></i>&nbsp;&nbsp;&nbsp;&nbsp;View</a><a class="dropdown-item" href="'.base_url('admin/bookings/'.$row['id'].'/edit').'"><i class="fas fa-user-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit</a><a class="dropdown-item" href="javascript:void(0)" onclick="deleteBooking('.$row['id'].')"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></div></div>';
 
     }
 
@@ -309,6 +315,19 @@ public static function getBooking(int $booking_id)
         $obj=new self();
 
         return $obj->delete($id);
+    }
+
+
+    public function addon(array $data)
+    {
+        if($data['bookingID']):
+
+
+            $addon=\App\Models\BookingAddOnModel::create($data);
+
+            return array('status'=>1,'message'=>'The addon is added to your booking successfully','type'=>'success');
+
+        endif;
     }
 
     

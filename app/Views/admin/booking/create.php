@@ -214,7 +214,7 @@
 <?php if(isset($response['data']['fare_types']) && count($response['data']['fare_types'])):
       foreach($response['data']['fare_types'] as $fare_type): ?>
 
-        <option value="<?=$fare_type['id']?>"><?=$fare_type['name'].' '.$fare_type['amount'].' '.'('.round($fare_type['min_range']).'km - '.round($fare_type['max_range']).'kms)';?></option>
+        <option value="<?=$fare_type['id']?>"><?=$fare_type['name'].' '.system_setting('currency_icon').$fare_type['amount'].' '.'('.round($fare_type['min_range']).'km - '.round($fare_type['max_range']).'kms)';?></option>
 
       <?php endforeach;
             endif; ?>

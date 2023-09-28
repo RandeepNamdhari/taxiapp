@@ -19,6 +19,14 @@ class Booking extends BaseController
 
         $data['pageTitle']='Bookings';
         $data['currentRoute']='admin-bookings';
+        $data['response']= run_with_exceptions(function(){
+
+        $data['services']=\App\Models\ServiceModel::all();
+
+        return array('status'=>1,'data'=>$data);
+
+
+        });
 
         return view('admin/booking/index',$data);
 
@@ -230,6 +238,47 @@ class Booking extends BaseController
 
 
         //echo '<pre>';print_r($response);die;
+        return $this->response->setJSON($response);
+       
+           }
+
+         public function addon()
+    {
+    
+
+
+
+      $response=run_with_exceptions(function()
+      {
+
+          $data = $this->request->getJSON(true);
+
+      
+
+          $rule = [                  
+                   'service'=>'required',
+                  ];
+
+      
+
+        if (! $this->validateData($data, $rule)) {
+             return array('status'=>0,
+                             'errors'=>$this->validator->getErrors(),
+                             'message'=>'Validation Error Occur!',
+                             'type'=>'warning');
+            
+        }
+        else
+        {
+            $booking=new \App\Models\BookingModel();
+            
+            return $booking->addon($data);
+           
+        }
+         });
+
+
+        
         return $this->response->setJSON($response);
        
            }

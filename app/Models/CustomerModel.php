@@ -132,7 +132,7 @@ class CustomerModel extends Model
 
         $data = [
             'draw' => $draw,
-            'recordsTotal' => $query1->countAll(),
+            'recordsTotal' => $obj->countAll(),
             'recordsFiltered' => $query1->countAllResults(),
             'data' => $rows,
         ];

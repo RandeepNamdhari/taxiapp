@@ -73,8 +73,15 @@ class VehicleBodyTypeModel extends Model
 
         $obj=new self();
 
-        $query=$obj->select('vehicle_body_types.*')->like('name',$search)
-        ->limit($length, $start)->orderBy('name',$order)
+        $query=$obj->builder();
+
+
+
+        $query->select('vehicle_body_types.*')->like('name',$search);
+
+        $query1=clone $query;
+
+        $query=$query->limit($length, $start)->orderBy('name',$order)
             ->get();
 
            $rows= $query->getResultArray();
@@ -93,7 +100,7 @@ class VehicleBodyTypeModel extends Model
         $data = [
             'draw' => $draw,
             'recordsTotal' => $obj->countAll(),
-            'recordsFiltered' => $obj->countAllResults(),
+            'recordsFiltered' => $query1->countAllResults(),
             'data' => $rows,
         ];
 

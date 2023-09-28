@@ -78,8 +78,14 @@ class TaxTypeModel extends Model
 
         $obj=new self();
 
-        $query=$obj->select('tax_types.*')->like('name',$search)
-        ->limit($length, $start)->orderBy('percent',$order)
+        $query=$obj->builder();
+
+        $query->select('tax_types.*')->like('name',$search);
+
+        $query1=clone $query;
+
+
+        $query=$query->limit($length, $start)->orderBy('percent',$order)
             ->get();
 
            $rows= $query->getResultArray();
@@ -98,7 +104,7 @@ class TaxTypeModel extends Model
         $data = [
             'draw' => $draw,
             'recordsTotal' => $obj->countAll(),
-            'recordsFiltered' => $obj->countAllResults(),
+            'recordsFiltered' => $query1->countAllResults(),
             'data' => $rows,
         ];
 

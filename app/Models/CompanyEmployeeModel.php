@@ -80,7 +80,7 @@ class CompanyEmployeeModel extends Model
 
             $query1= clone $query;
 
-            $countAll=$query1->countAll();
+            $countAll=$obj->countAll();
             $filterResult=$query1->countAllResults();
 
 

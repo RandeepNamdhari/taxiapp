@@ -17,6 +17,13 @@
 
 
           <style>
+
+        span.currency_icon
+        {
+            position: relative;
+    top: -28px;
+    left: 12px;
+        }
         
 
         .vehicle-card:hover

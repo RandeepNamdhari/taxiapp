@@ -1,4 +1,6 @@
 <?php
+ use App\Models\SystemSettingModel;
+
    global $colors;  
 
    $colors=array('A'=>'lightgreen',
@@ -13,6 +15,20 @@ if (!function_exists('randomColor')) {
        
         return $GLOBALS['colors'][strtoupper(mb_substr($string, 0, 1))];
         
+
+            
+    }
+
+ 
+}
+
+if (!function_exists('system_setting')) {
+    function system_setting(string $key)
+    {
+       
+        $obj=new SystemSettingModel();
+
+        return $obj->getSetting($key);
 
             
     }

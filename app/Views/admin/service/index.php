@@ -1,4 +1,3 @@
-
 <?= $this->extend('admin/layouts/master') ?>
 
 <?=$this->section('page-style')?>
@@ -25,11 +24,11 @@
                         <div class="page-title-box">
                             <div class="row align-items-center">
                                 <div class="col-md-8">
-                                    <h6 class="page-title">Bookings</h6>
+                                    <h6 class="page-title">Services</h6>
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="<?=base_url('admin')?>">Home</a></li>
-                                        <li class="breadcrumb-item"><a href="#">Booking Management</a></li>
-                                        <li class="breadcrumb-item active"><a href="<?=base_url('admin/bookings')?>">Bookings</a></li>
+                                     
+                                        <li class="breadcrumb-item active"><a href="<?=base_url('admin/services')?>">Services</a></li>
                                         
                                     </ol>
                                 </div>
@@ -37,8 +36,8 @@
                                 <div class="col-md-4">
                                     <div class="text-end">
                                      
-                                          <a href="<?=base_url('admin/bookings/create')?>" class="btn btn-outline-primary waves-effect waves-light">
-                                              <i class="fas fa-plus-circle"></i>&nbsp;Add New Booking
+                                          <a href="<?=base_url('admin/services/create')?>" class="btn btn-outline-primary waves-effect waves-light">
+                                              <i class="fas fa-plus-circle"></i>&nbsp;Add New Service
                                             </a>
                                       
                                     </div>
@@ -48,19 +47,18 @@
                         </div>
                         <!-- end page title -->
 
-                            <table id="BookingTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+
+
+                            <table id="servicesTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
 
                                             <thead>
                                             <tr>
                                                 <th>S.No.</th>
-                                                <th>Booking ID</th>
-                                                <th>Customer Name</th>
-                                                <th>Driver</th>
-                                                <th>Vehicle</th>
-                                                <th>Amount</th>
-                                                <th>Location</th>
-                                                <th class="text-center">Status</th>
-                                                <th>Booking Date</th>
+                                                <th>Name</th>
+                                                <th>Service Charge</th>
+                                              
+                                                <th>Status</th>
+                                              
                                                 <th>Action</th>
 
                                             </tr>
@@ -80,7 +78,7 @@
 
 
 
-<?=view('admin/partials/booking_addon_modal',$response['data'])?>
+
 
 <?=$this->endSection()?>
 
@@ -91,53 +89,36 @@
  <?=script_tag('admin/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js')?>
 
  <script type="text/javascript">
-
-         document.getElementById("addOnForm").addEventListener("submit", function(event) {
-  event.preventDefault(); // Prevents the form from submitting
-   let data=getFormData('addOnForm');
-   let url='<?=base_url('admin/bookings/add/addon')?>'
-  // console.log(data);return false;
-   submitNormalForm('addOnForm',url,data,function(data){
-    if(data.status)
-    {
-        $('.addOnModal').modal('hide');
-    }
-   });
-});
-
-
-        let BookingTable;
+        let servicesTable;
     $(document).ready(function () {
-         BookingTable=$('#BookingTable').DataTable({
-            ajax: '<?= base_url('admin/bookings') ?>', // AJAX endpoint
+         servicesTable=$('#servicesTable').DataTable({
+            ajax: '<?= base_url('admin/services') ?>', // AJAX endpoint
             serverSide:true,
             columns: [
-                {data:'serial_no'},
-                {data:'booking_uid'},
+                {data:'serial_no','sortable':false},
+                { data: 'name','sortable':true },
+                { data: 'amount','sortable':false },
 
-                { data: 'first_name' },
-                { data: 'driver_name' },
-                { data: 'vehicle_name' },
-                { data: 'booking_fares' },
-                { data: 'locations' },
-                { data: 'status' },
+            
 
-                { data: 'booking_date' },
+
+                { data: 'status','sortable':false },
+
               
-                {data:'actions'}
+                {data:'actions','sortable':false}
 
                 // Add more columns as needed
             ]
         });
     });
 
-    function deleteBooking(id)
+    function deleteService(id)
     {
         if(id)
         {
                 var data={'id':id};
 
-                var url='<?=base_url('admin/bookings/')?>'+id+'/delete';
+                var url='<?=base_url('admin/services/')?>'+id+'/delete';
 
                         __askThenDelete(url,data,function(response)
                                 {
@@ -145,7 +126,7 @@
 
                                           if(data.status)
                                           {
-                                              BookingTable.draw();
+                                              servicesTable.draw();
                                           }
                                        })
                                 });
@@ -158,22 +139,15 @@
         {
                 var data={'id':id};
 
-                var url='<?=base_url('admin/customers/')?>'+id+'/change/status';
+                var url='<?=base_url('admin/services/')?>'+id+'/change/status';
 
                         __postRequest(url,data,__showMessage);
         }
     }
 
-    function showAddons(id)
-    {
-        $('.addOnModal').modal('show');
-        $('#addOnBookingId').val(id);
-    }
+  
 
-    function setServicePrice(selector)
-    {
-        $('#servicePrice').val($(selector).find('option:selected').attr('data-price'));
-    }
+  
 </script>
 
 

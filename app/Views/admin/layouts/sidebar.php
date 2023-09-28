@@ -69,6 +69,16 @@
 
                             <!--End Bookings -->
 
+                            <!--services-->
+
+                              <li class="<?php echo ($currentRoute=='admin-services')?'mm-active':''?>">
+                                <a href="<?=base_url('admin/services')?>" class="waves-effect <?php echo ($currentRoute=='admin-services')?'active':''?>">
+                                    <i class="ti-home"></i>
+                                      <!--   <span class="badge rounded-pill bg-primary float-end">1</span> -->
+                                    <span>Services</span>
+                                </a>
+                            </li>
+
                             <!--Settings-->
 
 

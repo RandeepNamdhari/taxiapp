@@ -78,8 +78,13 @@ class StateModel extends Model
 
         $obj=new self();
 
-        $query=$obj->select('states.*')->like('code',$search)
-        ->limit($length, $start)->orderBy('code',$order)
+        $query=$obj->builder();
+
+       $query->select('states.*')->like('code',$search);
+
+       $query1=clone $query;
+
+        $query=$query->limit($length, $start)->orderBy('code',$order)
             ->get();
 
            $rows= $query->getResultArray();
@@ -98,7 +103,7 @@ class StateModel extends Model
         $data = [
             'draw' => $draw,
             'recordsTotal' => $obj->countAll(),
-            'recordsFiltered' => $obj->countAllResults(),
+            'recordsFiltered' => $query1->countAllResults(),
             'data' => $rows,
         ];
 

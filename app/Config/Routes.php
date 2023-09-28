@@ -223,13 +223,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     $routes->post('settings/fare/types/(:num)/delete', 'FareType::delete/$1');
 
 
-
-
-
-
-
-
-    //End Settings Routes
+        //End Settings Routes
 
     // Bookings Routes
     $routes->get('bookings', 'Booking::index');
@@ -247,6 +241,12 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     $routes->get('bookings/(:num)/edit', 'Booking::edit/$1');
 
     $routes->post('bookings/(:num)/update', 'Booking::update/$1');
+
+
+    
+
+    $routes->post('bookings/add/addon', 'Booking::addon');
+
 
 
 
@@ -343,6 +343,42 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
 
     // End Company Routes
+
+
+    /* --- Services Routes -- */
+
+     $routes->get('services','Service::index');
+    $routes->post('services','Service::index');
+      $routes->get('services/create','Service::create');
+
+
+    $routes->post('services/store','Service::store');
+
+     $routes->get('services/(:num)/edit','Service::edit/$1');
+      
+
+    $routes->post('services/(:num)/update','Service::update/$1');
+
+    $routes->post('services/(:num)/change/status', 'Service::status/$1');
+    $routes->post('services/(:num)/delete', 'Service::delete/$1');
+
+    /* --- End Services Routes --*/
+
+
+     $routes->get('settings/fare/types','FareType::index');
+    $routes->post('settings/fare/types','FareType::index');
+      $routes->get('settings/fare/types/create','FareType::create');
+
+
+    $routes->post('settings/fare/types/store','FareType::store');
+
+     $routes->get('settings/fare/types/(:num)/edit','FareType::edit/$1');
+      
+
+    $routes->post('settings/fare/types/(:num)/update','FareType::update/$1');
+
+    $routes->post('settings/fare/types/(:num)/change/status', 'FareType::status/$1');
+    $routes->post('settings/fare/types/(:num)/delete', 'FareType::delete/$1');
 
 
     
