@@ -47,7 +47,7 @@ class BookingDetailModel extends Model
 
 
       $bookingDetail=array('vehicle_id'=>$data['vehicle'],
-                           'driver_id'=>$data['driver'],
+                           'driver_id'=>$data['driver']??'',
                            'booking_id'=>$booking_id,
                            'from_location'=>$data['from_location'],
                            'to_location'=>$data['to_location'],
@@ -79,5 +79,12 @@ class BookingDetailModel extends Model
 
 
 
+    }
+
+    public static function attachDriver(int $driver_id,int $booking_id)
+    {
+        $obj=new self();
+
+        return $obj->where('booking_id',$booking_id)->set(['driver_id'=>$driver_id])->update();
     }
 }

@@ -202,4 +202,13 @@ class DriverModel extends Model
     }
 
 
+
+    public function getDriverRow(int $driver_id)
+    {
+       
+
+        return $this->select('drivers.*,users.email,users.phone')->join('users','users.id=drivers.user_id')->find($driver_id);
+    }
+
+
 }

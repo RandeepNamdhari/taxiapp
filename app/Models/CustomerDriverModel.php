@@ -27,7 +27,10 @@ class CustomerDriverModel extends Model
     {
         $obj=new self();
 
-        return $obj->where('customer_id',$customer_id)->countAll();
+       // echo '<pre>';print_r($customer_id);die;
+
+
+        return $obj->where('customer_id',$customer_id)->countAllResults();
     }
 
 

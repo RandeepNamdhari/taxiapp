@@ -109,12 +109,12 @@
 
                                                  <div class="col-md-4 mb-3">
  <label> Email</label>
- <input  type="text" name="email" class="form-control" placeholder="Email"  onfocusout ="checkIfUserExist(this)" autocomplete="no-autofill" >
+ <input  type="text" id="userEmail" name="email" class="form-control" placeholder="Email" autocomplete="no-autofill" >
  <input type="hidden" name="user_id" id="userId">
  </div>
  <div class="col-md-6 mb-3">
  <label>Phone Number</label>
- <input  type="text" id="userPhone" name="phone" class="form-control" placeholder="Phone Number" >
+ <input  type="text" id="userPhone"   onkeyup ="checkIfUserExist(this)" name="phone" class="form-control" placeholder="Phone Number" >
  </div>
                                             </div>
                                            
@@ -462,9 +462,10 @@
                                 $('#userFirstName').val(user.first_name);
                                 $('#userLastName').val(user.last_name);
                                 $('#userAddress').val(user.address);
-                                $('#userPhone').val(user.phone);
+                               // $('#userPhone').val(user.phone);
                                 $('#userAddress').val(user.address);
                                 $('#userId').val(user.id);
+                                $('#userEmail').val(user.email);
 
                           //   if(!$('#moreDetails').hasClass('d-none'))
 

@@ -44,11 +44,11 @@ class CompanyBookingModel extends Model
     }
 
     
-     public static function CheckAndDetach(int $booking_id,int $company_id)
+     public static function CheckAndDetach(int $booking_id)
     {
-        $obj=new self();
- 
-        return $obj->where('booking_id',$booking_id)->where('company_id',$company_id)->delete();
+
+       $obj=new self();
+        return $obj->where('booking_id',$booking_id)->delete();
 
 
     }

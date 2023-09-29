@@ -4,6 +4,8 @@
     $booking=$response['data']['booking']??[];
 
     $booking_detail=$response['data']['booking']['booking_details'][0];
+    $addons=$response['data']['booking']['addons']??[];
+
 
     //echo '<pre>';print_r($booking);die;
 
@@ -110,6 +112,10 @@
 
 
                                                     </tr>
+
+
+                                                   
+
                                                   <tr class="table-light">
                                 <th>Vehicle</th>
                                 <th colspan="2">Vehicle Type</th>
@@ -128,6 +134,54 @@
 
                                         </div>
                                 </div>
+
+  <!--booking Add on details -->
+  
+
+                                                                <div class="col-md-12 mt-3">
+                                    <div class="mb-3">
+
+                                        <h5 class="fw-bold">Addons</h5>
+
+                                    </div>                                                                      
+                                               
+
+
+                                                 
+                                    <div class="table-responsive">
+                                            <table class="table mb-0">
+                                               <thead>
+
+
+  <tr class="table-light">
+    <th>Service Name</th>
+    <th>Note</th>
+    <th>Amount</th>
+    <th>Action <a href="javascript:void(0)" onclick="showAddons(<?=$booking['id']?>)"><i class="fas fa-plus-circle text-primary"></i></a></th>
+   
+  </tr>
+</thead>
+                                                <tbody class="addonsBody">
+                                                    <?php
+                                                    if(count($addons)):
+                                                     foreach($addons as $addon):?>
+                                                    <tr>
+                                                        <td><?=$addon['name']?></td>
+                                                        <td><?=$addon['note']?></td>
+                                                        <td><?=$addon['amount']?></td>
+                                                        <td><a href="javascript:void(0)" onclick="removeAddon(this,<?=$addon['id']?>)"><i class="fas fa-minus-circle text-danger"></i></a></td>
+                                                    </tr>
+                                                <?php endforeach;
+                                            endif;?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                            
+
+
+                                                           <!--end -->
 
 
 
@@ -166,13 +220,15 @@
 
 
                                 <div class="col-md-12 mt-3">
-                                    <div class="mb-3">
+                                    <div class="mb-2 d-flex justify-content-between">
 
-                                        <h5 class="fw-bold">Driver Details</h5>
+                                        <h5 class="fw-bold w-75">Driver Details</h5>
+
+                                        <button onclick="openDriverList()" class="btn btn-primary">Assing Driver</button>
 
                                     </div>
                                     <div class="table-responsive">
-                                            <table class="table mb-0">
+                                            <table class="table mb-0" id="driverTable">
                                                <thead>
 
 
@@ -185,11 +241,12 @@
   </tr>
 </thead>
                                                 <tbody>
+                                                    <?php if(isset($booking_detail['driver']->first_name)):?>
                                                     <tr>
                                                         <td class="border border-light"><?=$booking_detail['driver']->first_name??''?></td>
                                                          <td class="border-light border"><?=$booking_detail->phone??''?></td>
 
-                                                         <td class="text-center border border-light"> <?php $media=$booking_detail['driver']->getDefaultMedia();
+                                                         <td class="border border-light"> <?php $media=$booking_detail['driver']->getDefaultMedia();
 
                                                   if(isset($media['file_thumb_path'])):
 
@@ -203,7 +260,9 @@
 
 
 
-                                              <?php endif;?></td>
+                                              <?php endif;?></td></tr>
+
+                                          <?php endif;?>
                                                        
                                                 </tbody>
                                             </table>
@@ -222,6 +281,10 @@
                 </div>
 
 
+<?=view('admin/partials/booking_addon_modal',$response['data'])?>
+
+<?=view('admin/partials/driver-modal')?>
+
 
 
 
@@ -232,6 +295,121 @@
  <?=script_tag('admin/assets/libs/datatables.net/js/jquery.dataTables.min.js')?>
 
  <?=script_tag('admin/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js')?>
+
+ <script type="text/javascript">
+     
+     function removeAddon(selector,id)
+     {
+        if(id)
+        {
+             var data={'id':id};
+
+                var url='<?=base_url('admin/bookings/remove/')?>'+id+'/addon';
+
+                        __askThenDelete(url,data,function(response)
+                                {
+                                       response.then(function(data){
+
+                                          if(data.status)
+                                          {
+                                            $(selector).closest('tr').remove();
+                                          }
+                                       })
+                                });
+        }
+     }
+
+      function showAddons(id)
+    {
+        $('.addOnModal').modal('show');
+        $('#addOnBookingId').val(id);
+    }
+
+    function setServicePrice(selector)
+    {
+        $('#servicePrice').val($(selector).find('option:selected').attr('data-price'));
+    }
+
+       document.getElementById("addOnForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // Prevents the form from submitting
+   let data=getFormData('addOnForm');
+
+   data.service_name=$('#serviceDropDown').find('option:selected').text();
+ 
+   let url='<?=base_url('admin/bookings/add/addon')?>'
+  // console.log(data);return false;
+   submitNormalForm('addOnForm',url,data,function(data){
+    if(data.status)
+    {
+        $('.addOnModal').modal('hide');
+        if(data.fields)
+        {
+            $('.addonsBody').append('<tr><td>'+data.fields.service_name+'</td><td>'+data.fields.note+'</td><td>'+data.fields.amount+'</td><td><a href="javascript:void()" onclick="removeAddon(this,'+data.fields.id+')"><i class="fas fa-minus-circle text-danger"></i></a></td><tr>');
+        }
+    }
+   });
+});
+
+       function openDriverList()
+       {
+         $('.bs-driver-modal-center').modal('show');
+       }
+
+                        function showDrivers(selector,placeholder){
+
+                        let search=$(selector).val();
+
+                        let url='<?=base_url('admin/drivers/search/list')?>';
+
+                        let data={'search':search};
+
+                      let response=__postRequest(url,data,null);
+
+                    response.then(function(data)
+                    {
+                        if(data.status)
+                        {
+                            $(placeholder).html(data.content);
+                        }
+                    })
+
+                     }
+
+                     function selectDriver(selector,driver_id)
+                     {
+
+                        let url='<?=base_url('admin/bookings/assign/driver')?>';
+
+                        let data={'driver_id':driver_id,'booking_id':'<?=$booking['id']?>'};
+
+                      let response=__postRequest(url,data,__showMessage);
+
+                    response.then(function(data)
+                    {
+
+                        if(data.status)
+                        {
+                            var html='<tr><td class="border border-light">'+data.driver.first_name+'</td><td class="border-light border">'+data.driver.phone+'</td><td class="border border-light">';
+
+                                var img='<div class="w-50 bg-light text-center" style="height:78px;width:100%;min-width:80px;font-size:56px"><i class="fas fa-user"></i></div>';
+                                if(data.driver.media)
+                                {
+                                    img='<img class=" w-50" style="height:78px;width: 100%;min-width: 80px;" src="<?=base_url()?>'+data.driver.media.file_thumb_path+'" alt="driver">'
+                                }
+
+                               html+=img+'</td></tr>';
+
+                               $('#driverTable').find('tbody').html(html);
+         $('#searchDriverInList').val('')
+         $('#driver_list_area').html('');
+         $('.bs-driver-modal-center').modal('hide');
+
+
+                        }
+                    })
+
+                     }
+ </script>
 
 
 <?=$this->endSection()?>

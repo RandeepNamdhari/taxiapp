@@ -12,12 +12,12 @@
                               <div class="row">
  <div class="col-md-6 mb-3">
  <label>Select Service</label>
- <select  type="text" name="service" onchange="setServicePrice(this)" class="form-control" placeholder="Service">
+ <select  type="text" name="service" id="serviceDropDown" onchange="setServicePrice(this)" class="form-control" placeholder="Service">
     <option value="">Choose Service</option>
     <?php if(isset($services) && count($services)):
           foreach($services as $service):?>
 
-            <option data-price="<?=$service['amount']?>" value="<?=$service['id']?>" ><?=$service['name']?></option>
+            <option data-service="<?=$service['name']?>" data-price="<?=$service['amount']?>" value="<?=$service['id']?>" ><?=$service['name']?></option>
 
         <?php endforeach;
     endif;

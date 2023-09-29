@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+use CodeIgniter\Database\Exceptions\DatabaseException;
+
+
 class BookingModel extends Model
 {
     protected $DBGroup          = 'default';
@@ -33,6 +36,8 @@ public static function getBooking(int $booking_id)
     ->find($booking_id);
 
     $booking['booking_details']=\App\Models\BookingDetailModel::getDetails($booking_id);
+
+    $booking['addons']=\App\Models\BookingAddOnModel::getAddons($booking_id);
 
 
     return $booking;
@@ -176,7 +181,7 @@ public static function getBooking(int $booking_id)
           \App\Models\CompanyBookingModel::CheckAndAttach($booking_id,$data['company']);
       else:
 
-         \App\Models\CompanyBookingModel::CheckAndDetach($booking_id,$data['company']);
+         \App\Models\CompanyBookingModel::CheckAndDetach($booking_id);
 
 
 
@@ -223,7 +228,7 @@ public static function getBooking(int $booking_id)
         ->join('booking_details','booking_details.booking_id=bookings.id')
         ->join('users', 'users.id = bookings.user_id')
         ->join('vehicles','booking_details.vehicle_id=vehicles.id')
-        ->join('drivers','booking_details.driver_id=drivers.id')
+        ->join('drivers','booking_details.driver_id=drivers.id','left')
         ->groupStart()
         ->like('users.username',$search)
         ->orlike('drivers.first_name',$search)
@@ -325,9 +330,32 @@ public static function getBooking(int $booking_id)
 
             $addon=\App\Models\BookingAddOnModel::create($data);
 
-            return array('status'=>1,'message'=>'The addon is added to your booking successfully','type'=>'success');
+            $data['id']=$addon;
+
+            return array('status'=>1,'message'=>'The addon is added to your booking successfully','type'=>'success','fields'=>$data);
 
         endif;
+    }
+
+    public static function removeAddon(int $addon_id)
+    {
+        return \App\Models\BookingAddOnModel::remove($addon_id);
+    }
+
+
+    public function assignDriver(int $driver_id,int $booking_id)
+    {
+
+        if(\App\Models\BookingDetailModel::attachDriver($driver_id,$booking_id)):
+
+         $driver=\App\Models\DriverModel::getDriver($driver_id);
+
+         $driver->media=$driver->getDefaultMedia();
+
+
+         return $driver;
+
+     endif;
     }
 
     

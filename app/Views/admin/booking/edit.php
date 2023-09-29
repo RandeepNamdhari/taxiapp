@@ -153,12 +153,12 @@
 
                                                  <div class="col-md-4 mb-3">
  <label> Email</label>
- <input  type="text" name="email" value="<?=$booking['email']??''?>" class="form-control" placeholder="Email"  onfocusout ="checkIfUserExist(this)" autocomplete="no-autofill" >
+ <input  type="text" name="email" value="<?=$booking['email']??''?>" class="form-control" id="userEmail" placeholder="Email"   autocomplete="no-autofill" >
  <input type="hidden" value="<?=$booking['user_id']??''?>" name="user_id" id="userId">
  </div>
  <div class="col-md-6 mb-3">
  <label>Phone Number</label>
- <input  type="text" id="userPhone" value="<?=$booking['phone']??''?>" name="phone" class="form-control" placeholder="Phone Number" >
+ <input  type="text" id="userPhone" onkeyup="checkIfUserExist(this)" value="<?=$booking['phone']??''?>" name="phone" class="form-control" placeholder="Phone Number" >
  </div>
                                             </div>
                                            
@@ -533,9 +533,11 @@
                                 $('#userFirstName').val(user.first_name);
                                 $('#userLastName').val(user.last_name);
                                 $('#userAddress').val(user.address);
-                                $('#userPhone').val(user.phone);
+                             //   $('#userPhone').val(user.phone);
                                 $('#userAddress').val(user.address);
                                 $('#userId').val(user.id);
+                                $('#userEmail').val(user.email);
+
 
                           //   if(!$('#moreDetails').hasClass('d-none'))
 

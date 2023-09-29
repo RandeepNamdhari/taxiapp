@@ -10,7 +10,7 @@
 
                                                   ?>
 
-                                                   <img class=" w-100 border-2 rounded-5 border-success" style="height:78px;width: 100%;min-width: 80px;" src="<?=base_url($media['file_thumb_path'])?>" alt="car">
+                                                   <img class=" w-100 border-2 rounded-5 border-success" style="height:78px;width: 100%;min-width: 80px;" src="<?=base_url($media['file_thumb_path'])?>" alt="driver">
 
                                                <?php else:?>
 

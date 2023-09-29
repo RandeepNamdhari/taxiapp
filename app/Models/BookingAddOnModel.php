@@ -30,6 +30,23 @@ class BookingAddOnModel extends Model
       $data['booking_id']=$data['bookingID'];
       $data['service_id']=$data['service'];
 
-      return $obj->insert($data)? true : throw new DatabaseException('Unable to insert the record.Please try again later.');
+      $id=$obj->insert($data);
+
+      return $id ? $id : throw new DatabaseException('Unable to insert the record.Please try again later.');
+  }
+
+
+  public static function getAddons(int $booking_id)
+  {
+     $obj=new self();
+
+     return $obj->select('booking_add_ons.*,services.name')->join('services','booking_add_ons.service_id=services.id','left')->where('booking_id',$booking_id)->findAll();
+  }
+
+  public static function remove(int $addon_id)
+  {
+    $obj=new self();
+
+    return $obj->delete($addon_id);
   }
 }

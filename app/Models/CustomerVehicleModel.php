@@ -26,7 +26,7 @@ class CustomerVehicleModel extends Model
     {
         $obj=new self();
 
-        return $obj->where('customer_id',$customer_id)->countAll();
+        return $obj->where('customer_id',$customer_id)->countAllResults();
     }
    
 

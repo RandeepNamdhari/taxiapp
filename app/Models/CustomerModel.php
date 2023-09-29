@@ -193,6 +193,7 @@ class CustomerModel extends Model
             ->where('customers.id',$id)->first();
 
         $customer->vehicle_count=\App\Models\CustomerVehicleModel::vehicleCount($customer->id);
+
         $customer->driver_count=\App\Models\CustomerDriverModel::driverCount($customer->id);
 
         if($customer):
