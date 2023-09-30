@@ -23,7 +23,7 @@ class CompanyEmployees extends Migration
             
         ]);
           $this->forge->addForeignKey('company_id', 'companies', 'id', 'NO ACTION', 'CASCADE');
-           $this->forge->addForeignKey('emloyee_id', 'employees', 'id', 'NO ACTION', 'CASCADE');
+           $this->forge->addForeignKey('employee_id', 'employees', 'id', 'NO ACTION', 'CASCADE');
     
         $this->forge->createTable('company_employees');
     }

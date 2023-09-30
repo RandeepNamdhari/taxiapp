@@ -79,6 +79,16 @@
                                 </a>
                             </li>
 
+                             <!--aboutus-->
+
+                              <li class="<?php echo ($currentRoute=='admin-pages-about-us')?'mm-active':''?>">
+                                <a href="<?=base_url('admin/pages/about-us')?>" class="waves-effect <?php echo ($currentRoute=='admin-pages-aboutus-static')?'active':''?>">
+                                    <i class="fas fa-address-card"></i>
+                                      <!--   <span class="badge rounded-pill bg-primary float-end">1</span> -->
+                                    <span>About Us</span>
+                                </a>
+                            </li>
+
                             <!--Settings-->
 
 
@@ -100,6 +110,53 @@
                             </li>
 
                             <!--End Settings -->
+
+                            <!--Policies -->
+
+                             <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Policies</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="true">
+                                    <!-- <li><a href="javascript: void(0);">Users</a></li> -->
+                                      <li class="<?php echo ($currentRoute=='admin-pages-user-policy')?'mm-active':''?>"><a href="<?=base_url('admin/pages/user/policy')?>">User Policy</a></li>
+                                    <li class="<?php echo ($currentRoute=='admin-pages-driver-policy')?'mm-active':''?>"><a href="<?=base_url('admin/pages/driver/policy')?>">Driver Policy</a></li>
+                                   
+
+                                      <li class="<?php echo ($currentRoute=='admin-pages-cancellation-policy')?'mm-active':''?>"><a href="<?=base_url('admin/pages/cancellation/policy')?>">Cancellation Policy</a></li>
+                                  
+
+                               
+                                </ul>
+                            </li>
+
+
+                            <!--End Policies -->
+
+
+                            <!--Term and Conditions -->
+
+                             <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Terms & Condition</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="true">
+                                    <!-- <li><a href="javascript: void(0);">Users</a></li> -->
+                                      <li class="<?php echo ($currentRoute=='admin-pages-user-terms')?'mm-active':''?>"><a href="<?=base_url('admin/pages/user/terms')?>">User Terms & Condition</a></li>
+                                    <li class="<?php echo ($currentRoute=='admin-pages-driver-terms')?'mm-active':''?>"><a href="<?=base_url('admin/pages/driver/terms')?>">Driver Terms & Condtion</a></li>
+                                   
+
+                                     
+                                  
+
+                               
+                                </ul>
+                            </li>
+
+
+                            <!--End Term and Conditions -->
 
                         </ul>
                     </div>

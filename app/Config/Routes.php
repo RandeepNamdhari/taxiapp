@@ -259,6 +259,16 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     // End Bookinks
 
+    // Pages Route
+
+    $routes->get('pages/(:any)(/(:any))?', 'Page::show/$1/$2');
+    $routes->post('pages/(:any)/(:any)', 'Page::save/$1/$2');
+
+
+
+
+    // End Pages
+
 
     // Vechile Routes
 

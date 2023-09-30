@@ -86,7 +86,7 @@
 
 
          // function to submit form
-             const submitNormalForm=(formId,url,data,callback=null)=>{
+             const submitNormalForm=(formId,url,data,callback=null,errorPosition=null)=>{
 
              
 
@@ -105,8 +105,17 @@
           {
             Object.keys(data.errors).forEach(key => {
 
-              
+                   if(errorPosition)
+                   {
+                     $('#'+formId).find('[name="'+key+'"]').parent('div').after('<div class="validation-error">'+data.errors[key].replace('_',' ')+'</div>')
+                   }
+                   else
+                   {
                      $('#'+formId).find('[name="'+key+'"]').after('<div class="validation-error">'+data.errors[key].replace('_',' ')+'</div>');
+
+                   }
+
+              
                  
               
               });
@@ -190,7 +199,7 @@
   }
 
 
-       const submitFormWithMedia=(formId,url,data,callback=null)=>{
+       const submitFormWithMedia=(formId,url,data,callback=null,errorPosition=null)=>{
 
              
 
@@ -210,7 +219,15 @@
             Object.keys(data.errors).forEach(key => {
 
               
+                    if(errorPosition)
+                   {
+                     $('#'+formId).find('[name="'+key+'"]').parent('div').after('<div class="validation-error">'+data.errors[key].replace('_',' ')+'</div>')
+                   }
+                   else
+                   {
                      $('#'+formId).find('[name="'+key+'"]').after('<div class="validation-error">'+data.errors[key].replace('_',' ')+'</div>');
+
+                   }
                  
               
               });
