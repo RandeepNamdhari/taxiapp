@@ -18,6 +18,7 @@ class Migration_CreatePermissionsTable extends Migration
             'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
+                'unique'=>true,
             ],
             'description' => [
                 'type' => 'TEXT',

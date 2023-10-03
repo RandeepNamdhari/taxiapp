@@ -36,6 +36,9 @@ class EmployeeModel extends Model
 
         $user_id=\App\Models\UserModel::createUser($userData);
 
+        \App\Models\UserRoleModel::attachRole('employee',$user_id);
+
+
         $data['user_id']=$user_id;
        
         $data['status']=0;

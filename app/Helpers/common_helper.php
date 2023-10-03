@@ -7,13 +7,15 @@
                  'B'=>'brown',
                  'C'=>'red',
                  'D'=>'orange',
-                 'R'=>'gray');
+                 'R'=>'gray'
+              );
 
 if (!function_exists('randomColor')) {
     function randomColor(string $string): string
     {
        
-        return $GLOBALS['colors'][strtoupper(mb_substr($string, 0, 1))];
+       
+        return $GLOBALS['colors'][strtoupper(mb_substr($string, 0, 1))]??'gray';
         
 
             

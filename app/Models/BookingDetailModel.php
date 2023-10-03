@@ -47,7 +47,7 @@ class BookingDetailModel extends Model
 
 
       $bookingDetail=array('vehicle_id'=>$data['vehicle'],
-                           'driver_id'=>$data['driver']??'',
+                           'driver_id'=>$data['driver']??null,
                            'booking_id'=>$booking_id,
                            'from_location'=>$data['from_location'],
                            'to_location'=>$data['to_location'],

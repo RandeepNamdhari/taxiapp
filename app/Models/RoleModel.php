@@ -10,7 +10,7 @@ class RoleModel extends Model
 {
     protected $table = 'roles'; 
     protected $primaryKey = 'id'; 
-    protected $allowedFields = ['name', 'description'];
+    protected $allowedFields = ['name', 'description','is_default'];
 
 
     public function addRoleWithPermissions($data)
@@ -104,7 +104,17 @@ class RoleModel extends Model
     {
         $obj=new self();
 
+        $role=$obj->find($id);
+
+        if(!$role['is_default']):
+
         return $obj->delete($id);
+
+    else:
+
+         return false;
+
+        endif;
     }
 
     
@@ -117,7 +127,17 @@ class RoleModel extends Model
 
             $role=array('name'=>$data['role_name']);
 
+            $roleRow=$this->find($id);
+
+            if($roleRow['is_default'] && $role['name']!=$roleRow['name']):
+
+                return array('status'=>1,'message'=>'The default role name cannot be changed','type'=>'warning');
+
+
+            endif;
+
            $this->update($id,$role);
+
 
             $rolePermissions= new \App\Models\RolePermissionModel;
 
@@ -141,6 +161,9 @@ class RoleModel extends Model
 
 
 
+
+
+
             return array('status'=>1,'message'=>'The role is updated successfully','type'=>'success',
                          'redirect'=>base_url('admin/roles'));
 
@@ -161,6 +184,14 @@ class RoleModel extends Model
         endif;
 
         return $response;
+    }
+
+
+    public static function getRoleWithName(string $role_name)
+    {
+        $obj=new self();
+
+        return $obj->where('name',$role_name)->first();
     }
 
   

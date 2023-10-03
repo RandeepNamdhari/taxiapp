@@ -72,8 +72,8 @@
 
                                                      <div data-toggle="tooltip" data-placement="top" title="<?=ucwords($user['username'])?>" class="avatar-sm zIndex0 role-member"  onclick="showDeleteIcon(this)">
                                                        
-                                                        <span class="avatar-title rounded-circle text-white font-size-14" style="background:<?=randomColor($user['username'])?>;">
-                                                        <?=  strtoupper(mb_substr($user['username'], 0, 1));?>
+                                                        <span class="avatar-title rounded-circle text-white font-size-14" style="background:<?=randomColor($user['first_name'])?>;">
+                                                        <?=  strtoupper(mb_substr($user['first_name'], 0, 1));?>
                                                         </span>
                                                          <span onclick="detachUser(this,<?=$user['id'];?>,<?=$role['id']?>)" class="remove-icon-user removeUserIcon">X</span>
                                                     </div>
@@ -100,8 +100,13 @@
                                                            <a href="<?=base_url('admin/edit/'.$role['id'].'/role')?>" class="fs-5 text-muted">
                                                                    <i class="fas fa-edit"></i> </a>
 
+                                                    <?php if(!$role['is_default']):?>
+
+
                                                             <a href="javascript:void(0)" class="fs-5 text-danger" onclick="deleteRole(<?=$role['id']?>,this);">
                                                                    <i class="fas fa-trash-alt"></i> </a>
+
+                                                               <?php endif;?>
 
                                                                   
                                                     

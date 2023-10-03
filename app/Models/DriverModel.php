@@ -35,6 +35,8 @@ class DriverModel extends Model
         $userData=['email'=>$data['email'],'phone'=>$data['phone'],'first_name'=>$data['first_name'],'last_name'=>$data['last_name'],'address'=>$data['address']??'','middle_name'=>$data['middle_name']??''];
 
         $user_id=\App\Models\UserModel::createUser($userData);
+        \App\Models\UserRoleModel::attachRole('driver',$user_id);
+
 
         $data['user_id']=$user_id;
         $data['state_id']=$data['state'];

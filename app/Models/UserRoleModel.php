@@ -170,6 +170,22 @@ class UserRoleModel extends Model
     }
 
 
+      public static function attachRole(string $role_name,int $user_id)
+    {
+        $obj=new self();
+
+        $role=\App\Models\RoleModel::getRoleWithName($role_name);
+
+
+        if(!$obj->where('user_id',$user_id)->where('role_id',$role['id'])->first()):
+
+           return $obj->insert(['role_id'=>$role['id'],'user_id'=>$user_id]);   
+
+           endif;      
+
+    }
+
+
 
 
 }

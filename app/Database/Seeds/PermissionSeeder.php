@@ -8,7 +8,7 @@ class PermissionSeeder extends Seeder
 {
     public function run()
     {
-        $modules = ['users','roles'];
+        $modules = ['users','roles','customers','bookings','services','settings','companies'];
         $permissions=['create','read','update','delete'];
 
         $permissionModel = new PermissionModel();

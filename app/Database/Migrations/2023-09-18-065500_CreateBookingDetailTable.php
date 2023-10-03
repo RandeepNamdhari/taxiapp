@@ -25,6 +25,7 @@ class CreateBookingDetailTable extends Migration
                 'type' => 'INT',
                 'constraint' => 11,
                 'unsigned' => true,
+                'null'=>true,
               
             ],
              'vehicle_id' => [
@@ -102,7 +103,7 @@ class CreateBookingDetailTable extends Migration
         $this->forge->addForeignKey('booking_id', 'bookings', 'id', 'NO ACTION', 'CASCADE');
 
         $this->forge->addForeignKey('vehicle_id', 'vehicles', 'id', 'NO ACTION', 'CASCADE');
-        $this->forge->addForeignKey('driver_id', 'drivers', 'id', 'NO ACTION', 'CASCADE');
+        // $this->forge->addForeignKey('driver_id', 'drivers', 'id', 'NO ACTION', 'CASCADE');
     
         $this->forge->createTable('booking_details');
     }

@@ -153,9 +153,14 @@ class Roles extends BaseController
      
              $response=run_with_exceptions(function() use ($id){ 
 
-             \App\Models\RoleModel::destroy($id);
+             if(\App\Models\RoleModel::destroy($id)):
 
             return array('status'=>1,'message'=>'The Role is deleted successfully!','type'=>'success');
+        else:
+
+            return array('status'=>1,'message'=>'The default role cannot be deleted','type'=>'warning');
+
+        endif;
 
         });
            

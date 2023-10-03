@@ -1,9 +1,10 @@
-<?php 
+<?php
+
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Migration_CreateRolesTable extends Migration
+class CreateChatMessagesTable extends Migration
 {
     public function up()
     {
@@ -14,24 +15,31 @@ class Migration_CreateRolesTable extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'name' => [
-                'type' => 'VARCHAR',
-                'constraint' => '250',
-                'unique'=>true,
-            ],
-            'description' => [
+            'message' => [
                 'type' => 'TEXT',
-                'null' => true,
+                'null' => true,                
             ],
+            'is_file' => [
+                'type' => 'BOOLEAN',               
+               'default'=>false,
+            ],
+             'is_read' => [
+                'type' => 'BOOLEAN',               
+               'default'=>false,
+            ],
+          
+            
             'created_at datetime default current_timestamp',
              'updated_at datetime default current_timestamp on update current_timestamp', 
         ]);
         $this->forge->addPrimaryKey('id');
-        $this->forge->createTable('roles');
+    
+        $this->forge->createTable('chat_messages');
     }
 
     public function down()
     {
-        $this->forge->dropTable('roles');
+        $this->forge->dropTable('chat_messages');
+        
     }
 }

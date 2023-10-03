@@ -34,6 +34,9 @@ class CustomerModel extends Model
 
         $user_id=\App\Models\UserModel::createUser($userData);
 
+        \App\Models\UserRoleModel::attachRole('customer',$user_id);
+
+
         $data['user_id']=$user_id;
         $data['state_id']=$data['state'];
         $data['status']=0;

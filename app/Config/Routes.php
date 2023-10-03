@@ -380,6 +380,16 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     /* --- End Services Routes --*/
 
 
+    /*--- Admin Chat Routes --*/
+
+     $routes->get('chats','Chat::index');
+
+
+
+
+    /*--- End Admin Chat --*/
+
+
      $routes->get('settings/fare/types','FareType::index');
     $routes->post('settings/fare/types','FareType::index');
       $routes->get('settings/fare/types/create','FareType::create');

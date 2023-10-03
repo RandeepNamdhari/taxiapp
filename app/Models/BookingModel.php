@@ -71,6 +71,9 @@ public static function getBooking(int $booking_id)
 
         $user_id=\App\Models\UserModel::createUser($userData);
 
+         \App\Models\UserRoleModel::attachRole('user',$user_id);
+
+
         $data['user_id']=$user_id;
 
         else:
@@ -116,8 +119,10 @@ public static function getBooking(int $booking_id)
 
       endif;
 
+     // echo '<pre>';print_r($bookingDetail);die;
 
-        if($booking && $data['user_id'] && $bookingDetail ):
+
+        if($booking_id && $data['user_id'] && $bookingDetail ):
 
         
 
@@ -187,7 +192,7 @@ public static function getBooking(int $booking_id)
 
       endif;
 
-  
+   
 
 
          $bookingDetail=\App\Models\BookingDetailModel::createOrUpdate($data,$booking_id);
