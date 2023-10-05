@@ -12,3 +12,16 @@ if (!function_exists('isLoggedIn')) {
 
  
 }
+
+if (!function_exists('getUserId')) {
+    function getUserId(): Bool
+    {
+    
+        $user=session('user');
+
+        return $user['id']??0;
+            
+    }
+
+ 
+}

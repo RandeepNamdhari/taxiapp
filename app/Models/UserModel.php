@@ -120,6 +120,15 @@ class UserModel extends Model
 
     }
 
+    public static function getUserExcludeIds(array $excludeUsers,string $search)
+    {
+           $obj=new self();
+
+           return $obj->like('first_name',$search)->findAll();
+
+
+    }
+
 
 
 

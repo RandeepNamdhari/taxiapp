@@ -383,6 +383,11 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     /*--- Admin Chat Routes --*/
 
      $routes->get('chats','Chat::index');
+     $routes->post('chats/send/message','Chat::send');
+     $routes->post('chats/search/user','Chat::searchUser');
+
+     
+
 
 
 
