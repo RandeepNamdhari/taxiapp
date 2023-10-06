@@ -12,14 +12,14 @@ class DriverEntity extends Entity
 
      public function getDefaultMedia()
     {
-        return \App\Models\MediaModel::getFirstOrDefaultMedia('Driver',$this->id);
+        return \App\Models\MediaModel::getFirstOrDefaultMedia('User',$this->user_id);
     }
 
      public function deleteMedia()
     {
         $obj=new \App\Models\MediaModel();
 
-        $obj->deleteMedia('Driver',$this->id);
+        $obj->deleteMedia('User',$this->user_id);
 
         
     }

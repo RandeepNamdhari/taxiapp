@@ -46,10 +46,10 @@ class DriverModel extends Model
 
         $driver_id=$this->insert($data);
 
-        \App\Models\MediaModel::attach(['model'=>'Driver',
-                                         'type'=>'driver',
+        \App\Models\MediaModel::attach(['model'=>'User',
+                                         'type'=>'user',
                                          'user_id'=>$user_id,
-                                         'model_id'=>$driver_id,
+                                         'model_id'=>$user_id,
                                          'file'=>'driver_picture'],true);
 
         $redirect_url='';
@@ -106,10 +106,10 @@ class DriverModel extends Model
 
         if($this->update($driver->id,$data)):
 
-        \App\Models\MediaModel::attach(['model'=>'Driver',
-                                         'type'=>'driver',
+        \App\Models\MediaModel::attach(['model'=>'User',
+                                         'type'=>'user',
                                          'user_id'=>$user_id,
-                                         'model_id'=>$driver->id,
+                                         'model_id'=>$user_id,
                                          'file'=>'driver_picture'],true);
 
         $redirect_url='';

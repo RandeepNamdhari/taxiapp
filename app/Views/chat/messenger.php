@@ -66,18 +66,31 @@
     </div>
 
 
-    <div class="col-xl-9">
+    <div class="col-xl-9" >
                                 <div class="card">
-                                    <div class="card-body m-0 p-0">
+                                    <div class="card-body m-0 p-0 " >
                                         <h4 class="card-title mb-4 p-3">Chat</h4>
-                                        <div class="chat-conversation">
+                                        <div class="chat-conversation " >
+
+
 
                                             <!--Messages-->
 
-                                            <?=view('chat/partials/messages')?>
+                                    
+                                            
+                                             <?=view('chat/partials/messages');?>
+
+                                          
+                                          
 
 
                                             <!--End Messages -->
+
+                                            <div class="d-flex w-100 justify-content-center loaderArea d-none" style="min-height: 380px;align-items: center;">
+                                            <div class="spinner-border text-warning m-1" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
                                             
 
 
@@ -131,6 +144,10 @@
                                     userListContainer:'.userListArea',
                                     userToggle:'.userElement',
                                     userIdAttr:'data-user-id',
+                                    messageContainer:'.userMessageArea',
+                                    activeUser:'',
+                                    loaderContainer:'.loaderArea',
+
 
 
                                  });

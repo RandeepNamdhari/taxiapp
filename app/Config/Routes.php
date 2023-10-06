@@ -32,6 +32,11 @@ $routes->set404Override();
 $routes->get('/', 'Home::index');
 
 
+ $routes->post('chats/send/message','Chat::send');
+     $routes->post('chats/search/user','Chat::searchUser');
+     $routes->get('chats/get/messages/(:num)','Chat::messages/$1');
+
+
 
 
 
@@ -383,8 +388,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     /*--- Admin Chat Routes --*/
 
      $routes->get('chats','Chat::index');
-     $routes->post('chats/send/message','Chat::send');
-     $routes->post('chats/search/user','Chat::searchUser');
+
 
      
 

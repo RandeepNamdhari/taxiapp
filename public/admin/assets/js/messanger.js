@@ -1,6 +1,7 @@
 function Messanger(config)
 	{
           this.mainContainer=document.querySelector(config.mainContainer);
+          this.messageContainer=this.mainContainer.querySelector(config.messageContainer)
           this.userListContainer=this.mainContainer.querySelector(config.userListContainer);
           this.sendMessageUrl=config.sendMessageUrl;
           this.textInput=this.mainContainer.querySelector(config.textInput);
@@ -13,7 +14,8 @@ function Messanger(config)
           this.chatUserId=this.mainContainer.querySelector(config.chatUserId).value;
           this.userToggle=this.mainContainer.querySelectorAll(config.userToggle);
           this.userIdAttr=config.userIdAttr;
-          this.activeUser;
+          this.activeUser=config.activeUser;
+          this.loaderContainer=this.mainContainer.querySelector(config.loaderContainer);
           this.chatForm;
           this.searchForm;
           
@@ -25,10 +27,20 @@ function Messanger(config)
 
              this.setFormData();
 
+             let obj=this;
 
-             __postCall('chats/send/message',this.chatForm,function(res){
+
+            let response= __postCall('chats/send/message',this.chatForm,function(res){
                 console.log(res);
-             })
+             });
+
+            response.then(function(data)
+            {
+                if(data.status)
+                {
+                     obj.messageContainer.innerHTML+=data.content;
+                }
+            })
 
              this.stopLoader();
           }
@@ -37,7 +49,7 @@ function Messanger(config)
          {
              this.sendButton.addEventListener('click',this.sendMessage);
              this.fileUploadIcon.addEventListener('click',this.openFileInput);
-             this.fileInput.addEventListener('change',this.sendMessage);
+            // this.fileInput.addEventListener('change',this.sendMessage);
              this.searchInput.addEventListener('keyup',this.searchUser);
 
                this.userToggle.forEach(userElement => {
@@ -61,12 +73,61 @@ function Messanger(config)
 
          }
 
+
          this.setActiveUser=(e)=>
          {
            
             this.activeUser=e.target.closest(config.userToggle).getAttribute(this.userIdAttr);
+            this.userToggle.forEach(userElement => {
+
+  userElement.classList.remove('bg-warning');
+});     
+               //        this.toogleMessageContainer('hide');
+             
+                          this.loadMessages();
+
+
+
+
+
+
              e.target.closest(config.userToggle).classList.add('bg-warning');
 
+         }
+
+         this.loadMessages=()=>
+         {
+            if(this.activeUser)
+            {
+                let response=__getCall('chats/get/messages/'+this.activeUser);
+                let obj=this;
+
+                response.then(function(data)
+                {
+                    if(data.status)
+                    {
+                        obj.messageContainer.innerHTML=data.content;
+                        
+                       // obj.toogleMessageContainer('show');
+                    }
+                })
+            }
+         }
+
+         this.toogleMessageContainer=(type='hide')=>
+         {
+            if(type=='show')
+            {
+               this.loaderContainer.classList.add('d-none');
+
+             this.messageContainer.classList.remove('d-none');
+            }
+            else
+            {
+               this.loaderContainer.classList.remove('d-none');
+
+               this.messageContainer.classList.add('d-none');
+            }
          }
 
          this.setSearchForm=()=>
@@ -114,15 +175,15 @@ function Messanger(config)
 
             if(this.fileInput.files[0]){
 
-            this.chatForm.append('file', this.fileInput.files[0]);
+            this.chatForm.append('upload_file', this.fileInput.files[0]);
            
 
 
             }
 
             this.chatForm.append('message',this.textInput.value);
-             this.chatForm.append('chat_user_id', this.chatUserId);
-            this.chatForm.append('chat_user_type', this.chatUserType);
+             this.chatForm.append('chat_user_id', this.activeUser);
+           // this.chatForm.append('chat_user_type', this.chatUserType);
          }
 
          this.openFileInput=()=>
@@ -151,13 +212,34 @@ function Messanger(config)
      const __postCall=async (url,formData,callback=null)=>
   {
     const _token=csrfToken;
-    const rawResponse =  await fetch(url, {
+    const rawResponse =  await fetch(baseURL+url, {
     method: 'POST',
     headers: {
     
         'X-CSRF-TOKEN':_token,
     },
     body: formData
+  });  
+      let response=await rawResponse.json();
+       if(callback)
+       {
+           callback(response.message,response.type,response);
+       }
+
+         return response;
+       
+  }
+
+  const __getCall=async (url,callback=null)=>
+  {
+    const _token=csrfToken;
+    const rawResponse =  await fetch(baseURL+url, {
+    method: 'GET',
+    headers: {
+    
+        'X-CSRF-TOKEN':_token,
+    },
+    
   });  
       let response=await rawResponse.json();
        if(callback)
