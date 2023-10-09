@@ -59,4 +59,12 @@ class ChatMessageModel extends Model
 
        
    }
+
+
+   public static function updateOnlyThisIds(array $ids)
+   {
+      $obj=new self();
+
+      return $obj->set(['is_read'=>1])->whereIn('id',$ids)->update();
+   }
 }

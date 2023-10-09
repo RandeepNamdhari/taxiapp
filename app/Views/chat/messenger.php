@@ -3,6 +3,22 @@
 
   <style type="text/css">
 
+    .user-message-info
+    {
+        height: 2.3rem;
+    padding: 0px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    
+    text-align: center;
+    /* display: flex; */
+    align-items: center;
+  
+    font-size: xx-large;
+    color: white;
+    }
+
     .user-status
     {
             border-radius: 25px;
@@ -26,6 +42,21 @@
     .active-user
     {
         background: orange;
+    }
+    .user-img-span
+    {
+
+    display: block;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    /* display: flex; */
+    align-items: center;
+    padding: auto;
+    /* margin: auto; */
+    padding: 0px;
+    font-size: xx-large;
+    color: white;
     }
           
   </style>
@@ -54,7 +85,7 @@
 
         <!-- User List -->
 
-<?=view('chat/partials/users')?>
+<!--  -->
 
 <!--End User List -->
 
@@ -70,7 +101,7 @@
                                 <div class="card">
                                     <div class="card-body m-0 p-0 " >
                                         <h4 class="card-title mb-4 p-3">Chat</h4>
-                                        <div class="chat-conversation " >
+                                        <div class="chat-conversation" >
 
 
 
@@ -78,7 +109,19 @@
 
                                     
                                             
-                                             <?=view('chat/partials/messages');?>
+                                          <ul class="conversation-list userMessageArea" style="max-height:350px;">
+
+                                           
+
+                                         
+
+
+                                    </ul>
+
+                                 <!--    <div class="" style="height:380px;text-align: center;display: flex;align-items: center;"><h2 class="text-center w-100">Start Messaging...</h2></div>
+                                         <li></li> -->
+
+                                   
 
                                           
                                           
@@ -86,11 +129,7 @@
 
                                             <!--End Messages -->
 
-                                            <div class="d-flex w-100 justify-content-center loaderArea d-none" style="min-height: 380px;align-items: center;">
-                                            <div class="spinner-border text-warning m-1" role="status">
-                                                <span class="sr-only">Loading...</span>
-                                            </div>
-                                        </div>
+                                          
                                             
 
 
@@ -98,7 +137,7 @@
 
                                             <div class="row">
 
-                                                <form class="chatForm" style="display:flex;" enctype="multipart/form-data" id="" onsubmit="return false;">
+                                                <form class="chatForm d-none" style="display:flex;" enctype="multipart/form-data" id="" onsubmit="return false;">
                                                 <input type="hidden" name="chat_user_type" class="chat_user_type" value="1">
 
                                                 <input type="hidden" name="chat_user_id" class="chat_user_id" value="1">
@@ -125,8 +164,14 @@
    </div>
 
    <?=$this->section('page-script')?>
+            
+
+   <?=script_tag('admin/assets/libs/simplebar/simplebar.min.js')?>
+
+
 
    <?=script_tag('admin/assets/js/messanger.js')?>
+
 
 
 
@@ -147,6 +192,10 @@
                                     messageContainer:'.userMessageArea',
                                     activeUser:'',
                                     loaderContainer:'.loaderArea',
+                                    form:'.chatForm',
+                                    unreadCounter:'.unreadCounter',
+                                    unreadAttribute:'data-count',
+                                    userConnectionAttribute:'data-connection-id',
 
 
 

@@ -11,12 +11,14 @@ class Chat extends BaseController
         //
     }
 
-    public function messages(int $user_id)
+    public function messages(int $connection_id,int $unread_count)
     {
-         $response=run_with_exceptions(function() use ($user_id)
+         $response=run_with_exceptions(function() use ($connection_id,$unread_count)
         {
-            return \App\Models\UserConnectionModel::getChat($user_id);
+            return \App\Models\UserConnectionModel::getChat($connection_id,$unread_count);
         });
+
+         
 
          return $this->response->setJSON($response);
     }
@@ -65,6 +67,18 @@ class Chat extends BaseController
         $response=run_with_exceptions(function() use ($search)
         {
             return \App\Models\UserConnectionModel::searchUser($search);
+        });
+
+         return $this->response->setJSON($response);
+    }
+
+    public function users()
+    {
+        
+
+        $response=run_with_exceptions(function()
+        {
+            return \App\Models\UserConnectionModel::getUsers();
         });
 
          return $this->response->setJSON($response);

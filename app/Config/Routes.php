@@ -34,7 +34,9 @@ $routes->get('/', 'Home::index');
 
  $routes->post('chats/send/message','Chat::send');
      $routes->post('chats/search/user','Chat::searchUser');
-     $routes->get('chats/get/messages/(:num)','Chat::messages/$1');
+     $routes->get('chats/get/messages/(:num)/(:num)','Chat::messages/$1/$2');
+     $routes->get('chats/users','Chat::users');
+
 
 
 

@@ -58,19 +58,21 @@ class UserConnectionModel extends Model
 
     }
 
-    public static function getChat(int $user_id)
+    public static function getChat(int $connection_id,int $count)
     {
         $obj=new self();
-        $connection_id=$obj->where('sender',$user_id)->orWhere('receiver',$user_id)->first()['id']??null;
+       
         if($connection_id):
 
-            $messages=\App\Models\ChatUserModel::userChat($connection_id);
+            $messages=\App\Models\ChatUserModel::userChat($connection_id,$count);
 
         else:
 
             $messages=[];
 
         endif;
+
+       //echo '<pre>';print_r($messages);die;
 
         $content=view('chat/partials/messages',['messages'=>$messages]);
 
@@ -126,7 +128,7 @@ class UserConnectionModel extends Model
 
                 $chat=\App\Models\ChatUserModel::getSenderMessage($chat_user_id);
 
-              //  echo '<pre>';print_r($chatDetail);die;
+               // echo '<pre>';print_r($chat);die;
 
                 $content=view('chat/partials/sender-message',['chat'=>$chat]);
 
@@ -148,6 +150,43 @@ class UserConnectionModel extends Model
         else:
 
         endif;
+    }
+
+    public static function getUsers()
+    {
+        $user_id=getUserId();
+
+        $obj=new self();
+
+        $connections=$obj->select('user_connections.*,sender.first_name as sender_first_name,sender.username as sender_username,receiver.username as receiver_username,sender_media_files.file_thumb_path as sender_photo,receiver.first_name as receiver_first_name,receiver_media_files.file_thumb_path as receiver_photo,MAX(chat_messages.message) AS message,chat_messages.is_file,  SUM(CASE WHEN chat_messages.is_read != 1 AND chat_users.receiver ='.$user_id.' THEN 1 ELSE 0 END) AS unread_messages_count')
+        ->join('chat_users','chat_users.connection_id=user_connections.id')
+        ->join('chat_messages','chat_users.chat_message_id=chat_messages.id')
+        ->join('users as sender','user_connections.sender=sender.id')
+        ->join('users as receiver','user_connections.receiver=receiver.id')
+
+        ->join('media as sender_media','sender_media.model_id=sender.id AND sender_media.model="User"','left')
+        ->join('media_files sender_media_files','sender_media.id=sender_media_files.media_id','left')
+        ->join('media as receiver_media','receiver_media.model_id=receiver.id AND receiver_media.model="User"','left')->join('media_files receiver_media_files','receiver_media.id=receiver_media_files.media_id','left')
+        ->groupStart()->where('user_connections.sender',$user_id)->orWhere('user_connections.receiver',$user_id)->groupEnd()->groupBy('user_connections.id')->orderBy('chat_users.id','desc')->findAll();
+
+      //return array('connections'=>$connections);
+
+        $content='';
+
+        if(count($connections)):
+
+
+            $content=view('chat/partials/users',['connections'=>$connections]);
+
+
+
+
+        endif;
+
+        return array('status'=>1,'content'=>$content);
+
+
+
     }
    
 }

@@ -14,10 +14,22 @@ function Messanger(config)
           this.chatUserId=this.mainContainer.querySelector(config.chatUserId).value;
           this.userToggle=this.mainContainer.querySelectorAll(config.userToggle);
           this.userIdAttr=config.userIdAttr;
+          this.connectionAttribute=config.userConnectionAttribute;
           this.activeUser=config.activeUser;
           this.loaderContainer=this.mainContainer.querySelector(config.loaderContainer);
+          this.unreadCounter=config.unreadCounter;
+          this.currentUserUnreadCount=0;
+          this.unreadAttribute=config.unreadAttribute
           this.chatForm;
+          this.form=this.mainContainer.querySelector(config.form);
           this.searchForm;
+          this.isSimpleBarInit=0;
+          this.simpleBar = new SimpleBar(this.messageContainer);
+          this.connectionId;
+          this.activeUserElement;
+
+
+
           
 
 
@@ -30,36 +42,60 @@ function Messanger(config)
              let obj=this;
 
 
-            let response= __postCall('chats/send/message',this.chatForm,function(res){
-                console.log(res);
-             });
+            let response= __postCall('chats/send/message',this.chatForm,null);
 
             response.then(function(data)
             {
                 if(data.status)
                 {
-                     obj.messageContainer.innerHTML+=data.content;
+                     obj.messageContainer.querySelector('.simplebar-content').innerHTML+=data.content;
+             obj.scrollDown();
+             obj.textInput.value='';
+
+
                 }
             })
 
              this.stopLoader();
           }
 
+          this.loadUsers=()=>
+          {
+
+              let obj=this;
+
+             let response= __getCall('chats/users');
+
+            response.then(function(data)
+            {
+                if(data.status)
+                {
+                     obj.userListContainer.innerHTML+=data.content;
+                     obj.refreshUsers();
+                }
+            })
+
+          }
+
          this.setup=()=>
          {
+             this.loadUsers();
              this.sendButton.addEventListener('click',this.sendMessage);
              this.fileUploadIcon.addEventListener('click',this.openFileInput);
             // this.fileInput.addEventListener('change',this.sendMessage);
              this.searchInput.addEventListener('keyup',this.searchUser);
 
-               this.userToggle.forEach(userElement => {
-
-  userElement.addEventListener('click',this.setActiveUser);
-});     
 
 
+             
+
+           
 
 
+
+            
+
+            
          }
 
          this.refreshUsers=()=>{
@@ -77,14 +113,41 @@ function Messanger(config)
          this.setActiveUser=(e)=>
          {
            
-            this.activeUser=e.target.closest(config.userToggle).getAttribute(this.userIdAttr);
+            let user=e.target.closest(config.userToggle).getAttribute(this.userIdAttr);
+            let unreadCount=e.target.closest(config.userToggle).querySelector(this.unreadCounter).getAttribute(this.unreadAttribute);
+
+            this.activeUserElement=e.target.closest(config.userToggle);
+
+            this.unreadCount=unreadCount;
+
+            
+            this.connectionId=e.target.closest(config.userToggle).getAttribute(this.connectionAttribute);
+
+           // console.log(this.connectionId);
+
+            if(user==this.activeUser)
+            {
+                return false;
+            }
+            this.activeUser=user;
             this.userToggle.forEach(userElement => {
 
   userElement.classList.remove('bg-warning');
 });     
-               //        this.toogleMessageContainer('hide');
+                       this.toogleMessageContainer('hide');
              
                           this.loadMessages();
+
+                          if(this.unreadCount){
+
+                            e.target.closest(config.userToggle).querySelector(this.unreadCounter).classList.add('d-none');
+                            e.target.closest(config.userToggle).querySelector(this.unreadCounter).setAttribute(this.unreadAttribute,0);
+                            e.target.closest(config.userToggle).querySelector(this.unreadCounter).innerHTML=0;
+
+                          }
+
+                          
+
 
 
 
@@ -99,16 +162,20 @@ function Messanger(config)
          {
             if(this.activeUser)
             {
-                let response=__getCall('chats/get/messages/'+this.activeUser);
+                let response=__getCall('chats/get/messages/'+this.connectionId+'/'+this.unreadCount);
                 let obj=this;
 
                 response.then(function(data)
                 {
                     if(data.status)
                     {
-                        obj.messageContainer.innerHTML=data.content;
+                        obj.messageContainer.querySelector('.simplebar-content').innerHTML=data.content;
                         
-                       // obj.toogleMessageContainer('show');
+                      //  obj.toogleMessageContainer('show');
+
+                        obj.form.classList.remove('d-none');
+
+                        obj.scrollDown();
                     }
                 })
             }
@@ -118,15 +185,13 @@ function Messanger(config)
          {
             if(type=='show')
             {
-               this.loaderContainer.classList.add('d-none');
-
-             this.messageContainer.classList.remove('d-none');
+              
             }
             else
             {
-               this.loaderContainer.classList.remove('d-none');
+              
 
-               this.messageContainer.classList.add('d-none');
+               this.messageContainer.querySelector('.simplebar-content').innerHTML='<div class="d-flex w-100 justify-content-center loaderArea" style="min-height: 380px;align-items: center;"><div class="spinner-border text-warning m-1" role="status"><span class="sr-only">Loading...</span></div></div>';
             }
          }
 
@@ -167,6 +232,14 @@ function Messanger(config)
 
 
            }
+         }
+
+         this.scrollDown=()=>
+         { 
+
+    
+            this.simpleBar.getScrollElement().scrollTop = this.simpleBar.getScrollElement().scrollHeight;
+      
          }
 
          this.setFormData=()=>

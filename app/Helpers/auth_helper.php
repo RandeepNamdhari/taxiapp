@@ -14,10 +14,11 @@ if (!function_exists('isLoggedIn')) {
 }
 
 if (!function_exists('getUserId')) {
-    function getUserId(): Bool
+    function getUserId():int
     {
     
         $user=session('user');
+
 
         return $user['id']??0;
             
