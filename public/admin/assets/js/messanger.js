@@ -27,6 +27,7 @@ function Messanger(config)
           this.simpleBar = new SimpleBar(this.messageContainer);
           this.connectionId;
           this.activeUserElement;
+          this.limit=10;
 
 
 
@@ -72,6 +73,7 @@ function Messanger(config)
                 {
                      obj.userListContainer.innerHTML+=data.content;
                      obj.refreshUsers();
+                    obj.activeUserUpdate();
                 }
             })
 
@@ -85,15 +87,14 @@ function Messanger(config)
             // this.fileInput.addEventListener('change',this.sendMessage);
              this.searchInput.addEventListener('keyup',this.searchUser);
 
-
-
-             
-
-           
-
-
-
-            
+             this.messageContainer.addEventListener('scroll', () => {
+  if ( this.messageContainer.scrollTop === 0) {
+    // User has scrolled to the top of the SimpleBar container
+    console.log('User scrolled to the top of SimpleBar');
+    // Add your event handling code here
+  }
+});
+  
 
             
          }
@@ -107,6 +108,20 @@ function Messanger(config)
   userElement.addEventListener('click',this.setActiveUser);
 });     
 
+         }
+
+         this.activeUserUpdate=()=> 
+         {
+             this.userToggle.forEach(userElement => {
+
+                if(userElement.getAttribute(this.userIdAttr)==this.activeUser)
+                {
+
+  userElement.classList.add('bg-warning');
+                   
+                }
+
+});     
          }
 
 
@@ -230,6 +245,13 @@ function Messanger(config)
                 })
              
 
+
+           }
+           else if(searchString.length==0)
+           {
+            this.userListContainer.innerHTML='';
+              this.loadUsers();
+            // this.activeUserElement.classList.add('bg-warning');
 
            }
          }

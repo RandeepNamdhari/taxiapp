@@ -124,7 +124,20 @@ class UserModel extends Model
     {
            $obj=new self();
 
-           return $obj->like('first_name',$search)->findAll();
+           if(empty($excludeUsers)):
+
+            $excludeUsers=[0];
+
+           endif;
+       
+
+
+           return $obj->select('users.*,user_media_files.file_thumb_path as user_photo')      
+
+        ->join('media','media.model_id=users.id AND media.model="User"','left')
+        ->join('media_files as user_media_files','media.id=user_media_files.media_id','left')
+        ->like('users.username',$search)
+       ->whereNotIn('users.id',$excludeUsers)->where('users.id!='.getUserId())->findAll();
 
 
     }

@@ -109,7 +109,7 @@
 
                                     
                                             
-                                          <ul class="conversation-list userMessageArea" style="max-height:350px;">
+                                          <ul class="conversation-list userMessageArea" style="max-height:350px;min-height: 350px;">
 
                                            
 

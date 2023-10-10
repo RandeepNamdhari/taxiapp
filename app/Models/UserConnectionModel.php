@@ -29,22 +29,31 @@ class UserConnectionModel extends Model
 
             $obj=new self();
 
-            $connected_users=$obj->select('users.*,u.*,user_connections.is_active')
-                                 ->join('users','user_connections.sender=users.id')
-                                 ->join('users as u','user_connections.receiver=u.id')
-                                 ->where('users.id','!='.getUserId())
-                                 ->where('u.id','!='.getUserId())
-                                 ->groupStart()
-                                 ->like('u.first_name',$search)
-                                 ->orLike('users.first_name',$search)
-                                 ->groupEnd()
-                                 ->findAll();
+         $user_id=getUserId();
 
-          
-            $users=\App\Models\UserModel::getUserExcludeIds([],$search);
+        $obj=new self();
+
+         $connected_users=[];
+         $connected_users=$obj->getConnections($user_id,$search);
+
+                          //  return $connected_users;
+
+         $existingUsers=[];
+
+         $existingUsers1=array_column($connected_users, 'sender');
+         $existingUsers2=array_column($connected_users, 'receiver');
+
+         $existingUsers=array_merge($existingUsers2,$existingUsers1);
 
 
-            $content=view('chat/partials/search',['users'=>$users]);
+
+        //  print_r($existingUsers);die;
+            $users=\App\Models\UserModel::getUserExcludeIds($existingUsers,$search);
+
+           // return $users;
+
+
+            $content=view('chat/partials/search',['connections'=>$connected_users,'users'=>$users]);
 
 
 
@@ -52,9 +61,11 @@ class UserConnectionModel extends Model
 
         else:
 
+
+
         endif;
 
-        return array('status'=>1,'connected_users'=>$connected_users,'users'=>$users,'content'=>$content);
+        return array('status'=>1,'content'=>$content);
 
     }
 
@@ -95,7 +106,7 @@ class UserConnectionModel extends Model
 
             $user_id=getUserId();
 
-            $connection=$obj->groupStart()->where('sender',$user_id)->orWhere('receiver',$user_id)->groupEnd()->first();
+            $connection=$obj->groupStart()->where('sender',$user_id)->orWhere('receiver',$user_id)->groupEnd()->groupStart()->where('sender',$data['chat_user_id'])->orWhere('receiver',$data['chat_user_id'])->groupEnd()->first();
 
             if(($connection && $connection['status']!='blocked') || !$connection):
 
@@ -158,17 +169,8 @@ class UserConnectionModel extends Model
 
         $obj=new self();
 
-        $connections=$obj->select('user_connections.*,sender.first_name as sender_first_name,sender.username as sender_username,receiver.username as receiver_username,sender_media_files.file_thumb_path as sender_photo,receiver.first_name as receiver_first_name,receiver_media_files.file_thumb_path as receiver_photo,MAX(chat_messages.message) AS message,chat_messages.is_file,  SUM(CASE WHEN chat_messages.is_read != 1 AND chat_users.receiver ='.$user_id.' THEN 1 ELSE 0 END) AS unread_messages_count')
-        ->join('chat_users','chat_users.connection_id=user_connections.id')
-        ->join('chat_messages','chat_users.chat_message_id=chat_messages.id')
-        ->join('users as sender','user_connections.sender=sender.id')
-        ->join('users as receiver','user_connections.receiver=receiver.id')
-
-        ->join('media as sender_media','sender_media.model_id=sender.id AND sender_media.model="User"','left')
-        ->join('media_files sender_media_files','sender_media.id=sender_media_files.media_id','left')
-        ->join('media as receiver_media','receiver_media.model_id=receiver.id AND receiver_media.model="User"','left')->join('media_files receiver_media_files','receiver_media.id=receiver_media_files.media_id','left')
-        ->groupStart()->where('user_connections.sender',$user_id)->orWhere('user_connections.receiver',$user_id)->groupEnd()->groupBy('user_connections.id')->orderBy('chat_users.id','desc')->findAll();
-
+     
+        $connections=$obj->getConnections($user_id);
       //return array('connections'=>$connections);
 
         $content='';
@@ -187,6 +189,56 @@ class UserConnectionModel extends Model
 
 
 
+    }
+
+    // public function getConnections2(int $user_id,$search='')
+    // {
+    //     $obj=new self();
+    //        $connections=$obj->select('user_connections.*,sender.first_name as sender_first_name,sender.username as sender_username,receiver.username as receiver_username,sender_media_files.file_thumb_path as sender_photo,receiver.first_name as receiver_first_name,receiver_media_files.file_thumb_path as receiver_photo,MAX(chat_messages.message) AS message,chat_messages.is_file,  SUM(CASE WHEN chat_messages.is_read != 1 AND chat_users.receiver ='.$user_id.' THEN 1 ELSE 0 END) AS unread_messages_count')
+    //     ->join('chat_users','chat_users.connection_id=user_connections.id')
+    //     ->join('chat_messages','chat_users.chat_message_id=chat_messages.id')
+    //     ->join('users as sender','user_connections.sender=sender.id')
+    //     ->join('users as receiver','user_connections.receiver=receiver.id')
+
+    //     ->join('media as sender_media','sender_media.model_id=sender.id AND sender_media.model="User"','left')
+    //     ->join('media_files sender_media_files','sender_media.id=sender_media_files.media_id','left')
+    //     ->join('media as receiver_media','receiver_media.model_id=receiver.id AND receiver_media.model="User"','left')->join('media_files receiver_media_files','receiver_media.id=receiver_media_files.media_id','left');
+
+    //     if($search):
+
+    //     $connections=$connections->groupStart()->like('sender.username',$search)->orLike('sender.first_name',$search)->orLike('receiver.first_name',$search)->orLike('receiver.username',$search)->groupEnd()->where('user_connections');
+
+    // endif;
+
+    //     $connections=$connections->groupStart()->where('user_connections.sender',$user_id)->orWhere('user_connections.receiver',$user_id)->groupEnd()->groupBy('user_connections.id')->orderBy('chat_users.id','desc')->findAll();
+
+    //     return $connections;
+    // }
+
+
+    public function getConnections(int $user_id,$search='')
+    {
+        $obj=new self();
+        
+           $connections=$obj->select('user_connections.*,sender.first_name as sender_first_name,sender.username as sender_username,receiver.username as receiver_username,sender_media_files.file_thumb_path as sender_photo,receiver.first_name as receiver_first_name,receiver_media_files.file_thumb_path as receiver_photo,MAX(chat_messages.message) AS message,chat_messages.is_file,  SUM(CASE WHEN chat_messages.is_read != 1 AND chat_users.receiver ='.$user_id.' THEN 1 ELSE 0 END) AS unread_messages_count')
+        ->join('chat_users','chat_users.connection_id=user_connections.id')
+        ->join('chat_messages','chat_users.chat_message_id=chat_messages.id')
+        ->join('users as sender','user_connections.sender=sender.id')
+        ->join('users as receiver','user_connections.receiver=receiver.id')
+
+        ->join('media as sender_media','sender_media.model_id=sender.id AND sender_media.model="User"','left')
+        ->join('media_files sender_media_files','sender_media.id=sender_media_files.media_id','left')
+        ->join('media as receiver_media','receiver_media.model_id=receiver.id AND receiver_media.model="User"','left')->join('media_files receiver_media_files','receiver_media.id=receiver_media_files.media_id','left');
+
+        if($search):
+
+        $connections=$connections->groupStart()->like('(CASE WHEN user_connections.sender = '.$user_id.' THEN receiver.username ELSE sender.username END)',$search)->groupEnd();
+
+    endif;
+
+        $connections=$connections->groupStart()->where('user_connections.sender',$user_id)->orWhere('user_connections.receiver',$user_id)->groupEnd()->groupBy('user_connections.id')->orderBy('chat_users.id','desc')->findAll();
+
+        return $connections;
     }
    
 }
