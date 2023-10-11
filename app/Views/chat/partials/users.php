@@ -45,8 +45,8 @@ endif;
                                                 <p class="user-title m-0"><?=$first_name?></p>
 
                                              
-                                                <p class="text-muted"><?=$connection['message']??''?></p>
-                                                <span data-count="<?=$connection['unread_messages_count']??''?>" class="unreadCounter badge bg-danger rounded-pill message-count <?=($connection['unread_messages_count']>0?'':'d-none')?>"><?=$connection['unread_messages_count']??''?> </span>
+                                                <p class="text-muted lastMessageArea" ><?=$connection['message']??''?></p>
+                                                <span data-count="<?=$connection['unread_messages_count']??0?>" class="unreadCounter badge bg-danger rounded-pill message-count <?=($connection['unread_messages_count']>0?'':'d-none')?>"><?=$connection['unread_messages_count']??''?> </span>
                                             </div>
                                         </a>
 

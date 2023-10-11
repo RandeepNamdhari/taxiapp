@@ -25,9 +25,10 @@ class ChatUserModel extends Model
     protected $updatedField  = 'updated_at';
    
 
-   public static function userChat(int $connection_id,int $unread_count)
+   public static function userChat(int $connection_id,$unread_count)
    {
       $obj=new self();
+      $user_id=getUserId();
 
 
 
@@ -46,9 +47,11 @@ class ChatUserModel extends Model
 
         $is_read_done=0;
 
+      
+
         if($unread_count):
             $obj2=new self();
-            $result=$obj2->where('connection_id',$connection_id)->findAll();
+            $result=$obj2->select('chat_users.chat_message_id')->where('chat_users.connection_id',$connection_id)->join('chat_messages','chat_users.chat_message_id=chat_messages.id')->where('receiver',$user_id)->where('chat_messages.is_read',0)->get()->getResultArray();
 
             $chat_ids=array_column($result, 'chat_message_id');
 

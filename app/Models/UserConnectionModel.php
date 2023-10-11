@@ -71,6 +71,7 @@ class UserConnectionModel extends Model
 
     public static function getChat(int $connection_id,int $count)
     {
+
         $obj=new self();
        
         if($connection_id):
@@ -219,10 +220,18 @@ class UserConnectionModel extends Model
     public function getConnections(int $user_id,$search='')
     {
         $obj=new self();
+
+       $subquery = $this->db->table('chat_users')
+                            ->select('MAX(id) AS max_id')
+                            ->groupBy('connection_id')
+                            ->getCompiledSelect();
         
-           $connections=$obj->select('user_connections.*,sender.first_name as sender_first_name,sender.username as sender_username,receiver.username as receiver_username,sender_media_files.file_thumb_path as sender_photo,receiver.first_name as receiver_first_name,receiver_media_files.file_thumb_path as receiver_photo,MAX(chat_messages.message) AS message,chat_messages.is_file,  SUM(CASE WHEN chat_messages.is_read != 1 AND chat_users.receiver ='.$user_id.' THEN 1 ELSE 0 END) AS unread_messages_count')
-        ->join('chat_users','chat_users.connection_id=user_connections.id')
-        ->join('chat_messages','chat_users.chat_message_id=chat_messages.id')
+           $obj->select('user_connections.*,sender.first_name as sender_first_name,sender.username as sender_username,receiver.username as receiver_username,sender_media_files.file_thumb_path as sender_photo,receiver.first_name as receiver_first_name,receiver_media_files.file_thumb_path as receiver_photo,chat_messages.message as message,chat_messages.is_file,  ,chat_messages.id as chat_message_p_id,(SELECT COUNT(chat_messages.id) FROM chat_messages JOIN chat_users ON chat_users.chat_message_id=chat_messages.id WHERE chat_users.chat_message_id = chat_messages.id and chat_users.receiver='.$user_id.' and chat_messages.is_read=0 and user_connections.id =chat_users.connection_id) AS unread_messages_count')
+
+        ->join('chat_users','user_connections.id=chat_users.connection_id')
+         ->join("($subquery) AS latest_ids", 'chat_users.id = latest_ids.max_id', 'inner')
+        ->join('chat_messages','chat_users.chat_message_id=chat_messages.id','left')
+
         ->join('users as sender','user_connections.sender=sender.id')
         ->join('users as receiver','user_connections.receiver=receiver.id')
 
@@ -232,11 +241,19 @@ class UserConnectionModel extends Model
 
         if($search):
 
-        $connections=$connections->groupStart()->like('(CASE WHEN user_connections.sender = '.$user_id.' THEN receiver.username ELSE sender.username END)',$search)->groupEnd();
+       $obj->groupStart()->like('(CASE WHEN user_connections.sender = '.$user_id.' THEN receiver.username ELSE sender.username END)',$search)->groupEnd();
 
     endif;
 
-        $connections=$connections->groupStart()->where('user_connections.sender',$user_id)->orWhere('user_connections.receiver',$user_id)->groupEnd()->groupBy('user_connections.id')->orderBy('chat_users.id','desc')->findAll();
+    
+
+        
+
+
+        $connections=$obj->groupStart()->where('user_connections.sender',$user_id)->orWhere('user_connections.receiver',$user_id)->groupEnd()->orderBy('chat_users.created_at','desc')->groupBy('user_connections.id')->get()->getResultArray();
+
+       // echo $obj->getLastQuery();
+       // echo '<pre>';print_r($connections);
 
         return $connections;
     }

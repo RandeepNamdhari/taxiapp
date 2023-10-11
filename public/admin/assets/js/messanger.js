@@ -2,6 +2,7 @@ function Messanger(config)
 	{
           this.mainContainer=document.querySelector(config.mainContainer);
           this.messageContainer=this.mainContainer.querySelector(config.messageContainer)
+          this.firstScreen=this.mainContainer.querySelector(config.firstScreen);
           this.userListContainer=this.mainContainer.querySelector(config.userListContainer);
           this.sendMessageUrl=config.sendMessageUrl;
           this.textInput=this.mainContainer.querySelector(config.textInput);
@@ -17,6 +18,7 @@ function Messanger(config)
           this.connectionAttribute=config.userConnectionAttribute;
           this.activeUser=config.activeUser;
           this.loaderContainer=this.mainContainer.querySelector(config.loaderContainer);
+          this.lastMessageContainer=config.lastMessageContainer;
           this.unreadCounter=config.unreadCounter;
           this.currentUserUnreadCount=0;
           this.unreadAttribute=config.unreadAttribute
@@ -50,14 +52,46 @@ function Messanger(config)
                 if(data.status)
                 {
                      obj.messageContainer.querySelector('.simplebar-content').innerHTML+=data.content;
+                     obj.setLastMessage(obj.textInput.value);
              obj.scrollDown();
              obj.textInput.value='';
 
 
+
+             obj.setConnection(data);
+             if(obj.firstMessageScreen){
+             obj.firstMessageScreen.classList.add('d-none');
+
+             }
+
+obj.stopLoader();
                 }
             })
 
-             this.stopLoader();
+             
+          }
+
+          this.setConnection=(data)=>{
+            if(data.connection)
+            {
+                this.connectionId=data.connection;
+                this.setUserAttribute(this.connectionAttribute,data.connection);
+            }
+            
+          }
+
+          this.setUserAttribute=(attribute,value)=>
+          {
+               this.userToggle.forEach(userElement => {
+
+                if(userElement.getAttribute(this.userIdAttr)==this.activeUser)
+                {
+
+                 userElement.setAttribute(attribute,value);
+                   
+                }
+
+});   
           }
 
           this.loadUsers=()=>
@@ -110,6 +144,21 @@ function Messanger(config)
 
          }
 
+         this.setLastMessage=(message)=>
+         {
+              this.userToggle.forEach(userElement => {
+
+                if(userElement.getAttribute(this.userIdAttr)==this.activeUser)
+                {
+
+  userElement.querySelector(this.lastMessageContainer).innerHTML=message;
+                   
+                }
+
+});     
+             
+         }
+
          this.activeUserUpdate=()=> 
          {
              this.userToggle.forEach(userElement => {
@@ -151,26 +200,27 @@ function Messanger(config)
 });     
                        this.toogleMessageContainer('hide');
              
-                          this.loadMessages();
-
-                          if(this.unreadCount){
-
-                            e.target.closest(config.userToggle).querySelector(this.unreadCounter).classList.add('d-none');
-                            e.target.closest(config.userToggle).querySelector(this.unreadCounter).setAttribute(this.unreadAttribute,0);
-                            e.target.closest(config.userToggle).querySelector(this.unreadCounter).innerHTML=0;
-
-                          }
-
-                          
-
-
-
-
+                          this.loadMessages();     
 
 
 
              e.target.closest(config.userToggle).classList.add('bg-warning');
 
+         }
+
+         this.unsetUnreadCount=()=>
+         {
+             this.userToggle.forEach(userElement => {
+
+  if(userElement.getAttribute(this.userIdAttr)==this.activeUser)
+                {
+
+  userElement.querySelector(this.unreadCounter).classList.add('d-none');
+                            userElement.querySelector(this.unreadCounter).setAttribute(this.unreadAttribute,0);
+                            userElement.querySelector(this.unreadCounter).innerHTML=0;
+                   
+                }
+});     
          }
 
          this.loadMessages=()=>
@@ -191,6 +241,14 @@ function Messanger(config)
                         obj.form.classList.remove('d-none');
 
                         obj.scrollDown();
+
+                         if(obj.unreadCount){
+
+                            obj.unsetUnreadCount();
+
+                           
+
+                          }
                     }
                 })
             }

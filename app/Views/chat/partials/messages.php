@@ -112,7 +112,7 @@
 
                                               <?php else:?>
 
-                                                <div class="" style="height:380px;text-align: center;display: flex;align-items: center;"><h2 class="text-center w-100">Start Messaging...</h2></div>
+                                                <div class="firstMessageScreen" style="height:380px;text-align: center;display: flex;align-items: center;"><h2 class="text-center w-100">Start Messaging...</h2></div>
 
 
 

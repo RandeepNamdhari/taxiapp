@@ -7,7 +7,7 @@
 
     
     
-      $first_name=$connection['username'];;
+      $first_name=$connection['first_name']?$connection['first_name']:$connection['username'];;
       $photo=$connection['user_photo'];
       $data_user_id=$connection['id'];
 
@@ -18,7 +18,7 @@
 
      <h5 class="p-2">System Users</h5>
 
-  <a href="javascript:void(0)" class="d-flex p-1 userElement" data-user-id="<?=$data_user_id?>" data-connection-id="<?=$connection['id']?>" style="min-height: 50px;">
+  <a href="javascript:void(0)" class="d-flex p-1 userElement" data-user-id="<?=$data_user_id?>" data-connection-id="0" style="min-height: 50px;">
 
    
                                             <div class="flex-shrink-0 me-3" style="padding-left:5px;pointer-events: none;">
@@ -44,7 +44,7 @@
                                                 <p class="user-title m-0"><?=$first_name?></p>
 
                                              
-                                                <p class="text-muted"><?=$connection['message']??''?></p>
+                                                <p class="text-muted lastMessageArea"><?=$connection['message']??''?></p>
                                                 <span data-count="0" class="unreadCounter badge bg-danger rounded-pill message-count d-none">0</span>
                                             </div>
                                         </a>
@@ -114,8 +114,8 @@ endif;
                                                 <p class="user-title m-0"><?=$first_name?></p>
 
                                              
-                                                <p class="text-muted"><?=$connection['message']??''?></p>
-                                                <span data-count="<?=$connection['unread_messages_count']??''?>" class="unreadCounter badge bg-danger rounded-pill message-count <?=($connection['unread_messages_count']>0?'':'d-none')?>"><?=$connection['unread_messages_count']??''?> </span>
+                                                <p class="text-muted lastMessageArea" ><?=$connection['message']??''?></p>
+                                                <span data-count="<?=$connection['unread_messages_count']??0?>" class="unreadCounter badge bg-danger rounded-pill message-count <?=($connection['unread_messages_count']>0?'':'d-none')?>"><?=$connection['unread_messages_count']??''?> </span>
                                             </div>
                                         </a>
 

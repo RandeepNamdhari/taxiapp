@@ -195,7 +195,9 @@
                                     form:'.chatForm',
                                     unreadCounter:'.unreadCounter',
                                     unreadAttribute:'data-count',
+                                    lastMessageContainer:'.lastMessageArea',
                                     userConnectionAttribute:'data-connection-id',
+                                    firstScreen:'.firstMessageScreen',
 
 
 

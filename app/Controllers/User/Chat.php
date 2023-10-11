@@ -11,8 +11,10 @@ class Chat extends BaseController
         //
     }
 
-    public function messages(int $connection_id,int $unread_count)
+    public function messages(int $connection_id,$unread_count)
     {
+        $unread_count=(int)$unread_count; 
+       
          $response=run_with_exceptions(function() use ($connection_id,$unread_count)
         {
             return \App\Models\UserConnectionModel::getChat($connection_id,$unread_count);
