@@ -11,13 +11,13 @@ class Chat extends BaseController
         //
     }
 
-    public function messages(int $connection_id,$unread_count)
+    public function messages(int $connection_id,$unread_count,$offset)
     {
         $unread_count=(int)$unread_count; 
        
-         $response=run_with_exceptions(function() use ($connection_id,$unread_count)
+         $response=run_with_exceptions(function() use ($connection_id,$unread_count,$offset)
         {
-            return \App\Models\UserConnectionModel::getChat($connection_id,$unread_count);
+            return \App\Models\UserConnectionModel::getChat($connection_id,$unread_count,$offset);
         });
 
          
@@ -82,6 +82,8 @@ class Chat extends BaseController
         {
             return \App\Models\UserConnectionModel::getUsers();
         });
+
+       // echo '<pre>';print_r($response);die;
 
          return $this->response->setJSON($response);
     }

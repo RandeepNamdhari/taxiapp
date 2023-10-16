@@ -1,25 +1,13 @@
-<?php if(isset($connections) && count($connections)):
-      foreach($connections as $connection):
+<?php 
 
-?>
+$connection=$user[0];
 
- <?php
-
-    if($connection['sender']!=getUserId()):
-      $first_name=$connection['sender_first_name']?$connection['sender_first_name']:$connection['sender_username'];
+ $first_name=$connection['sender_first_name']?$connection['sender_first_name']:$connection['sender_username'];
       $photo=$connection['sender_photo'];
       $data_user_id=$connection['sender'];
-    else:
-      $first_name=$connection['receiver_first_name']?$connection['receiver_first_name']:$connection['receiver_username'];;
-      $photo=$connection['receiver_photo'];
-      $data_user_id=$connection['receiver'];
 
-endif;
-
-
-     ?>
-
-  <a href="javascript:void(0)" class="d-flex p-1 userElement" data-user-id="<?=$data_user_id?>" data-connection-id="<?=$connection['id']?>" style="min-height: 50px;">
+      ?>
+<a href="javascript:void(0)" class="d-flex p-1 userElement" data-user-id="<?=$data_user_id?>" data-connection-id="<?=$connection['id']?>" style="min-height: 50px;">
 
    
                                             <div class="flex-shrink-0 me-3" style="padding-left:5px;pointer-events: none;">
@@ -49,6 +37,3 @@ endif;
                                                 <span data-count="<?=$connection['unread_messages_count']??0?>" class="unreadCounter badge bg-danger rounded-pill message-count <?=($connection['unread_messages_count']>0?'':'d-none')?>"><?=$connection['unread_messages_count']??''?> </span>
                                             </div>
                                         </a>
-
-                                <?php endforeach;
-                                endif;?>

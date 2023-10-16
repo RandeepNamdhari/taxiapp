@@ -23,8 +23,9 @@
     {
             border-radius: 25px;
     height: 8px !important;
-    background: green;
-    padding: 5px;
+    background: gray;
+    border:1px solid white;
+        padding: 5px;
     position: relative;
     display: block;
     width: 3px;
@@ -170,12 +171,26 @@
 
 
 
+ 
+ <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
+
+ <script>var loginUser='<?=getUserId()?>';</script>
+
+
+
    <?=script_tag('admin/assets/js/messanger.js')?>
 
 
 
 
+
+
+
+
+
+
  <script type="text/javascript">
+   
 
     const messanger=new Messanger({
                                     mainContainer:'.chatMessangerContainer',
@@ -204,8 +219,13 @@
                                  });
 
 
+
+
   
 </script>
+
+   <?=script_tag('admin/assets/js/ably.js')?>
+
 
 
 <?=$this->endSection()?>

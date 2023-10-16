@@ -25,7 +25,7 @@ class ChatUserModel extends Model
     protected $updatedField  = 'updated_at';
    
 
-   public static function userChat(int $connection_id,$unread_count)
+   public static function userChat(int $connection_id,$unread_count,$offset=0)
    {
       $obj=new self();
       $user_id=getUserId();
@@ -43,7 +43,7 @@ class ChatUserModel extends Model
         ->join('media as receiver_media','receiver_media.model_id=receiver.id AND receiver_media.model="User"','left')->join('media_files receiver_media_files','receiver_media.id=receiver_media_files.media_id','left')
         ->join('media as chat_media','chat_media.model_id=chat_messages.id AND chat_media.model="Chat"','left')
         ->join('media_files as chat_media_files','chat_media_files.media_id=chat_media.id','left')
-        ->where('chat_users.connection_id',$connection_id)->orderBy('chat_users.id','desc')->offset(0)->limit(10)->get()->getResultArray();
+        ->where('chat_users.connection_id',$connection_id)->orderBy('chat_users.id','desc')->offset($offset)->limit(10)->get()->getResultArray();
 
         $is_read_done=0;
 

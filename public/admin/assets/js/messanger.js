@@ -29,7 +29,8 @@ function Messanger(config)
           this.simpleBar = new SimpleBar(this.messageContainer);
           this.connectionId;
           this.activeUserElement;
-          this.limit=10;
+          this.offset=0;
+          
 
 
 
@@ -53,6 +54,9 @@ function Messanger(config)
                 {
                      obj.messageContainer.querySelector('.simplebar-content').innerHTML+=data.content;
                      obj.setLastMessage(obj.textInput.value);
+                      data.lastMessage=obj.textInput.value;
+                      data.sender_id=loginUser;
+             sendAblyMessage(obj.activeUser,data);
              obj.scrollDown();
              obj.textInput.value='';
 
@@ -63,6 +67,7 @@ function Messanger(config)
              obj.firstMessageScreen.classList.add('d-none');
 
              }
+
 
 obj.stopLoader();
                 }
@@ -98,6 +103,7 @@ obj.stopLoader();
           {
 
               let obj=this;
+              obj.userListContainer.innerHTML='';
 
              let response= __getCall('chats/users');
 
@@ -121,17 +127,9 @@ obj.stopLoader();
             // this.fileInput.addEventListener('change',this.sendMessage);
              this.searchInput.addEventListener('keyup',this.searchUser);
 
-             this.messageContainer.addEventListener('scroll', () => {
-  if ( this.messageContainer.scrollTop === 0) {
-    // User has scrolled to the top of the SimpleBar container
-    console.log('User scrolled to the top of SimpleBar');
-    // Add your event handling code here
-  }
-});
-  
+            this.simpleBar.getScrollElement().addEventListener('scroll',this.scrollUp);
 
-            
-         }
+        }
 
          this.refreshUsers=()=>{
 
@@ -141,6 +139,7 @@ obj.stopLoader();
 
   userElement.addEventListener('click',this.setActiveUser);
 });     
+               checkUserStatus();
 
          }
 
@@ -194,6 +193,7 @@ obj.stopLoader();
                 return false;
             }
             this.activeUser=user;
+            this.offset=0;
             this.userToggle.forEach(userElement => {
 
   userElement.classList.remove('bg-warning');
@@ -227,20 +227,38 @@ obj.stopLoader();
          {
             if(this.activeUser)
             {
-                let response=__getCall('chats/get/messages/'+this.connectionId+'/'+this.unreadCount);
+                let response=__getCall('chats/get/messages/'+this.connectionId+'/'+this.unreadCount+'/'+this.offset);
                 let obj=this;
 
                 response.then(function(data)
                 {
                     if(data.status)
                     {
-                        obj.messageContainer.querySelector('.simplebar-content').innerHTML=data.content;
+                        if(obj.offset >0 && data.count >0)
+                        {
+                          obj.messageContainer.querySelector('.simplebar-content').insertAdjacentHTML('afterbegin', data.content);
+                          obj.offset=obj.offset+1;
+                        }
+                        else if(data.count)
+                        {
+                            obj.messageContainer.querySelector('.simplebar-content').innerHTML=data.content;
+
+                             obj.scrollDown();
+                             obj.offset=obj.offset+1;
+                        }
+
+                        
+
+
+
+
+                        
                         
                       //  obj.toogleMessageContainer('show');
 
                         obj.form.classList.remove('d-none');
 
-                        obj.scrollDown();
+                       
 
                          if(obj.unreadCount){
 
@@ -314,6 +332,16 @@ obj.stopLoader();
            }
          }
 
+         this.scrollUp=()=>
+         {
+           
+  if (this.simpleBar.getScrollElement().scrollTop === 0) {
+      this.loadMessages();
+     // this.simpleBar.getScrollElement().scrollTop += 50
+  }
+
+         }
+
          this.scrollDown=()=>
          { 
 
@@ -352,6 +380,64 @@ obj.stopLoader();
          this.stopLoader=()=>
          {
                this.sendButton.disabled=false;
+         }
+
+
+         this.login=()=>
+         {
+             
+         }
+
+         this.receiveMessage=(message)=>
+         {
+            let user_id=message.clientId.replace('user__','');
+
+            if(this.activeUser==user_id)
+            {
+               this.messageContainer.querySelector('.simplebar-content').innerHTML+=message.data.content;
+               this.scrollDown();
+            }
+
+
+                this.userToggle.forEach(userElement => {
+
+                if(userElement.getAttribute(this.userIdAttr)==user_id)
+                {
+
+  userElement.querySelector(this.lastMessageContainer).innerHTML=message.data.lastMessage;
+
+  let count=parseInt(userElement.querySelector(this.unreadCounter).innerHTML);
+
+  if(this.activeUser!=user_id)
+  {
+    userElement.querySelector(this.unreadCounter).classList.remove('d-none');
+  userElement.querySelector(this.unreadCounter).innerHTML=(count+1);
+
+  }
+
+
+                   
+                }
+
+});    
+
+                if(message.data.connection)
+                {
+                   if(this.searchInput.value)
+                   {
+                    const event = new KeyboardEvent('keyup', { key: 'Enter' }); // 
+
+this.searchInput.dispatchEvent(event);
+                   }
+                   else
+                   {
+                    this.loadUsers();
+                   }
+                }
+
+                
+
+
          }
 
 

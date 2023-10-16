@@ -32,7 +32,7 @@
 
                                               <?php endif;?>
 
-                                                 <span class="user-status" data-user-id="<?=$data_user_id?>"></span>
+                                                 <span class="user-status userStatus__<?=$data_user_id?>" data-user-id="<?=$data_user_id?>"></span>
 
                                              
 
@@ -102,7 +102,7 @@ endif;
 
                                               <?php endif;?>
 
-                                                 <span class="user-status" data-user-id="<?=$data_user_id?>"></span>
+                                                 <span class="user-status userStatus__<?=$data_user_id?>" data-user-id="<?=$data_user_id?>"></span>
 
                                              
 

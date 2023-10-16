@@ -69,14 +69,14 @@ class UserConnectionModel extends Model
 
     }
 
-    public static function getChat(int $connection_id,int $count)
+    public static function getChat(int $connection_id,int $count,$offset)
     {
 
         $obj=new self();
        
         if($connection_id):
 
-            $messages=\App\Models\ChatUserModel::userChat($connection_id,$count);
+            $messages=\App\Models\ChatUserModel::userChat($connection_id,$count,$offset);
 
         else:
 
@@ -88,7 +88,7 @@ class UserConnectionModel extends Model
 
         $content=view('chat/partials/messages',['messages'=>$messages]);
 
-        return array('status'=>'success','content'=>$content);
+        return array('status'=>'success','content'=>$content,'count'=>count($messages));
 
     }
 
