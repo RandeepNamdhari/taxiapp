@@ -230,6 +230,25 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     $routes->post('settings/fare/types/(:num)/delete', 'FareType::delete/$1');
 
 
+        // Commission Types
+
+      $routes->get('settings/commission/types','CommissionType::index');
+    $routes->post('settings/commission/types','CommissionType::index');
+      $routes->get('settings/commission/types/create','CommissionType::create');
+
+
+    $routes->post('settings/commission/types/store','CommissionType::store');
+
+     $routes->get('settings/commission/types/(:num)/edit','CommissionType::edit/$1');
+      
+
+    $routes->post('settings/commission/types/(:num)/update','CommissionType::update/$1');
+
+    $routes->post('settings/commission/types/(:num)/change/status', 'CommissionType::status/$1');
+    $routes->post('settings/commission/types/(:num)/delete', 'CommissionType::delete/$1');
+
+
+
         //End Settings Routes
 
     // Bookings Routes

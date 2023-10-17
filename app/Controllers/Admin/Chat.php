@@ -9,13 +9,7 @@ class Chat extends BaseController
        public function index()
     {
 
-        if($this->request->isAJAX())
-        {
-          
-         $data = \App\Models\StateModel::datatable();
-
-         return $this->response->setJSON($data);
-        }
+        
 
         $data['currentRoute']='admin-chats';
 

@@ -51,6 +51,14 @@
 
                             <!--Bookings-->
 
+                             <li class="<?php echo ($currentRoute=='admin-chats')?'mm-active':''?>">
+                                <a href="<?=base_url('admin/chats')?>" class="waves-effect <?php echo ($currentRoute=='admin-chats')?'active':''?>">
+                                    <i class="fab fa-facebook-messenger"></i>
+                                      <!--   <span class="badge rounded-pill bg-primary float-end">1</span> -->
+                                    <span>Messenger</span>
+                                </a>
+                            </li>
+
 
 
                             <li>
