@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+use CodeIgniter\Database\Exceptions\DatabaseException;
+
+
 
 
 class UserModel extends Model
@@ -100,7 +103,15 @@ class UserModel extends Model
     {
          $obj=new self();
 
-         return $obj->allowEmptyInserts()->insert($user);
+         $user_id= $obj->insert($user);
+
+         if($user_id):
+            return $user_id;
+         else:
+
+            throw new DatabaseException('Unable to insert the user.Please try again later.');
+
+         endif;
     }
 
     public static function updateUser($id,$user)

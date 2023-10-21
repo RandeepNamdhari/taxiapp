@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+use CodeIgniter\Database\Exceptions\DatabaseException;
+
+
 class BookingDetailModel extends Model
 {
     protected $DBGroup          = 'default';
@@ -31,7 +34,9 @@ class BookingDetailModel extends Model
         foreach($details as $ind => $detail)
         {
             $details[$ind]['vehicle']=\App\Models\VehicleModel::getVehicle($detail['vehicle_id']);
+            if($detail['driver_id']):
             $details[$ind]['driver']=\App\Models\DriverModel::getDriver($detail['driver_id']);
+        endif;
         }
 
         return $details;
@@ -47,33 +52,43 @@ class BookingDetailModel extends Model
 
 
       $bookingDetail=array('vehicle_id'=>$data['vehicle'],
-                           'driver_id'=>$data['driver']??null,
+                           'driver_id'=>$data['driver']?$data['driver']:null,
                            'booking_id'=>$booking_id,
                            'from_location'=>$data['from_location'],
                            'to_location'=>$data['to_location'],
                            'from_location_latitude'=>$data['from_location_latitude']??'',
                             'from_location_longitude'=>$data['from_location_longitude']??'',
-                            'to_location_latitude'=>$data['to_location_latitude']??'0',
+                            'to_location_latitude'=>$data['to_location_latitude']??'',
                             'to_location_longitude'=>$data['to_location_longitude']??'',
-                            'distance'=>$data['distance']??'',
-                            'estimate_time'=>$data['estimate_time']??'',
-                            'pickup_time'=>$data['pickup_time']??'',
-                            'drop_time'=>$data['drop_time']??'',
-                            'fares'=>$data['fares']??'0',
-                            'note'=>$data['note']??'',
+                            'distance'=>$data['distance']??0,
+                            'estimate_time'=>$data['estimate_time']??null,
+                            'pickup_time'=>$data['pickup_time']??null,
+                            'drop_time'=>$data['drop_time']??null,
+                            'fares'=>$data['fares']??null,
+                            'note'=>$data['note']??null,
                             'status'=>'pending');
 
-      //print_r($data);die;
+    
 
       if(isset($data['booking_detail_id'])):
 
-      return  $obj->update($data['booking_detail_id'],$bookingDetail);
+      $rid=  $obj->update($data['booking_detail_id'],$bookingDetail);
 
 
 
       else:
 
-      return  $obj->allowEmptyInserts()->insert($bookingDetail);
+      $rid=  $obj->insert($bookingDetail);
+
+      endif;
+
+      if($rid):
+
+           return $rid;
+
+      else:
+
+         throw new DatabaseException('Unable to insert the booking details.Please try again later.');
 
       endif;
 

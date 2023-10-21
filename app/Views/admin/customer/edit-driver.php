@@ -3,7 +3,25 @@
 
  $driver=$response['data']['driver'];
 
- //echo '<pre>';print_r($driver->email);die;
+ $profit=[];
+
+ if(isset($driver->profit) && count($driver->profit)):
+
+
+
+foreach($driver->profit as $row):
+
+$profit[$row['type']]=$row;
+
+endforeach;
+
+
+
+ // echo '<pre>';print_r($profit);die;
+
+
+ endif;
+
 
  ?>
                  <div class="col-lg-12">
@@ -91,12 +109,94 @@
  <input type="date" name="licence_expiry" class="form-control 
  " placeholder="Licence Expiry" value="<?=$driver->licence_expiry?>">
  </div>
+
+
+
+  <div class="col-md-3 mb-3">
+ <label> Booking Margin</label>
+ <select class="form-select" onchange="changeAmountOfType(this)" name="profit[booking][commission_type_id]"  >
+ <option value="">Select Margin Type</option>
+<?php if(isset($response['data']['commission_types']) && count($response['data']['commission_types'])):
+      foreach($response['data']['commission_types'] as $type):
+
+        $bsel='';
+
+      if(isset($profit['booking']) && $profit['booking']['commission_type_id']==$type['id']):
+       $bsel='selected';
+       endif; 
+
+        ?>
+
+        <option <?=$bsel?> data-amount="<?=$type['amount']?>" value="<?=$type['id']?>"><?=$type['name'];?></option>
+
+      <?php endforeach;
+            endif; ?>
+  </select>
+ </div>
+ <div class="col-md-3 mb-3">
+ <label> Booking Margin Amount</label>
+ <input type="text" name="profit[booking][amount]" class="form-control 
+ " placeholder="Enter amount or percentage" value="<?=$profit['booking']['amount']??''?>">
+ </div>
+
+
+  <div class="col-md-3 mb-3">
+ <label> Addon Margin</label>
+ <select class="form-select" onchange="changeAmountOfType(this)" name="profit[add_on][commission_type_id]"  >
+ <option value="">Select Margin Type</option>
+<?php if(isset($response['data']['commission_types']) && count($response['data']['commission_types'])):
+      foreach($response['data']['commission_types'] as $type): 
+           $asel='';
+
+      if(isset($profit['add_on']) && $profit['add_on']['commission_type_id']==$type['id']):
+       $asel='selected';
+       endif; 
+       ?>
+
+        <option <?=$asel?> data-amount="<?=$type['amount']?>" value="<?=$type['id']?>"><?=$type['name'];?></option>
+
+      <?php endforeach;
+            endif; ?>
+  </select>
+ </div>
+ <div class="col-md-3 mb-3">
+ <label> Addon Margin Amount</label>
+ <input type="text" name="profit[add_on][amount]" class="form-control 
+ " placeholder="Enter amount or percentage" value="<?=$profit['add_on']['amount']??''?>">
+ </div>
+
+ <div class="col-md-3 mb-3">
+ <label> Cancellation Margin</label>
+ <select class="form-select" onchange="changeAmountOfType(this)" name="profit[cancellation][commission_type_id]"  >
+ <option value="">Select Margin Type</option>
+<?php if(isset($response['data']['commission_types']) && count($response['data']['commission_types'])):
+      foreach($response['data']['commission_types'] as $type): 
+
+         $csel='';
+
+      if(isset($profit['cancellation']) && $profit['cancellation']['commission_type_id']==$type['id']):
+       $csel='selected';
+       endif; 
+
+        ?>
+
+        <option <?=$csel?> data-amount="<?=$type['amount']?>" value="<?=$type['id']?>"><?=$type['name'];?></option>
+
+      <?php endforeach;
+            endif; ?>
+  </select>
+ </div>
+ <div class="col-md-3 mb-3">
+ <label> Cancellation Margin Amount</label>
+ <input type="text" name="profit[cancellation][amount]" class="form-control 
+ " placeholder="Enter amount or percentage" value="<?=$profit['cancellation']['amount']??''?>">
+ </div>
 <?php $media=$driver->getDefaultMedia();
 
    if(isset($media['file_thumb_path'])): ?>
 
 
-  <div class="col-md-4 mb-3">
+  <div class="col-md-3 mb-3">
 
   <label for="formFile" class="form-label">Old Driver Picture</label>
  <img style="width:100%" src="<?=base_url($media['file_thumb_path'])?>"/>
@@ -107,7 +207,7 @@
 
 
 
- <div class="col-md-4 mb-3">
+ <div class="col-md-3 mb-3">
 
   <label for="formFile" class="form-label">Driver Picture</label>
   <input class="form-control" name="driver_picture"  type="file" id="formFile">

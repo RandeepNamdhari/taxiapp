@@ -11,4 +11,10 @@
     });
 });
 
+                function changeAmountOfType(selector)
+              {
+                let amount=$(selector).find('option:selected').attr('data-amount');
+                $(selector).parent('div').next('div').find('input').val(amount);
+              }
+
 </script>

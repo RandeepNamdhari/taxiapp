@@ -158,7 +158,7 @@
  </div>
  <div class="col-md-6 mb-3">
  <label>Phone Number</label>
- <input  type="text" id="userPhone" onkeyup="checkIfUserExist(this)" value="<?=$booking['phone']??''?>" name="phone" class="form-control" placeholder="Phone Number" >
+ <input  type="text" id="userPhone" onkeyup="checkIfUserExist(this)" value="<?=$booking['user_phone']??''?>" name="phone" class="form-control" placeholder="Phone Number" >
  </div>
                                             </div>
                                            

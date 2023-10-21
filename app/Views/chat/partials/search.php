@@ -1,4 +1,6 @@
-<?php if(isset($users) && count($users)):
+<?php if(isset($users) && count($users)):?>
+  <h5 class="p-2">System Users</h5>
+  <?php
       foreach($users as $connection):
 
 ?>
@@ -16,7 +18,7 @@
 
      ?>
 
-     <h5 class="p-2">System Users</h5>
+   
 
   <a href="javascript:void(0)" class="d-flex p-1 userElement" data-user-id="<?=$data_user_id?>" data-connection-id="0" style="min-height: 50px;">
 
@@ -65,7 +67,12 @@
 
 
 
-<?php if(isset($connections) && count($connections)):
+<?php if(isset($connections) && count($connections)):?>
+
+     <h5 class="p-2">Connected Users</h5>
+<?php
+
+
       foreach($connections as $connection):
 
 ?>
@@ -86,7 +93,6 @@ endif;
 
      ?>
 
-     <h5 class="p-2">Connected Users</h5>
 
   <a href="javascript:void(0)" class="d-flex p-1 userElement" data-user-id="<?=$data_user_id?>" data-connection-id="<?=$connection['id']?>" style="min-height: 50px;">
 

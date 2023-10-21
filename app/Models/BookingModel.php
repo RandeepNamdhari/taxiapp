@@ -103,7 +103,12 @@ public static function getBooking(int $booking_id)
          $booking=array('status'=>'pending','user_id'=>$data['user_id'],
                        'customer_type'=>$data['customer_type'],'fares_type'=>$data['fares_type'],'tax_type_id'=>$data['tax'],'booking_date'=>date('Y-m-d-H:i:s'));
 
+         
+
          $booking_id=$this->insert($booking);
+
+      
+
 
          $this->update($booking_id,['booking_uid'=>rand(1111,9999).$booking_id]);
 
@@ -119,10 +124,13 @@ public static function getBooking(int $booking_id)
 
       endif;
 
-     // echo '<pre>';print_r($bookingDetail);die;
+
+      $this->createTransaction($data,$booking_id);
 
 
         if($booking_id && $data['user_id'] && $bookingDetail ):
+
+
 
         
 
@@ -196,6 +204,8 @@ public static function getBooking(int $booking_id)
 
 
          $bookingDetail=\App\Models\BookingDetailModel::createOrUpdate($data,$booking_id);
+
+         $this->updateTransaction($data,$booking_id);
 
         if($booking && $data['user_id'] && $bookingDetail):
 
@@ -332,19 +342,69 @@ public static function getBooking(int $booking_id)
     {
         if($data['bookingID']):
 
+            $this->transBegin();
 
             $addon=\App\Models\BookingAddOnModel::create($data);
 
+            $booking=$this->find($data['bookingID']);
+
+            if($addon):
+            
+
+                $transaction=array('model'=>'Addon','model_id'=>$addon,
+                                   'amount'=>$data['amount'],
+                                    'user_id'=>$booking['user_id'],
+                                    'type'=>'debit',
+                                    'user_type'=>'user');
+
+               $transObj=new \App\Models\TransactionModel;
+
+               $response=$transObj->create($transaction,$booking['id'],'Booking');
+            endif;
+
             $data['id']=$addon;
 
-            return array('status'=>1,'message'=>'The addon is added to your booking successfully','type'=>'success','fields'=>$data);
+            if($response && $addon):
+
+                $this->transCommit();
+
+                return array('status'=>1,'message'=>'The addon is added to your booking successfully','type'=>'success','fields'=>$data);
+
+            else:
+
+                $this->transRollback();
+
+                return array('status'=>0,'message'=>'Something went wrong','type'=>'warning','fields'=>$data);
+
+            endif;
+
+            
 
         endif;
     }
 
     public static function removeAddon(int $addon_id)
     {
-        return \App\Models\BookingAddOnModel::remove($addon_id);
+        $obj=new self();
+        $obj->transBegin();
+
+        $addon= \App\Models\BookingAddOnModel::remove($addon_id);
+
+               $transObj=new \App\Models\TransactionModel;
+
+               $response=$transObj->removeTransaction($addon_id,'Addon');
+
+               if($response):
+
+               $obj->transCommit();
+
+           else:
+
+               $obj->transRollback();
+
+           endif;
+
+        return $addon;
     }
 
 
@@ -361,6 +421,41 @@ public static function getBooking(int $booking_id)
          return $driver;
 
      endif;
+    }
+
+
+    public function createTransaction($data,$booking_id)
+    {
+        $data['transaction_amount']=\App\Models\FareTypeModel::getType($data['fares_type'])['amount']??0;
+
+        $transaction=array('model'=>'Booking',
+                           'model_id'=>$booking_id,
+                           'amount'=>$data['transaction_amount'],
+                           'user_id'=>$data['user_id'],
+                           'type'=>'debit',
+                          'user_type'=>'user',
+                          );
+
+        $transactionObj=new \App\Models\TransactionModel;
+
+        $transactionObj->create($transaction);
+    }
+
+    public function updateTransaction($data,$booking_id)
+    {
+        $data['transaction_amount']=\App\Models\FareTypeModel::getType($data['fares_type'])['amount']??0;
+
+        $transaction=array('model'=>'Booking',
+                           'model_id'=>$booking_id,
+                           'amount'=>$data['transaction_amount'],
+                           'user_id'=>$data['user_id'],
+                           'type'=>'debit',
+                          'user_type'=>'user',
+                          );
+
+        $transactionObj=new \App\Models\TransactionModel;
+
+        $transactionObj->updateTransaction($transaction);
     }
 
     

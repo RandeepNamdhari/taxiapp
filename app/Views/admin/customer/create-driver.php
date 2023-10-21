@@ -77,7 +77,65 @@
  " placeholder="Licence Expiry">
  </div>
 
- <div class="col-md-4 mb-3">
+  <div class="col-md-3 mb-3">
+ <label> Booking Margin</label>
+ <select class="form-select" onchange="changeAmountOfType(this)" name="profit[booking][commission_type_id]"  >
+ <option value="">Select Margin Type</option>
+<?php if(isset($response['data']['commission_types']) && count($response['data']['commission_types'])):
+      foreach($response['data']['commission_types'] as $type): ?>
+
+        <option data-amount="<?=$type['amount']?>" value="<?=$type['id']?>"><?=$type['name'];?></option>
+
+      <?php endforeach;
+            endif; ?>
+  </select>
+ </div>
+ <div class="col-md-3 mb-3">
+ <label> Booking Margin Amount</label>
+ <input type="text" name="profit[booking][amount]" class="form-control 
+ " placeholder="Enter amount or percentage">
+ </div>
+
+
+  <div class="col-md-3 mb-3">
+ <label> Addon Margin</label>
+ <select class="form-select" onchange="changeAmountOfType(this)" name="profit[add_on][commission_type_id]"  >
+ <option value="">Select Margin Type</option>
+<?php if(isset($response['data']['commission_types']) && count($response['data']['commission_types'])):
+      foreach($response['data']['commission_types'] as $type): ?>
+
+        <option data-amount="<?=$type['amount']?>" value="<?=$type['id']?>"><?=$type['name'];?></option>
+
+      <?php endforeach;
+            endif; ?>
+  </select>
+ </div>
+ <div class="col-md-3 mb-3">
+ <label> Addon Margin Amount</label>
+ <input type="text" name="profit[add_on][amount]" class="form-control 
+ " placeholder="Enter amount or percentage">
+ </div>
+
+ <div class="col-md-3 mb-3">
+ <label> Cancellation Margin</label>
+ <select class="form-select" onchange="changeAmountOfType(this)" name="profit[cancellation][commission_type_id]"  >
+ <option value="">Select Margin Type</option>
+<?php if(isset($response['data']['commission_types']) && count($response['data']['commission_types'])):
+      foreach($response['data']['commission_types'] as $type): ?>
+
+        <option data-amount="<?=$type['amount']?>" value="<?=$type['id']?>"><?=$type['name'];?></option>
+
+      <?php endforeach;
+            endif; ?>
+  </select>
+ </div>
+ <div class="col-md-3 mb-3">
+ <label> Cancellation Margin Amount</label>
+ <input type="text" name="profit[cancellation][amount]" class="form-control 
+ " placeholder="Enter amount or percentage">
+ </div>
+
+ <div class="col-md-6 mb-3">
 
   <label for="formFile" class="form-label">Driver Picture</label>
   <input class="form-control" name="driver_picture" type="file" id="formFile">

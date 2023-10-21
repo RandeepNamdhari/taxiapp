@@ -54,6 +54,8 @@ class DriverModel extends Model
 
         $redirect_url='';
 
+       \App\Models\UserCommissionModel::attachDriverCommission($data['profit'],$user_id,$driver_id);
+
 
         if($driver_id && $customer_id):
 
@@ -108,11 +110,14 @@ class DriverModel extends Model
 
         \App\Models\MediaModel::attach(['model'=>'User',
                                          'type'=>'user',
-                                         'user_id'=>$user_id,
-                                         'model_id'=>$user_id,
+                                         'user_id'=>$driver->user_id,
+                                         'model_id'=>$driver->user_id,
                                          'file'=>'driver_picture'],true);
 
         $redirect_url='';
+
+       \App\Models\UserCommissionModel::attachDriverCommission($data['profit'],$driver->user_id,$driver->id);
+
 
         if($customer_id):
             $redirect_url=base_url('admin/customers/'.$customer_id.'/drivers/view');

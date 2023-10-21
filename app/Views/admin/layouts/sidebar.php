@@ -59,6 +59,14 @@
                                 </a>
                             </li>
 
+                              <li class="<?php echo ($currentRoute=='admin-transactions')?'mm-active':''?>">
+                                <a href="<?=base_url('admin/transactions')?>" class="waves-effect <?php echo ($currentRoute=='admin-transactions')?'active':''?>">
+                                    <i class="fas fa-money-check-alt"></i>
+                                      <!--   <span class="badge rounded-pill bg-primary float-end">1</span> -->
+                                    <span>Transactions</span>
+                                </a>
+                            </li>
+
 
 
                             <li>
@@ -112,6 +120,7 @@
                                      <li class="<?php echo ($currentRoute=='admin-settomgs-vechile-body-types')?'mm-active':''?>"><a href="<?=base_url('admin/settings/vehicle/bodytypes')?>">Vehicle Body Types</a></li>
                                      <li class="<?php echo ($currentRoute=='admin-settings-taxes')?'mm-active':''?>"><a href="<?=base_url('admin/settings/taxes')?>">Taxes</a></li>
                                       <li class="<?php echo ($currentRoute=='admin-settings-fare-types')?'mm-active':''?>"><a href="<?=base_url('admin/settings/fare/types')?>">Fare Types</a></li>
+                                      <li class="<?php echo ($currentRoute=='admin-settings-commission-types')?'mm-active':''?>"><a href="<?=base_url('admin/settings/commission/types')?>">Commission Types</a></li>
 
                                
                                 </ul>

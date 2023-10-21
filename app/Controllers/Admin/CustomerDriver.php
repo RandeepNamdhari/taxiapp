@@ -49,6 +49,8 @@ class CustomerDriver extends BaseController
 
             $data['customer']= \App\Models\CustomerModel::getCustomer($id);
 
+            $data['commission_types']=\App\Models\CommissionTypeModel::all();
+
             $data['states']=\App\Models\StateModel::all();
            
 
@@ -149,6 +151,9 @@ class CustomerDriver extends BaseController
              $data['customer']= \App\Models\CustomerModel::getCustomer($customer_id);
 
             $data['states']=\App\Models\StateModel::all();
+
+            $data['commission_types']=\App\Models\CommissionTypeModel::all();
+
 
         
 

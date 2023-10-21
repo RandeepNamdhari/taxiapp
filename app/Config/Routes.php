@@ -251,6 +251,16 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
         //End Settings Routes
 
+    // Transaction Routes
+
+    $routes->get('transactions','Transaction::index');
+    $routes->post('transactions','Transaction::index');
+    $routes->get('transactions/(:num)/view','Transaction::invoice/$1');
+
+
+
+    // End Transaction Routes
+
     // Bookings Routes
     $routes->get('bookings', 'Booking::index');
     $routes->post('bookings', 'Booking::index');

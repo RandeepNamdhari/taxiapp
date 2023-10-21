@@ -62,7 +62,7 @@ class MediaModel extends Model
             $media_file['media_id']=$media_id;
 
 
-            if($media_file):
+            if(isset($media_file['file_path'])):
 
                $file_id=\App\Models\MediaFileModel::addFile($media_file,$do_update);
 
@@ -78,7 +78,7 @@ class MediaModel extends Model
 
         endif;
 
-          $media_file['file_id']=$file_id;
+          $media_file['file_id']=$file_id??'';
 
           return $media_file;
 
@@ -93,6 +93,8 @@ class MediaModel extends Model
            $request = service('request');
 
             $file = $request->getFile($fileName);
+
+
 
 
         if ($file->isValid() && ! $file->hasMoved()):

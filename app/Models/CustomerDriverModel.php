@@ -39,6 +39,8 @@ class CustomerDriverModel extends Model
           $driverObj=new \App\Models\DriverModel();
 
           $response= $driverObj->select('drivers.*,users.email,users.phone')->join('users','users.id=drivers.user_id')->join('customer_drivers','drivers.id=customer_drivers.driver_id')->where('customer_drivers.customer_id',$customer_id)->where('customer_drivers.driver_id',$driver_id)->first();
+
+          $response->profit=\App\Models\UserCommissionModel::getCommissions('Driver',$driver_id);
           
             return $response?$response: throw new DatabaseException('Unable to find the record.');
     }
