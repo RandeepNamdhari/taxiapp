@@ -283,6 +283,12 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     $routes->post('bookings/add/addon', 'Booking::addon');
 
+    $routes->get('bookings/(:num)/add/tip', 'Booking::tip/$1');
+
+    $routes->post('bookings/(:num)/save/tip', 'Booking::storeTip/$1');
+
+
+
     $routes->post('bookings/remove/(:num)/addon', 'Booking::removeAddon/$1');
 
     $routes->post('bookings/assign/driver','Booking::assignDriver');

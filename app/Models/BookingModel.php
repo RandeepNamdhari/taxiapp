@@ -239,7 +239,8 @@ public static function getBooking(int $booking_id)
         $query=$obj->builder();
 
 
-        $query->select('bookings.*,users.first_name,GROUP_CONCAT(booking_details.to_location SEPARATOR "____") as to_locations,GROUP_CONCAT(booking_details.from_location SEPARATOR "____") as from_locations,vehicles.model as vehicle_name,drivers.first_name as driver_name,vehicles.id as vehicle_id')
+        $query->select('bookings.*,users.first_name,GROUP_CONCAT(booking_details.to_location SEPARATOR "____") as to_locations,GROUP_CONCAT(booking_details.from_location SEPARATOR "____") as from_locations,vehicles.model as vehicle_name,drivers.first_name as driver_name,vehicles.id as vehicle_id,driver_tips.amount as tip_amount')
+        ->join('driver_tips','driver_tips.booking_id=bookings.id','left')
         ->join('booking_details','booking_details.booking_id=bookings.id')
         ->join('users', 'users.id = bookings.user_id')
         ->join('vehicles','booking_details.vehicle_id=vehicles.id')
@@ -304,9 +305,16 @@ public static function getBooking(int $booking_id)
 
     public function actions($row)
     {
-      return '<div class="btn-group"><button class="btn btn-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions<i class="mdi mdi-chevron-down"></i></button><div class="dropdown-menu" style="">
-      <a class="dropdown-item" href="javascript:void(0)" onclick="showAddons('.$row['id'].')"><i class="fas fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Addon</a>
-      <a class="dropdown-item" href="'.base_url('admin/bookings/'.$row['id'].'/view').'"><i class="fas fa-eye"></i>&nbsp;&nbsp;&nbsp;&nbsp;View</a><a class="dropdown-item" href="'.base_url('admin/bookings/'.$row['id'].'/edit').'"><i class="fas fa-user-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit</a><a class="dropdown-item" href="javascript:void(0)" onclick="deleteBooking('.$row['id'].')"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></div></div>';
+      $actions= '<div class="btn-group"><button class="btn btn-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions<i class="mdi mdi-chevron-down"></i></button><div class="dropdown-menu" style="">
+      <a class="dropdown-item" href="javascript:void(0)" onclick="showAddons('.$row['id'].')"><i class="fas fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Addon</a>';
+      if($row['driver_name'] && !$row['tip_amount']):
+      $actions.='<a class="dropdown-item" href="'.base_url('admin/bookings/'.$row['id'].'/add/tip').'" ><i class="fas fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Add Tip</a>';
+
+  endif;
+
+      $actions.='<a class="dropdown-item" href="'.base_url('admin/bookings/'.$row['id'].'/view').'"><i class="fas fa-eye"></i>&nbsp;&nbsp;&nbsp;&nbsp;View</a><a class="dropdown-item" href="'.base_url('admin/bookings/'.$row['id'].'/edit').'"><i class="fas fa-user-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit</a><a class="dropdown-item" href="javascript:void(0)" onclick="deleteBooking('.$row['id'].')"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></div></div>';
+
+      return $actions;
 
     }
 
@@ -456,6 +464,26 @@ public static function getBooking(int $booking_id)
         $transactionObj=new \App\Models\TransactionModel;
 
         $transactionObj->updateTransaction($transaction);
+    }
+
+
+    public function addTip(array $data,int $booking_id)
+    {
+        $booking=$this->getBooking($booking_id);
+
+        $driver=$booking['booking_details'][0]['driver'];
+
+        if(isset($driver->user_id)):
+
+            $tip=array('amount'=>$data['amount'],'booking_id'=>$booking_id,
+                      'user_id'=>$driver->user_id);
+
+            \App\Models\DriverTipModel::attachTip($tip);
+
+            return array('status'=>1,'message'=>'Tip is added to driver\'s account','type'=>'success','redirect'=>base_url('admin/bookings'));
+        else:
+            return array('status'=>0,'message'=>'Driver is not assigned to this booking.Please attach driver first to add tip');
+        endif;
     }
 
     

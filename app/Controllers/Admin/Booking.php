@@ -346,4 +346,78 @@ return $this->response->setJSON($response);
 }
 
 
+public function tip(int $booking_id)
+{
+$data['currentRoute']='admin-bookings';
+$data['pageTitle']='Add Driver Tip';
+
+$data['response']= run_with_exceptions(function() use($booking_id){ 
+
+ $data['booking']=\App\Models\BookingModel::getBooking($booking_id);
+
+ if($data['booking']['booking_details'][0]['driver_id']):
+
+return array('status'=>1,'data'=>$data);
+
+
+ else:
+
+return array('status'=>0,'data'=>$data,'message'=>'Driver Not assigned yet.','type'=>'warning');
+
+
+ endif;
+
+
+
+});
+
+//echo '<pre>';print_r($data);die;
+
+
+
+return view('admin/booking/add-tip',$data);
+}
+
+
+public function storeTip(int $booking_id)
+{
+
+
+$response=run_with_exceptions(function() use ($booking_id)
+{
+
+$data = $this->request->getJSON(true);
+
+
+
+$rule = [
+
+'amount'=>'required',
+
+];
+
+
+if (! $this->validateData($data, $rule)) {
+return array('status'=>0,
+     'errors'=>$this->validator->getErrors(),
+     'message'=>'Validation Error Occur!',
+     'type'=>'warning');
+
+}
+else
+{
+$booking=new \App\Models\BookingModel();
+
+return $booking->addTip($data,$booking_id);
+
+}
+});
+
+
+//echo '<pre>';print_r($response);die;
+return $this->response->setJSON($response);
+
+}
+
+
 }
