@@ -301,6 +301,17 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
     // End Bookinks
 
+    // Payment Routes
+
+    $routes->get('payment/(:num)/transaction', 'Payment::index/$1');
+    $routes->get('payment/callback', 'Payment::callback');
+
+    $routes->post('payment/(:num)/transaction', 'Payment::make/$1');
+
+
+
+    //End Payment Routes
+
     // Pages Route
 
     $routes->get('pages/(:any)(/(:any))?', 'Page::show/$1/$2');

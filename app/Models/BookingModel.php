@@ -125,7 +125,7 @@ public static function getBooking(int $booking_id)
       endif;
 
 
-      $this->createTransaction($data,$booking_id);
+      $transaction_id=$this->createTransaction($data,$booking_id);
 
 
         if($booking_id && $data['user_id'] && $bookingDetail ):
@@ -136,7 +136,7 @@ public static function getBooking(int $booking_id)
 
         $this->transCommit();
 
-        return array('status'=>1,'message'=>'The booking is created successfully.','type'=>'success','redirect'=>base_url('admin/bookings'));
+        return array('status'=>1,'message'=>'The booking is created successfully.','type'=>'success','redirect'=>base_url('admin/payment/'.$transaction_id.'/transaction'));
 
         else:
 
@@ -446,7 +446,7 @@ public static function getBooking(int $booking_id)
 
         $transactionObj=new \App\Models\TransactionModel;
 
-        $transactionObj->create($transaction);
+        return $transactionObj->create($transaction);
     }
 
     public function updateTransaction($data,$booking_id)

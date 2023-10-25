@@ -188,6 +188,26 @@ class TransactionModel extends Model
 
         return $transactions;
     }
+
+
+    public static function getTransaction(int $transaction_id)
+    {
+        $obj=new self();
+
+        $transaction=$obj->select('transactions.*,users.first_name,users.username,users.email,users.phone')->join('users','users.id=transactions.user_id')->find($transaction_id);
+
+        if($transaction):
+
+            return $transaction;
+
+
+
+        else:
+
+            throw new DatabaseException('Unable to find the transaction.Please try again later.');
+
+        endif;
+    }
     
 
 }
