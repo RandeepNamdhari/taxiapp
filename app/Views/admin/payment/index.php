@@ -168,7 +168,7 @@
 
 const clientSecret='<?php echo $intent->client_secret??''; ?>';
 // This is your test publishable API key.
-const stripe = Stripe("pk_test_51NIX39DFQsmxI1lbKXzGqA5izuyEYDcXY9jUGLZqzmPFZxv9Yg8Zede7q26AmUixdIS4hgr95jGzirZLSnuQP6lB00fZdr8hzD");
+const stripe = Stripe("");
 
 // The items the customer wants to buy
 const items = [{ id: "<?=$transaction['model_id']?>" }];

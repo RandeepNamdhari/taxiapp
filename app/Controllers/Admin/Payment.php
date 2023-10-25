@@ -39,13 +39,13 @@ return view('admin/payment/index',$data);
 
     public function callback()
     {
-        
+
     }
 
 
     public function createPaymentIntent($amount)
     {
-         \Stripe\Stripe::setApiKey('sk_test_51NIX39DFQsmxI1lbTvLjNot5BvrhzQVWi6gvQDB7QPtn3R0lPNrJIUS4myI4bC1wN3MTzN3W1kjrGXMfa2edST9D00g59VmkL4'); // Set your secret API key
+         \Stripe\Stripe::setApiKey(''); // Set your secret API key
 
     $intent = \Stripe\PaymentIntent::create([
     'amount' => $amount*100, // Amount in cents
